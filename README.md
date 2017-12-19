@@ -1,4 +1,6 @@
-== Goal ==
+# Fitness App
+
+## Goal 
 
 In this project you should model all the information managed by a Fitness App.  
 With this app users can search for nearby running routes or share their favorite routes.  
