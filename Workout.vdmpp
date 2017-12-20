@@ -1,12 +1,16 @@
 class Workout
 types
--- TODO Define types here
+	public Duration :: hours : int
+										 minutes: int
+										 seconds: int;
+										
 values
 -- TODO Define values here
 instance variables
 	distance: real; -- In km
 	caloriesBurned: real;
 	averageRhythm: real; -- In min/km
+	time: Duration;
 operations
 -- TODO Define operations here
 functions
