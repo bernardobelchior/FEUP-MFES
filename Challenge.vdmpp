@@ -4,10 +4,18 @@ types
 values
 -- TODO Define values here
 instance variables
+	public name: Types`String;
+	public description: Types`String;
 	public startDate: Types`Date;
 	public endDate: Types`Date;
 operations
--- TODO Define operations here
+	public Challenge(n: Types`String, d: Types`String, s: Types`Date, e: Types`Date) res: Challenge == (
+				name := n;
+				description := d;
+				startDate := s;
+				endDate := e;
+		)
+		post name = n and description = d and startDate = s and endDate = s;
 functions
 -- TODO Define functiones here
 traces
