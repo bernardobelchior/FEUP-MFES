@@ -1,0 +1,17 @@
+class Route
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	points: seq of Types`Point := [];
+operations
+	public Route(point: Types`Point) res: Route == (
+			points := points ^ [point]
+		)
+		post points(len points - 1) = point;
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Route

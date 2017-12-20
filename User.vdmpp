@@ -4,10 +4,20 @@ types
 values
 -- TODO Define values here
 instance variables
-	name: seq of char;
-	workouts: set of Workout;
+	firstName: Types`String;
+	lastName: Types`String;
+	workouts: set of Workout := {};
+	favoriteRoutes: set of NamedRoute := {};
 operations
--- TODO Define operations here
+	public User(fName: Types`String, lName: Types`String) res: User == (
+		firstName := fName;
+		lastName := lName;
+	)
+		post res.firstName = fName and res.lastName = lName;
+
+	public AddFavorite(route: NamedRoute) == 
+		favoriteRoutes := favoriteRoutes union {route}
+		post route in set favoriteRoutes;
 functions
 -- TODO Define functiones here
 traces

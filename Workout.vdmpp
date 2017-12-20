@@ -1,16 +1,19 @@
 class Workout
 types
-	public Duration :: hours : int
-										 minutes: int
-										 seconds: int;
-										
 values
 -- TODO Define values here
 instance variables
-	distance: real; -- In km
-	caloriesBurned: real;
-	averageRhythm: real; -- In min/km
-	time: Duration;
+	distance: real := 0; -- In km
+	caloriesBurned: real := 0; -- In km
+	averageRhythm: real := 0; -- In min/km
+	time: Types`Time := mk_Types`Time(0, 0, 0);
+	startDate: Types`Date;
+	activity: Types`Activity := <Running>;
+	route: Route;
+
+	inv distance >= 0; 
+	inv caloriesBurned >= 0; 
+	inv averageRhythm >= 0;
 operations
 -- TODO Define operations here
 functions

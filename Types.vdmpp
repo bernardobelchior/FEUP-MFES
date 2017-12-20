@@ -1,0 +1,36 @@
+class Types
+types
+	public String :: seq of char;
+
+	public DateTime :: date: Date
+										time: Time;
+
+	public Time :: hours : int
+										 minutes: int
+										 seconds: int
+		inv time == 
+			time.minutes >= 0 and time.minutes < 60 and
+			time.seconds >= 0 and time.seconds < 60 and
+			time.hours >= 0;
+			
+	public Date :: year : int
+								month: int
+								day: int
+	inv date ==
+		date.year >= 0 and date.month > 0 and date.month <= 12 and date.day > 0 and date.day <= 31;
+		
+	public Activity = <Bycicle> | <Running> | <Walking>;
+
+	public Point :: lat : real
+									long : real;
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Types

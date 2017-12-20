@@ -1,0 +1,15 @@
+class NamedRoute is subclass of Route
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	name: seq of char := "";
+-- TODO Define instance variables here
+operations
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end NamedRoute
