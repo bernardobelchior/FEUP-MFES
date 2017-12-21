@@ -1,4 +1,4 @@
-class Test
+class FitnessAppTest
 types
 -- TODO Define types here
 values
@@ -6,11 +6,11 @@ values
 instance variables
 -- TODO Define instance variables here
 operations
-	protected assert : bool ==> ()
-	assert(a) == return 
-	pre a
+	public static main() == (
+		new UserTest().test();
+	);
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end Test
+end FitnessAppTest

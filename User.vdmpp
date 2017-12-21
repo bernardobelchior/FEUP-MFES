@@ -15,14 +15,14 @@ operations
 	)
 		post res.firstName = fName and res.lastName = lName;
 
-	public AddFavorite(route: NamedRoute) == 
+	public addFavorite(route: NamedRoute) == 
 		favoriteRoutes := favoriteRoutes union {route}
 		post route in set favoriteRoutes;
 
-	public GetFavorites() res: set of NamedRoute == 
+	public getFavorites() res: set of NamedRoute == 
 		return favoriteRoutes;
 	
-	public AddWorkout(workout: Workout) == 
+	public addWorkout(workout: Workout) == 
 		workouts := workouts union {workout}	
 		post workout in set workouts;
 functions

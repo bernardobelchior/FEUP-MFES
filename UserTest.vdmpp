@@ -6,17 +6,22 @@ values
 instance variables
 -- TODO Define instance variables here
 operations
-	public TestAddFavorite() == (
+	public testAddFavorite() == (
 		dcl u: User := new User("Bernardo", "Belchior");	
 		dcl r: NamedRoute := new NamedRoute("Sunday Run", mk_Types`Point(0, 0));
-		u.AddFavorite(r);
+		u.addFavorite(r);
 	);
 	
-	public TestAddWorkout() == (
+	public testAddWorkout() == (
 		dcl u: User := new User("Bernardo", "Belchior");	
 		dcl r: Route := new Route(mk_Types`Point(0, 0));
 		dcl w: Workout := new Workout(mk_Types`Date(2017,12,21), <Running>, r);
-		u.AddWorkout(w);
+		u.addWorkout(w);
+	);
+	
+	public test() == (
+		testAddFavorite();	
+		testAddWorkout();
 	);
 functions
 -- TODO Define functiones here
