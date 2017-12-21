@@ -19,9 +19,12 @@ operations
 		favoriteRoutes := favoriteRoutes union {route}
 		post route in set favoriteRoutes;
 
-	public GetFavorites() res: set of NamedRoute == (
+	public GetFavorites() res: set of NamedRoute == 
 		return favoriteRoutes;
-	)
+	
+	public AddWorkout(workout: Workout) == 
+		workouts := workouts union {workout}	
+		post workout in set workouts;
 functions
 -- TODO Define functiones here
 traces

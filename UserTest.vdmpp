@@ -11,6 +11,13 @@ operations
 		dcl r: NamedRoute := new NamedRoute("Sunday Run", mk_Types`Point(0, 0));
 		u.AddFavorite(r);
 	);
+	
+	public TestAddWorkout() == (
+		dcl u: User := new User("Bernardo", "Belchior");	
+		dcl r: Route := new Route(mk_Types`Point(0, 0));
+		dcl w: Workout := new Workout(mk_Types`Date(2017,12,21), <Running>, r);
+		u.AddWorkout(w);
+	);
 functions
 -- TODO Define functiones here
 traces

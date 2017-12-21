@@ -8,14 +8,19 @@ instance variables
 	averageRhythm: real := 0; -- In min/km
 	time: Types`Time := mk_Types`Time(0, 0, 0);
 	startDate: Types`Date;
-	activity: Types`Activity := <Running>;
+	activity: Types`Activity;
 	route: Route;
 
 	inv distance >= 0; 
 	inv caloriesBurned >= 0; 
 	inv averageRhythm >= 0;
 operations
--- TODO Define operations here
+	public Workout(sd: Types`Date, a: Types`Activity, r: Route) res: Workout == (
+		startDate := sd;
+		activity := a;
+		route := r;
+	)
+	post startDate = sd and activity = a and route = r;
 functions
 -- TODO Define functiones here
 traces
