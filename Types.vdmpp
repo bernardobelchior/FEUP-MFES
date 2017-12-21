@@ -1,7 +1,5 @@
 class Types
 types
-	public String :: seq of char;
-
 	public DateTime :: date: Date
 										time: Time;
 

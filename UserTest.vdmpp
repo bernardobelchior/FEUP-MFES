@@ -1,0 +1,18 @@
+class UserTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+	public TestAddFavorite() == (
+		dcl u: User := new User("Bernardo", "Belchior");	
+		dcl r: NamedRoute := new NamedRoute("Sunday Run", mk_Types`Point(0, 0));
+		u.AddFavorite(r);
+	);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end UserTest

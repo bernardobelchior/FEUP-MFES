@@ -1,17 +1,14 @@
-class Route
+class ChallengeTest is subclass of Test
 types
 -- TODO Define types here
 values
 -- TODO Define values here
 instance variables
-	protected points: seq of Types`Point := [];
+-- TODO Define instance variables here
 operations
-	public Route(point: Types`Point) res: Route == (
-			points := points ^ [point]
-		)
-		post points(len points - 1) = point;
+-- TODO Define operations here
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end Route
+end ChallengeTest

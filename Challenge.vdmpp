@@ -4,12 +4,13 @@ types
 values
 -- TODO Define values here
 instance variables
-	public name: Types`String;
-	public description: Types`String;
+	public name: seq of char;
+	public description: seq of char;
 	public startDate: Types`Date;
 	public endDate: Types`Date;
+	public completed: set of User := {};
 operations
-	public Challenge(n: Types`String, d: Types`String, s: Types`Date, e: Types`Date) res: Challenge == (
+	public Challenge(n: seq of char, d: seq of char, s: Types`Date, e: Types`Date) res: Challenge == (
 				name := n;
 				description := d;
 				startDate := s;

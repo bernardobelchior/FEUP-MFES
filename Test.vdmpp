@@ -1,17 +1,16 @@
-class Route
+class Test
 types
 -- TODO Define types here
 values
 -- TODO Define values here
 instance variables
-	protected points: seq of Types`Point := [];
+-- TODO Define instance variables here
 operations
-	public Route(point: Types`Point) res: Route == (
-			points := points ^ [point]
-		)
-		post points(len points - 1) = point;
+	protected Assert : bool ==> ()
+	Assert(a) == return 
+	pre a
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end Route
+end Test
