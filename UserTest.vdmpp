@@ -6,36 +6,52 @@ values
 instance variables
 -- TODO Define instance variables here
 operations
-	public testAddFavorite() == (
-		dcl u: User := new User("Bernardo", "Belchior");	
+	public createUser() res: User ==
+		return new User("Bernardo", "Belchior");	
+
+	public testUser() == (
+		dcl u: User := createUser();
+		u.weight := 90;
+		u.height := 1.20;
+		assert(u.getFirstName() = "Bernardo");
+		assert(u.getLastName() = "Belchior");
+		assert(u.weight = 90);
+		assert(u.height = 1.20);
+	);
+
+	public testAddRoute() == (
+		dcl u: User := createUser();
 		dcl r: Route := new Route("Sunday Run", mk_Types`Point(0, 0));
 		u.addRoute(r);
+		assert(r in set u.getMyRoutes());
 	);
 	
 	public testAddWorkout() == (
-		dcl u: User := new User("Bernardo", "Belchior");	
+		dcl u: User := createUser();
 		dcl w: Workout := new Workout("Morning Run", mk_Types`Date(2017,12,21), <Running>, mk_Types`Point(0, 0));
 		u.addWorkout(w);
 		assert(w in set u.getWorkouts());
 	);
 	
-	public testSetWeight() == (
-		dcl u: User := new User("Bernardo", "Belchior");	
-		u.setWeight(90);
-		assert(u.getWeight() = 90);
-	);
-
-	public testSetHeight() == (
-		dcl u: User := new User("Bernardo", "Belchior");	
-		u.setHeight(1.80);
-		assert(u.getHeight() = 1.80);
+	public testAddFriend() == (
+		dcl u1: User := createUser();
+		dcl u2: User := new User("Bernardo", "Belchior");	
+		u1.addFriend(u2);
+		assert(u2 in set u1.getFriends());
 	);
 	
+	public testAddGoal() == (
+		dcl u: User := createUser();
+		dcl g: Goal := new Goal(10.2);
+		u.addGoal(g);
+		assert(g in set u.getGoals());
+	);
 	public test() == (
-		testAddFavorite();	
+		testUser();
+		testAddRoute();	
 		testAddWorkout();
-		testSetWeight();
-		testSetHeight();
+		testAddFriend();	
+		testAddGoal();
 	);
 functions
 -- TODO Define functiones here

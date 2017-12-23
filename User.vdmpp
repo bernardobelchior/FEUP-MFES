@@ -10,7 +10,7 @@ instance variables
 	myRoutes: set of Route := {};
 	goals: set of Goal := {};
 	friends: set of User := {};	
-	
+
 	public gender: Types`Gender;
 	public weight: [real] := nil; -- in kilograms
 	public height: [real] := nil; -- in meters
@@ -23,7 +23,7 @@ operations
 		lastName := lName;
 	)
 		post res.firstName = fName and res.lastName = lName;
-
+		
 	public addRoute(route: Route) == 
 		myRoutes := myRoutes union {route}
 		post route in set myRoutes;
@@ -41,24 +41,23 @@ operations
 		-- pre self <> f
 		post f in set friends;
 		
-	public setWeight(w: real) ==
-		weight := w
-		pre w > 0
-		post weight = w;
-
-	public setHeight(h: real) ==
-		height := h
-		pre h > 0
-		post height = h;
-
-	public getWeight() res: real ==
-		return weight;
-
-	public getHeight() res: real ==
-		return height;
-		
 	public getWorkouts() res: set of Workout ==
 		return workouts;
+		
+	public getFirstName() res: seq of char ==
+		return firstName;
+
+	public getLastName() res: seq of char ==
+		return lastName;
+		
+	public getMyRoutes() res: set of Route ==
+		return myRoutes;
+
+	public getFriends() res: set of User ==
+		return friends;
+
+	public getGoals() res: set of Goal ==
+		return goals;
 functions
 -- TODO Define functiones here
 traces
