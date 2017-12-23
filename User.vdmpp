@@ -40,6 +40,25 @@ operations
 		friends := friends union {f}
 		-- pre self <> f
 		post f in set friends;
+		
+	public setWeight(w: real) ==
+		weight := w
+		pre w > 0
+		post weight = w;
+
+	public setHeight(h: real) ==
+		height := h
+		pre h > 0
+		post height = h;
+
+	public getWeight() res: real ==
+		return weight;
+
+	public getHeight() res: real ==
+		return height;
+		
+	public getWorkouts() res: set of Workout ==
+		return workouts;
 functions
 -- TODO Define functiones here
 traces

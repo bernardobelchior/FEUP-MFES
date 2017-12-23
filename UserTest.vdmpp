@@ -16,11 +16,26 @@ operations
 		dcl u: User := new User("Bernardo", "Belchior");	
 		dcl w: Workout := new Workout("Morning Run", mk_Types`Date(2017,12,21), <Running>, mk_Types`Point(0, 0));
 		u.addWorkout(w);
+		assert(w in set u.getWorkouts());
+	);
+	
+	public testSetWeight() == (
+		dcl u: User := new User("Bernardo", "Belchior");	
+		u.setWeight(90);
+		assert(u.getWeight() = 90);
+	);
+
+	public testSetHeight() == (
+		dcl u: User := new User("Bernardo", "Belchior");	
+		u.setHeight(1.80);
+		assert(u.getHeight() = 1.80);
 	);
 	
 	public test() == (
 		testAddFavorite();	
 		testAddWorkout();
+		testSetWeight();
+		testSetHeight();
 	);
 functions
 -- TODO Define functiones here
