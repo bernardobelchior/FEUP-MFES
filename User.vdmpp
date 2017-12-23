@@ -7,7 +7,16 @@ instance variables
 	firstName: seq of char;
 	lastName: seq of char;
 	workouts: set of Workout := {};
-	favoriteRoutes: set of NamedRoute := {};
+	myRoutes: set of Route := {};
+	goals: set of Goal := {};
+	friends: set of User := {};	
+	
+	public gender: Types`Gender;
+	public weight: [real] := nil; -- in kilograms
+	public height: [real] := nil; -- in meters
+	
+	inv weight = nil or weight > 0;
+	inv height = nil or height > 0;
 operations
 	public User(fName: seq of char, lName: seq of char) res: User == (
 		firstName := fName;
@@ -15,16 +24,22 @@ operations
 	)
 		post res.firstName = fName and res.lastName = lName;
 
-	public addFavorite(route: NamedRoute) == 
-		favoriteRoutes := favoriteRoutes union {route}
-		post route in set favoriteRoutes;
-
-	public getFavorites() res: set of NamedRoute == 
-		return favoriteRoutes;
+	public addRoute(route: Route) == 
+		myRoutes := myRoutes union {route}
+		post route in set myRoutes;
 	
 	public addWorkout(workout: Workout) == 
 		workouts := workouts union {workout}	
 		post workout in set workouts;
+
+	public addGoal(goal: Goal) == 
+		goals := goals union {goal}	
+		post goal in set goals;
+		
+	public addFriend(f: User) ==
+		friends := friends union {f}
+		-- pre self <> f
+		post f in set friends;
 functions
 -- TODO Define functiones here
 traces

@@ -9,18 +9,35 @@ instance variables
 	time: Types`Time := mk_Types`Time(0, 0, 0);
 	startDate: Types`Date;
 	activity: Types`Activity;
-	route: Route;
+	route: [Route] := nil;
+	points: seq of Types`Point := [];
+	title: seq of char;
+	public description: seq of char;
 
 	inv distance >= 0; 
 	inv caloriesBurned >= 0; 
 	inv averageRhythm >= 0;
 operations
-	public Workout(sd: Types`Date, a: Types`Activity, r: Route) res: Workout == (
+	public Workout(t: seq of char, sd: Types`Date, a: Types`Activity, p: Types`Point) res: Workout == (
+		title := t;
 		startDate := sd;
 		activity := a;
+		points := points ^[p]
+	)
+	post startDate = sd and activity = a and title = t and len points > 0 and points(len points) = p and route = nil;
+
+	public Workout(t: seq of char, sd: Types`Date, a: Types`Activity, p: Types`Point, r: Route) res: Workout == (
+		title := t;
+		startDate := sd;
+		activity := a;
+		points := points ^[p];
 		route := r;
 	)
-	post startDate = sd and activity = a and route = r;
+	post startDate = sd and activity = a and route = r and title = t and len points > 0 and points(len points - 1) = p;
+	
+	public addPoint(p: Types`Point) ==
+		points := points ^ [p]
+		post len points > 0 and points(len points - 1) = p;
 functions
 -- TODO Define functiones here
 traces

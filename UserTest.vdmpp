@@ -8,14 +8,13 @@ instance variables
 operations
 	public testAddFavorite() == (
 		dcl u: User := new User("Bernardo", "Belchior");	
-		dcl r: NamedRoute := new NamedRoute("Sunday Run", mk_Types`Point(0, 0));
-		u.addFavorite(r);
+		dcl r: Route := new Route("Sunday Run", mk_Types`Point(0, 0));
+		u.addRoute(r);
 	);
 	
 	public testAddWorkout() == (
 		dcl u: User := new User("Bernardo", "Belchior");	
-		dcl r: Route := new Route(mk_Types`Point(0, 0));
-		dcl w: Workout := new Workout(mk_Types`Date(2017,12,21), <Running>, r);
+		dcl w: Workout := new Workout("Morning Run", mk_Types`Date(2017,12,21), <Running>, mk_Types`Point(0, 0));
 		u.addWorkout(w);
 	);
 	

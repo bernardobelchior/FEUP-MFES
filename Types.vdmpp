@@ -18,6 +18,8 @@ types
 		date.year >= 0 and date.month > 0 and date.month <= 12 and date.day > 0 and date.day <= 31;
 		
 	public Activity = <Bycicle> | <Running> | <Walking>;
+	
+	public Gender = <Masculine> | <Feminine>;
 
 	public Point :: lat : real
 									long : real;
