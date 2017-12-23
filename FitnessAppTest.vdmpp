@@ -8,6 +8,7 @@ instance variables
 operations
 	public static main() == (
 		new UserTest().test();
+		new WorkoutTest().test();
 	);
 functions
 -- TODO Define functiones here

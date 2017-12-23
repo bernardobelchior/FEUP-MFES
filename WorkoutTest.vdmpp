@@ -1,0 +1,34 @@
+class WorkoutTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+	public createWorkout() res: Workout ==
+		return new Workout("Morning Run", mk_Types`DateTime(mk_Types`Date(2017,12,21), mk_Types`Time(16, 37, 00)), <Running>, mk_Types`Point(0, 0));
+
+	public testSetRoute() == (
+		dcl w: Workout := createWorkout();	
+		dcl r: Route := new Route("Sunday Run", mk_Types`Point(0, 0));
+		w.route := r;
+		assert(w.route = r);
+	);
+
+	public testAddPoint() == (
+		dcl w: Workout := createWorkout();	
+		dcl p: Types`Point := mk_Types`Point(10, 10);
+		w.addPoint(p);
+		assert(p = w.getPoints()(len w.getPoints()))
+	);
+
+	public test() == (
+		testSetRoute();	
+		testAddPoint();
+	);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end WorkoutTest

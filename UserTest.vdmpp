@@ -28,7 +28,7 @@ operations
 	
 	public testAddWorkout() == (
 		dcl u: User := createUser();
-		dcl w: Workout := new Workout("Morning Run", mk_Types`Date(2017,12,21), <Running>, mk_Types`Point(0, 0));
+		dcl w: Workout := new Workout("Morning Run", mk_Types`DateTime(mk_Types`Date(2017,12,21), mk_Types`Time(16, 37, 00)), <Running>, mk_Types`Point(0, 0));
 		u.addWorkout(w);
 		assert(w in set u.getWorkouts());
 	);
