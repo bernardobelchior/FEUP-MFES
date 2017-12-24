@@ -6,6 +6,19 @@ values
 instance variables
 -- TODO Define instance variables here
 operations
+	public createChallenge() res: Challenge == 
+		return new Challenge("Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30));
+	
+	public testChallenge() == (
+		dcl c: Challenge := createChallenge();
+		assert(c.getName() = "Testing Challenge");
+		assert(c.getDescription() = "Lets test Challenge class");
+		assert(c.getStartDate() = mk_Types`Date(2017,12,24));
+		assert(c.getEndDate() = mk_Types`Date(2017,12,30));
+	);
+	
+	public test() == 
+		testChallenge();
 functions
 -- TODO Define functiones here
 traces

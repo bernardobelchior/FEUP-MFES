@@ -9,6 +9,8 @@ operations
 	public static main() == (
 		new UserTest().test();
 		new WorkoutTest().test();
+		new ChallengeTest().test();
+		new MaxDistanceChallengeTest().test();
 	);
 functions
 -- TODO Define functiones here

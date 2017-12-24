@@ -8,7 +8,7 @@ instance variables
 	public description: seq of char;
 	public startDate: Types`Date;
 	public endDate: Types`Date;
-	public completed: set of User := {};
+	public completed: seq of User := [];
 operations
 	public Challenge(n: seq of char, d: seq of char, s: Types`Date, e: Types`Date) res: Challenge == (
 				name := n;
@@ -16,7 +16,26 @@ operations
 				startDate := s;
 				endDate := e;
 		)
-		post name = n and description = d and startDate = s and endDate = s;
+		post name = n and description = d and startDate = s and endDate = e;
+		
+		public getName() res: seq of char ==
+			return name;
+		 
+		public getDescription() res: seq of char ==
+			return description;
+			
+		public getStartDate() res: Types`Date ==
+			return startDate;
+			
+		public getEndDate() res: Types`Date ==
+			return endDate;
+		
+		public getCompleted() res: seq of User ==
+			return completed;
+		
+		public addCompletedUser(u: User) == 
+			completed := [u] ^ completed
+			post completed = [u] ^ completed~;
 functions
 -- TODO Define functiones here
 traces

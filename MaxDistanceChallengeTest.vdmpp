@@ -1,0 +1,40 @@
+class MaxDistanceChallengeTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+	public createMaxDistanceChallenge() res: Challenge == 
+		return new MaxDistanceChallenge("Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30), 20);
+		
+	public createUser() res: User ==
+		return new User("Bernardo", "Belchior");	
+		
+	public testMaxDistanceChallenge() == (
+		dcl c: MaxDistanceChallenge := createMaxDistanceChallenge();
+		assert(c.getName() = "Testing Challenge");
+		assert(c.getDescription() = "Lets test Challenge class");
+		assert(c.getStartDate() = mk_Types`Date(2017,12,24));
+		assert(c.getEndDate() = mk_Types`Date(2017,12,30));
+		assert(c.getDistanceChallenged() = 20);
+	);
+	
+	public testCompleteMaxDistanceChallenge() == (
+		dcl c: MaxDistanceChallenge := createMaxDistanceChallenge();
+		dcl u: User := createUser();
+		c.addCompletedUser(u);
+		assert(u in set elems c.getCompleted());
+	);
+	
+	public test() == (
+		testMaxDistanceChallenge();
+		testCompleteMaxDistanceChallenge();
+	)
+	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end MaxDistanceChallengeTest

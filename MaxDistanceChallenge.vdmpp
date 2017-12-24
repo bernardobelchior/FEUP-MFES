@@ -1,0 +1,25 @@
+class MaxDistanceChallenge is subclass of Challenge
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	public distanceChallenged: real;
+operations
+	public MaxDistanceChallenge(n: seq of char, d: seq of char, s: Types`Date, e: Types`Date, dc: real) res: MaxDistanceChallenge == (
+		name := n;
+		description := d;
+		startDate := s;
+		endDate := e;
+		distanceChallenged := dc;
+	)
+	post name = n and description = d and startDate = s and endDate = e and distanceChallenged = dc;
+	
+	public getDistanceChallenged() res: real ==
+		return distanceChallenged;
+	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end MaxDistanceChallenge
