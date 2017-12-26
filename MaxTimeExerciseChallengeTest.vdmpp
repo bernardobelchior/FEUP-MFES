@@ -1,0 +1,39 @@
+class MaxTimeExerciseChallengeTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+	public createMaxTimeExerciseChallenge() res: Challenge == 
+		return new MaxTimeExerciseChallenge("Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30), 300);
+		
+	public createUser() res: User ==
+		return new User("Bernardo", "Belchior");	
+		
+	public testMaxTimeExerciseChallenge() == (
+		dcl c: MaxTimeExerciseChallenge := createMaxTimeExerciseChallenge();
+		assert(c.getName() = "Testing Challenge");
+		assert(c.getDescription() = "Lets test Challenge class");
+		assert(c.getStartDate() = mk_Types`Date(2017,12,24));
+		assert(c.getEndDate() = mk_Types`Date(2017,12,30));
+		assert(c.getTimeChallenged() = 20);
+	);
+	
+	public testCompleteMaxTimeExerciseChallenge() == (
+		dcl c: MaxCaloriesChallenge := createMaxTimeExerciseChallenge();
+		dcl u: User := createUser();
+		c.addCompletedUser(u);
+		assert(u in set elems c.getCompleted());
+	);
+	
+	public test() == (
+		testMaxTimeExerciseChallenge();
+		testCompleteMaxTimeExerciseChallenge();
+	)
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end MaxTimeExerciseChallengeTest

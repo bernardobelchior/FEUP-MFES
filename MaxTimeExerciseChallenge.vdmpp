@@ -1,4 +1,4 @@
-class MaxTimeExerciseChallenge is subclass of
+class MaxTimeExerciseChallenge is subclass of Challenge
 types
 -- TODO Define types here
 values

@@ -12,6 +12,7 @@ operations
 		new ChallengeTest().test();
 		new MaxDistanceChallengeTest().test();
 		new MaxCaloriesChallengeTest().test();
+		new MaxTimeExerciseChallengeTest().test();
 	);
 functions
 -- TODO Define functiones here
