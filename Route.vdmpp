@@ -13,6 +13,7 @@ operations
 		)
 		post len points > 0 and points(len points) = point and name = n;
 		
+	-- https://andrew.hedges.name/experiments/haversine/
 	-- public getDistance() res: real == (
 	--	let upperBound: real := (len points) - 2;
 	--	for i = 1 to upperBound do 
