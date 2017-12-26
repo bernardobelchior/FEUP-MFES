@@ -5,6 +5,8 @@ values
 -- TODO Define values here
 instance variables
 	public caloriesChallenged: real;
+	
+	inv caloriesChallenged >= 0;
 operations
 	public MaxCaloriesChallenge(n: seq of char, d: seq of char, s: Types`Date, e: Types`Date, c: real) res: MaxCaloriesChallenge == (
 		name := n;

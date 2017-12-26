@@ -5,6 +5,8 @@ values
 -- TODO Define values here
 instance variables
 	public distanceChallenged: real;
+	
+	inv distanceChallenged >= 0;
 operations
 	public MaxDistanceChallenge(n: seq of char, d: seq of char, s: Types`Date, e: Types`Date, dc: real) res: MaxDistanceChallenge == (
 		name := n;
@@ -21,7 +23,8 @@ operations
 	public verifyChallenge(user: User, atualDistance: real) == (
 		if atualDistance >= distanceChallenged
 		then addCompletedUser(user);
-	);
+	)
+	pre atualDistance >= 0;
 	
 functions
 -- TODO Define functiones here
