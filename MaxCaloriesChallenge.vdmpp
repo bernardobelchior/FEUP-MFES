@@ -1,0 +1,25 @@
+class MaxCaloriesChallenge is subclass of Challenge
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	public caloriesChallenged: real;
+operations
+	public MaxCaloriesChallenge(n: seq of char, d: seq of char, s: Types`Date, e: Types`Date, c: real) res: MaxCaloriesChallenge == (
+		name := n;
+		description := d;
+		startDate := s;
+		endDate := e;
+		caloriesChallenged := c;
+	)
+	post name = n and description = d and startDate = s and endDate = e and caloriesChallenged = c;
+	
+	public getCaloriesChallenged() res: real == 
+		return caloriesChallenged;
+		
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end MaxCaloriesChallenge
