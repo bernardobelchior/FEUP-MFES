@@ -12,6 +12,13 @@ operations
 			points := points ^ [point];
 		)
 		post len points > 0 and points(len points) = point and name = n;
+		
+	-- public getDistance() res: real == (
+	--	let upperBound: real := (len points) - 2;
+	--	for i = 1 to upperBound do 
+	--		let dlon: real := points(i+1).long - points(i).long
+	--		let dlat: real := points(i+1).lat - points(i).lat;
+	-- );
 functions
 -- TODO Define functiones here
 traces
