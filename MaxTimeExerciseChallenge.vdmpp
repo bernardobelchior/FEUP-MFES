@@ -1,0 +1,32 @@
+class MaxTimeExerciseChallenge is subclass of
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	public timeChallenged: real;
+	
+	inv timeChallenged >= 0;
+operations
+	public MaxTimeExerciseChallenge(n: seq of char, d: seq of char, s: Types`Date, e: Types`Date, t: real) res: MaxTimeExerciseChallenge == (
+		name := n;
+		description := d;
+		startDate := s;
+		endDate := e;
+		timeChallenged := t;
+	)
+	post name = n and description = d and startDate = s and endDate = e and timeChallenged = t;
+	
+	public getTimeChallenged() res: real == 
+		return timeChallenged;
+		
+	public verifyChallenge(user: User, currentTime: real) == (
+		if currentTime >= timeChallenged
+		then addCompletedUser(user);
+	)
+	pre currentTime >= 0;
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end MaxTimeExerciseChallenge
