@@ -22,15 +22,33 @@ operations
 	);
 	
 	public testCompleteMaxTimeExerciseChallenge() == (
-		dcl c: MaxCaloriesChallenge := createMaxTimeExerciseChallenge();
+		dcl c: MaxTimeExerciseChallenge := createMaxTimeExerciseChallenge();
 		dcl u: User := createUser();
 		c.addCompletedUser(u);
 		assert(u in set elems c.getCompleted());
 	);
 	
+	public testVerifyTimeCompleted() == (
+		dcl c: MaxTimeExerciseChallenge := createMaxTimeExerciseChallenge();
+		dcl u: User := createUser();
+		dcl d: real := 400;
+		c.verifyChallenge(u, d);
+		assert(u in set elems c.getCompleted());
+	);
+	
+	public testVerifyTimeNotCompleted() == (
+		dcl c: MaxTimeExerciseChallenge := createMaxTimeExerciseChallenge();
+		dcl u: User := createUser();
+		dcl d: real := 200;
+		c.verifyChallenge(u, d);
+		assert(u not in set elems c.getCompleted());
+	);
+	
 	public test() == (
-		testMaxTimeExerciseChallenge();
-		testCompleteMaxTimeExerciseChallenge();
+		testVerifyTimeCompleted();
+		testVerifyTimeNotCompleted();
+		testVerifyTimeCompleted();
+		testVerifyTimeNotCompleted();
 	)
 functions
 -- TODO Define functiones here
