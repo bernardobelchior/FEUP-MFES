@@ -28,9 +28,27 @@ operations
 		assert(u in set elems c.getCompleted());
 	);
 	
+	public testVerifyDistanceCompleted() == (
+		dcl c: MaxDistanceChallenge := createMaxDistanceChallenge();
+		dcl u: User := createUser();
+		dcl d: real := 22;
+		c.verifyChallenge(u, d);
+		assert(u in set elems c.getCompleted());
+	);
+	
+	public testVerifyDistanceNotCompleted() == (
+		dcl c: MaxDistanceChallenge := createMaxDistanceChallenge();
+		dcl u: User := createUser();
+		dcl d: real := 16;
+		c.verifyChallenge(u, d);
+		assert(u not in set elems c.getCompleted());
+	);
+	
 	public test() == (
 		testMaxDistanceChallenge();
 		testCompleteMaxDistanceChallenge();
+		testVerifyDistanceCompleted();
+		testVerifyDistanceNotCompleted();
 	)
 	
 functions
