@@ -20,6 +20,12 @@ operations
 	public getCaloriesChallenged() res: real == 
 		return caloriesChallenged;
 		
+	public verifyChallenge(user: User, currentCalories: real) == (
+		if currentCalories >= caloriesChallenged
+		then addCompletedUser(user);
+	)
+	pre currentCalories >= 0;
+		
 functions
 -- TODO Define functiones here
 traces

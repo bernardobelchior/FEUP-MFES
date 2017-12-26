@@ -28,9 +28,27 @@ operations
 		assert(u in set elems c.getCompleted());
 	);
 	
+	public testVerifyCaloriesCompleted() == (
+		dcl c: MaxCaloriesChallenge := createMaxCaloriesChallenge();
+		dcl u: User := createUser();
+		dcl d: real := 400;
+		c.verifyChallenge(u, d);
+		assert(u in set elems c.getCompleted());
+	);
+	
+	public testVerifyCaloriesNotCompleted() == (
+		dcl c: MaxCaloriesChallenge := createMaxCaloriesChallenge();
+		dcl u: User := createUser();
+		dcl d: real := 200;
+		c.verifyChallenge(u, d);
+		assert(u not in set elems c.getCompleted());
+	);
+	
 	public test() == (
 		testMaxCaloriesChallenge();
 		testCompleteMaxCaloriesChallenge();
+		testVerifyCaloriesCompleted();
+		testVerifyCaloriesNotCompleted();
 	)
 
 functions

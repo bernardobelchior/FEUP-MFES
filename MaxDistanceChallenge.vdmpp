@@ -20,11 +20,11 @@ operations
 	public getDistanceChallenged() res: real ==
 		return distanceChallenged;
 		
-	public verifyChallenge(user: User, atualDistance: real) == (
-		if atualDistance >= distanceChallenged
+	public verifyChallenge(user: User, currentDistance: real) == (
+		if currentDistance >= distanceChallenged
 		then addCompletedUser(user);
 	)
-	pre atualDistance >= 0;
+	pre currentDistance >= 0;
 	
 functions
 -- TODO Define functiones here
