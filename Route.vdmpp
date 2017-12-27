@@ -2,7 +2,7 @@ class Route
 types
 -- TODO Define types here
 values
-	public EARTH_RADIUS: real = 6371;
+	public EARTH_RADIUS: real = 6373;
 instance variables
 	points: seq of Types`Point := [];
 	name: seq of char;
@@ -13,30 +13,25 @@ operations
 		)
 		post len points = len ps and points = ps and name = n; 
 		
-	-- https://andrew.hedges.name/experiments/haversine/
-	 public getDistance() totalDistance: real == (
-		dcl upperBound: real := (len points) - 2;
+	 public getDistance() res: real == (
+	 	dcl totalDistance: real := 0;
+	 	
+	 	-- Font: http://www.geodatasource.com/developers/javascript
+		dcl upperBound: real := (len points) - 1;
 		for i = 1 to upperBound do (
-				dcl dlon: real := points(i+1).long - points(i).long;
-				dcl dlat: real := points(i+1).lat - points(i).lat;
-				dcl a: real := MATH`sin(dlat/2) ** 2 +  MATH`cos(points(i).lat) * MATH`cos(points(i+1).lat) * MATH`sin(dlon/2) ** 2;
-				dcl c: real := 2 * atan2(MATH`sqrt(a), MATH`sqrt(1 - a));
-				dcl d: real := EARTH_RADIUS * c;
-				totalDistance := totalDistance + d;
+				dcl radLat1: real := MATH`pi * points(i).lat / 180;
+				dcl radLat2: real := MATH`pi * points(i+1).lat / 180;
+				dcl theta: real := points(i).long - points(i+1).long;
+				dcl radTheta: real := MATH`pi * theta / 180;
+				dcl dist: real := MATH`sin(radLat1) * MATH`sin(radLat2) + MATH`cos(radLat1) * MATH`cos(radLat2) * MATH`cos(radTheta);
+				dist := MATH`acos(dist);
+				dist := dist * 180 / MATH`pi;
+				dist := dist * 60 * 1.1515;
+				dist := dist * 1.609344;
+				totalDistance := totalDistance + dist;
 			);
 			
 			return totalDistance;
-	 );
-	 
-	 public atan2(y: real, x: real) res: [real] == (
-	 	if x > 0 and y <> 0 then
-	 		return 2 * MATH`atan(y/(MATH`sqrt(x ** 2 + y ** 2) + 2))
- 		elseif x < 0 and y = 0 then
- 			return MATH`pi
-		elseif x = 0 and y = 0 then
-			return nil;
-			
-		return nil
 	 );
 functions
 -- TODO Define functiones here
