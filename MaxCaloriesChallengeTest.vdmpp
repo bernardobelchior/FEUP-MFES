@@ -18,7 +18,7 @@ operations
 		assert(c.getDescription() = "Lets test Challenge class");
 		assert(c.getStartDate() = mk_Types`Date(2017,12,24));
 		assert(c.getEndDate() = mk_Types`Date(2017,12,30));
-		assert(c.getCaloriesChallenged() = 20);
+		assert(c.getCaloriesChallenged() = 300);
 	);
 	
 	public testCompleteMaxCaloriesChallenge() == (

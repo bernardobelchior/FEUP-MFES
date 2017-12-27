@@ -9,7 +9,7 @@ instance variables
 operations
 	public Route(n: seq of char, ps: seq of Types`Point) res: Route == (
 			name := n;
-			points := points;
+			points := ps;
 		)
 		post len points = len ps and points = ps and name = n; 
 		
