@@ -21,7 +21,7 @@ operations
 
 	public testAddRoute() == (
 		dcl u: User := createUser();
-		dcl r: Route := new Route("Sunday Run", mk_Types`Point(0, 0));
+		dcl r: Route := new Route("Sunday Run", [mk_Types`Point(0, 0)]);
 		u.addRoute(r);
 		assert(r in set u.getMyRoutes());
 	);

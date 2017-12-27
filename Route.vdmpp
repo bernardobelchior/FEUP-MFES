@@ -2,24 +2,42 @@ class Route
 types
 -- TODO Define types here
 values
--- TODO Define values here
+	public EARTH_RADIUS: real = 6371;
 instance variables
 	points: seq of Types`Point := [];
 	name: seq of char;
 operations
-	public Route(n: seq of char, point: Types`Point) res: Route == (
+	public Route(n: seq of char, ps: seq of Types`Point) res: Route == (
 			name := n;
-			points := points ^ [point];
+			points := points;
 		)
-		post len points > 0 and points(len points) = point and name = n;
+		post len points = len ps and points = ps and name = n; 
 		
 	-- https://andrew.hedges.name/experiments/haversine/
-	-- public getDistance() res: real == (
-	--	let upperBound: real := (len points) - 2;
-	--	for i = 1 to upperBound do 
-	--		let dlon: real := points(i+1).long - points(i).long
-	--		let dlat: real := points(i+1).lat - points(i).lat;
-	-- );
+	 public getDistance() totalDistance: real == (
+		dcl upperBound: real := (len points) - 2;
+		for i = 1 to upperBound do (
+				dcl dlon: real := points(i+1).long - points(i).long;
+				dcl dlat: real := points(i+1).lat - points(i).lat;
+				dcl a: real := MATH`sin(dlat/2) ** 2 +  MATH`cos(points(i).lat) * MATH`cos(points(i+1).lat) * MATH`sin(dlon/2) ** 2;
+				dcl c: real := 2 * atan2(MATH`sqrt(a), MATH`sqrt(1 - a));
+				dcl d: real := EARTH_RADIUS * c;
+				totalDistance := totalDistance + d;
+			);
+			
+			return totalDistance;
+	 );
+	 
+	 public atan2(y: real, x: real) res: [real] == (
+	 	if x > 0 and y <> 0 then
+	 		return 2 * MATH`atan(y/(MATH`sqrt(x ** 2 + y ** 2) + 2))
+ 		elseif x < 0 and y = 0 then
+ 			return MATH`pi
+		elseif x = 0 and y = 0 then
+			return nil;
+			
+		return nil
+	 );
 functions
 -- TODO Define functiones here
 traces

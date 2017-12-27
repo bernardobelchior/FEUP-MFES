@@ -11,7 +11,7 @@ operations
 
 	public testSetRoute() == (
 		dcl w: Workout := createWorkout();	
-		dcl r: Route := new Route("Sunday Run", mk_Types`Point(0, 0));
+		dcl r: Route := new Route("Sunday Run", [mk_Types`Point(0, 0)]);
 		w.route := r;
 		assert(w.route = r);
 	);
