@@ -1,4 +1,4 @@
-class FitnessAppTest
+class FitnessAppTest is subclass of Test
 types
 -- TODO Define types here
 values
@@ -14,7 +14,24 @@ operations
 		new MaxCaloriesChallengeTest().test();
 		new MaxTimeExerciseChallengeTest().test();
 		new RouteTest().test();
+		new FitnessAppTest().test();
 	);
+	
+	public createFitnessApp() res: FitnessApp == (
+		return new FitnessApp({new User("Nuno", "Ramos"), new User("Bernardo", "Belchior")});
+	);
+	
+	public testAddUser() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl u: User := new User("John", "Doe");
+		assert(f.isValidUser(u) = false);
+		f.addUser(u);
+		assert(f.isValidUser(u) = true);
+	);
+	
+	public test() == 
+		testAddUser();
+		
 functions
 -- TODO Define functiones here
 traces

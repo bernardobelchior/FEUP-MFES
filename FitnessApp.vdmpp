@@ -1,0 +1,29 @@
+class FitnessApp
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+	users: set of User := {};
+	
+	inv card users >= 0;
+operations
+	public FitnessApp(u: set of User) res: FitnessApp == 
+		users := u
+		post users = u;
+
+	public addUser(u: User) ==
+		users := {u} union users
+		post users = {u} union users~;
+		
+	public isValidUser(u: User) res: bool == (
+		if u in set users then
+			return true;
+		
+		return false;
+	);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end FitnessApp

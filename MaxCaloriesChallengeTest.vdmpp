@@ -10,7 +10,7 @@ operations
 		return new MaxCaloriesChallenge("Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30), 300);
 		
 	public createUser() res: User ==
-		return new User("Bernardo", "Belchior");	
+		return new User("Nuno", "Ramos");	
 		
 	public testMaxCaloriesChallenge() == (
 		dcl c: MaxCaloriesChallenge := createMaxCaloriesChallenge();

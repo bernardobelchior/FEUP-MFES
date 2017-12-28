@@ -6,6 +6,8 @@ values
 instance variables
 	points: seq of Types`Point := [];
 	name: seq of char;
+	
+	inv len points >= 0;
 operations
 	public Route(n: seq of char, ps: seq of Types`Point) res: Route == (
 			name := n;
