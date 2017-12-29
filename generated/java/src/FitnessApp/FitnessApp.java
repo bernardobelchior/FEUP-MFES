@@ -1,10 +1,7 @@
 package FitnessApp;
 
-import org.overture.codegen.runtime.SetUtil;
-import org.overture.codegen.runtime.Utils;
-import org.overture.codegen.runtime.VDMSet;
-
-import java.util.Iterator;
+import java.util.*;
+import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class FitnessApp {
@@ -26,7 +23,7 @@ public class FitnessApp {
     users = SetUtil.union(SetUtil.set(u), Utils.copy(users));
   }
 
-  public Boolean isValidUser(final User u) {
+  public Boolean userExists(final User u) {
 
     return SetUtil.inSet(u, users);
   }
@@ -37,6 +34,18 @@ public class FitnessApp {
   }
 
   public Boolean login(final String email, final String password) {
+
+    Boolean orResult_2 = false;
+
+    if (email.length() < 5L) {
+      orResult_2 = true;
+    } else {
+      orResult_2 = password.length() < 8L;
+    }
+
+    if (orResult_2) {
+      return false;
+    }
 
     for (Iterator iterator_1 = users.iterator(); iterator_1.hasNext(); ) {
       User user = (User) iterator_1.next();

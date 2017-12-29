@@ -17,8 +17,8 @@ operations
 	users := {u} union users
 	post users = {u} union users~;
 		
-	public isValidUser: User ==> bool
-	isValidUser(u) == return u in set users
+	public userExists: User ==> bool
+	userExists(u) == return u in set users
 	post RESULT = u in set users;
 	
 	public isLoggedIn: () ==> bool 
@@ -27,6 +27,9 @@ operations
 	
 	public login: seq of char * seq of char ==> bool
 	login(email, password) == (
+		if (len email < 5 or len password < 8) then
+			return false;
+	
 		for all user in set users do (
 			if user.checkLogin(email, password) then (
 					loggedInUser := user;
@@ -36,8 +39,7 @@ operations
 		
 		return false;
 	)
-	pre len email >= 5 and len password >= 8
-	post RESULT = true and loggedInUser <> nil;
+	post (RESULT = true and loggedInUser <> nil) or RESULT = false;
 		
 	public logout: () ==> ()
 	logout() == loggedInUser := nil

@@ -1,8 +1,7 @@
 package FitnessApp;
 
-import org.overture.codegen.runtime.SetUtil;
-import org.overture.codegen.runtime.Utils;
-import org.overture.codegen.runtime.VDMSet;
+import java.util.*;
+import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class User {
@@ -94,15 +93,15 @@ public class User {
 
   public Boolean checkLogin(final String mail, final String passw) {
 
-    Boolean andResult_28 = false;
+    Boolean andResult_27 = false;
 
     if (Utils.equals(email, mail)) {
       if (Utils.equals(password, passw)) {
-        andResult_28 = true;
+        andResult_27 = true;
       }
     }
 
-    return andResult_28;
+    return andResult_27;
   }
 
   public User() {}

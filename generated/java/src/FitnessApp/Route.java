@@ -1,9 +1,7 @@
 package FitnessApp;
 
-import org.overture.codegen.runtime.MATH;
-import org.overture.codegen.runtime.SeqUtil;
-import org.overture.codegen.runtime.Utils;
-import org.overture.codegen.runtime.VDMSeq;
+import java.util.*;
+import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class Route {
@@ -26,7 +24,7 @@ public class Route {
 
     Number totalDistance = 0L;
     Number upperBound = points.size() - 1L;
-    long toVar_1 = (long) upperBound.doubleValue();
+    long toVar_1 = upperBound.doubleValue();
 
     for (Long i = 1L; i <= toVar_1; i++) {
       Number radLat1 =
