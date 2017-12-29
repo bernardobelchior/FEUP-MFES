@@ -1,3 +1,7 @@
 generated/*
+bin/
+.idea/
+.overture
+*.iml
 
 !/generated/java/src/FitnessApp/*.java

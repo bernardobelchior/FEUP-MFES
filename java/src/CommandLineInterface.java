@@ -1,20 +1,19 @@
-package FitnessApp;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CommandLineInterface {
 
-	Scanner reader = new Scanner(System.in);
+	private Scanner reader = new Scanner(System.in);
 
 	public static void main(String args[]) {
 		CommandLineInterface cli = new CommandLineInterface();
+		cli.mainMenu();
 	}
 
 	public void mainMenu() {
 		printLine();
 		System.out.println("Welcome to your favorite Fitness app");
-		ArrayList<String> mainMenuEntries = new ArrayList();
+		ArrayList<String> mainMenuEntries = new ArrayList<>();
 		mainMenuEntries.add("Login");
 		mainMenuEntries.add("Create Account");
 
@@ -39,7 +38,7 @@ public class CommandLineInterface {
 	}
 
 	public void printMenuEntries(ArrayList<String> menuEntries) {
-		for (int i = 1; i <= menuEntries.size(); i++) {
+		for (int i = 1; i < menuEntries.size(); i++) {
 			System.out.println(i + ": " + menuEntries.get(i));
 		}
 	}

@@ -1,7 +1,5 @@
-package FitnessApp;
-
-import java.util.*;
-import org.overture.codegen.runtime.*;
+import org.overture.codegen.runtime.IO;
+import org.overture.codegen.runtime.Utils;
 
 @SuppressWarnings("all")
 public class Main {
