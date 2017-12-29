@@ -16,19 +16,28 @@ public class Workout {
   public Route route = null;
   public String description;
 
+  public void cg_init_Workout_1(
+      final String t, final Types.DateTime sd, final Object a, final Types.Point p) {
+
+    title = t;
+    startDateTime = Utils.copy(sd);
+    activity = a;
+    points = SeqUtil.conc(Utils.copy(points), SeqUtil.seq(Utils.copy(p)));
+  }
+
   public Workout(final String t, final Types.DateTime sd, final Object a, final Types.Point p) {
 
-    throw new UnsupportedOperationException();
+    cg_init_Workout_1(t, Utils.copy(sd), a, Utils.copy(p));
   }
 
   public void addPoint(final Types.Point p) {
 
-    throw new UnsupportedOperationException();
+    points = SeqUtil.conc(Utils.copy(points), SeqUtil.seq(Utils.copy(p)));
   }
 
   public VDMSeq getPoints() {
 
-    throw new UnsupportedOperationException();
+    return Utils.copy(points);
   }
 
   public Workout() {}

@@ -7,18 +7,48 @@ instance variables
 -- TODO Define instance variables here
 operations
 	public createChallenge() res: Challenge == 
-		return new Challenge("Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30));
+		return new Challenge("Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30), 20);
 	
+	public createUser() res: User ==
+		return new User("Nuno", "Ramos", "a@b.c", "12345678");	
+
 	public testChallenge() == (
 		dcl c: Challenge := createChallenge();
-		assert(c.getName() = "Testing Challenge");
-		assert(c.getDescription() = "Lets test Challenge class");
-		assert(c.getStartDate() = mk_Types`Date(2017,12,24));
-		assert(c.getEndDate() = mk_Types`Date(2017,12,30));
+		assert(c.name = "Testing Challenge");
+		assert(c.description = "Lets test Challenge class");
+		assert(c.startDate = mk_Types`Date(2017,12,24));
+		assert(c.endDate = mk_Types`Date(2017,12,30));
+	);
+
+	public testCompleteChallenge() == (
+		dcl c: Challenge := createChallenge();
+		dcl u: User := createUser();
+		c.addCompletedUser(u);
+		assert(u in set elems c.getCompleted());
+	);
+
+	public testGoalCompleted() == (
+		dcl c: Challenge := createChallenge();
+		dcl u: User := createUser();
+		dcl d: real := 22;
+		c.verifyChallenge(u, d);
+		assert(u in set elems c.getCompleted());
 	);
 	
-	public test() == 
+	public testGoalNotCompleted() == (
+		dcl c: Challenge := createChallenge();
+		dcl u: User := createUser();
+		dcl d: real := 16;
+		c.verifyChallenge(u, d);
+		assert(u not in set elems c.getCompleted());
+	);
+	
+	public test() == (
 		testChallenge();
+		testCompleteChallenge();
+		testGoalCompleted();
+		testGoalNotCompleted();
+	)	
 functions
 -- TODO Define functiones here
 traces

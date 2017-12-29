@@ -18,7 +18,9 @@ instance variables
 	inv caloriesBurned >= 0; 
 	inv averageRhythm >= 0;
 operations
-	public Workout(t: seq of char, sd: Types`DateTime, a: Types`Activity, p: Types`Point) res: Workout == (
+	
+	public Workout: seq of char * Types`DateTime * Types`Activity * Types`Point ==> Workout
+	Workout(t, sd, a, p) == (
 		title := t;
 		startDateTime := sd;
 		activity := a;
@@ -26,12 +28,12 @@ operations
 	)
 	post startDateTime = sd and activity = a and title = t and len points > 0 and points(len points) = p and route = nil;
 
-	public addPoint(p: Types`Point) ==
-		points := points ^ [p]
+	public addPoint: Types`Point ==> ()
+	addPoint(p) == points := points ^ [p]
 		post len points > 0 and points(len points) = p;
 		
-	public getPoints() res: seq of Types`Point ==
-		return points;
+	public getPoints: () ==> seq of Types`Point
+	getPoints() == return points;
 functions
 -- TODO Define functiones here
 traces

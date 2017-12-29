@@ -7,29 +7,42 @@ instance variables
 	users: set of User := {};
 	loggedInUser: [User] := nil;
 operations
-	public FitnessApp(u: set of User) res: FitnessApp == 
-		users := u
-		post users = u;
+	public FitnessApp: set of User ==> FitnessApp  
+	FitnessApp(u) == 
+	users := u
+	post users = u;
 
-	public addUser(u: User) ==
-		users := {u} union users
-		post users = {u} union users~;
+	public addUser: User ==> ()
+	addUser(u) ==
+	users := {u} union users
+	post users = {u} union users~;
 		
-	public isValidUser(u: User) res: bool == (
-		if u in set users then
-			return true;
+	public isValidUser: User ==> bool
+	isValidUser(u) == return u in set users
+	post RESULT = u in set users;
+	
+	public isLoggedIn: () ==> bool 
+	isLoggedIn() == return loggedInUser <> nil
+	post RESULT = (loggedInUser <> nil);
+	
+	public login: seq of char * seq of char ==> bool
+	login(email, password) == (
+		for all user in set users do (
+			if user.checkLogin(email, password) then (
+					loggedInUser := user;
+					return true;
+				);
+		);
 		
 		return false;
-	);
-	
-	public isLoggedIn() res: bool == 
-		return loggedInUser <> nil
-		post res = (loggedInUser <> nil);
+	)
+	pre len email >= 5 and len password >= 8
+	post RESULT = true and loggedInUser <> nil;
 		
-	public logout() ==
-		loggedInUser := nil
-		pre loggedInUser <> nil
-		post loggedInUser = nil;
+	public logout: () ==> ()
+	logout() == loggedInUser := nil
+	pre loggedInUser <> nil
+	post loggedInUser = nil;
 functions
 -- TODO Define functiones here
 traces

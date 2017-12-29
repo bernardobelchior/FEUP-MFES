@@ -10,6 +10,8 @@ instance variables
 	myRoutes: set of Route := {};
 	goals: set of Goal := {};
 	friends: set of User := {};	
+	email: seq of char;
+	password: seq of char;
 
 	public gender: Types`Gender;
 	public weight: [real] := nil; -- in kilograms
@@ -17,47 +19,65 @@ instance variables
 	
 	inv weight = nil or weight > 0;
 	inv height = nil or height > 0;
+	inv len email >= 5; -- for the @ and . symbols
+	inv len password >= 8;
 operations
-	public User(fName: seq of char, lName: seq of char) res: User == (
+	public User : seq of char * seq of char * seq of char * seq of char ==> User
+	User(fName, lName, mail, passw) == (
 		firstName := fName;
 		lastName := lName;
+		email := mail;
+		password := passw
 	)
-		post res.firstName = fName and res.lastName = lName;
+	pre len mail >= 5 and len passw >= 8
+	post firstName = fName and lastName = lName;
 		
-	public addRoute(route: Route) == 
-		myRoutes := myRoutes union {route}
+	public addRoute: Route ==> ()
+		addRoute(route) == myRoutes := myRoutes union {route}
 		post route in set myRoutes;
 	
-	public addWorkout(workout: Workout) == 
-		workouts := workouts union {workout}	
+	public addWorkout: Workout ==> ()
+		addWorkout(workout) == workouts := workouts union {workout}
 		post workout in set workouts;
 
-	public addGoal(goal: Goal) == 
-		goals := goals union {goal}	
+	public addGoal: Goal ==> ()
+		addGoal(goal) == goals := goals union {goal}
 		post goal in set goals;
 		
-	public addFriend(f: User) ==
-		friends := friends union {f}
+	public addFriend: User ==> ()
+		addFriend(f) == friends := friends union {f}
 		-- pre self <> f
 		post f in set friends;
 		
-	public getWorkouts() res: set of Workout ==
-		return workouts;
+	public getWorkouts: () ==> set of Workout 
+	getWorkouts() == return workouts;
 		
-	public getFirstName() res: seq of char ==
-		return firstName;
+	public getFirstName: () ==> seq of char
+	getFirstName() ==	return firstName;
 
-	public getLastName() res: seq of char ==
-		return lastName;
+	public getLastName: () ==> seq of char
+	getLastName() == return lastName;
 		
-	public getMyRoutes() res: set of Route ==
-		return myRoutes;
+	public getMyRoutes: () ==> set of Route
+	getMyRoutes() == return myRoutes;
 
-	public getFriends() res: set of User ==
-		return friends;
+	public getFriends: () ==> set of User
+	getFriends() == return friends;
 
-	public getGoals() res: set of Goal ==
-		return goals;
+	public getGoals: () ==> set of Goal
+	getGoals() == return goals;
+	
+	public getEmail: () ==> seq of char
+	getEmail() == return email;
+
+	public getPassword: () ==> seq of char
+	getPassword() == return password;
+
+	public checkLogin: seq of char * seq of char ==> bool 
+	checkLogin(mail, passw) == (
+		return email = mail	and password = passw;
+	)
+	post RESULT = (email = mail and password = passw);
 functions
 -- TODO Define functiones here
 traces

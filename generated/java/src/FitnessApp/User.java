@@ -1,7 +1,8 @@
 package FitnessApp;
 
-import java.util.*;
-import org.overture.codegen.runtime.*;
+import org.overture.codegen.runtime.SetUtil;
+import org.overture.codegen.runtime.Utils;
+import org.overture.codegen.runtime.VDMSet;
 
 @SuppressWarnings("all")
 public class User {
@@ -11,63 +12,97 @@ public class User {
   private VDMSet myRoutes = SetUtil.set();
   private VDMSet goals = SetUtil.set();
   private VDMSet friends = SetUtil.set();
+  private String email;
+  private String password;
   public Object gender;
   public Number weight = null;
   public Number height = null;
 
-  public User(final String fName, final String lName) {
+  public void cg_init_User_1(
+      final String fName, final String lName, final String mail, final String passw) {
 
-    throw new UnsupportedOperationException();
+    firstName = fName;
+    lastName = lName;
+    email = mail;
+    password = passw;
+  }
+
+  public User(final String fName, final String lName, final String mail, final String passw) {
+
+    cg_init_User_1(fName, lName, mail, passw);
   }
 
   public void addRoute(final Route route) {
 
-    throw new UnsupportedOperationException();
+    myRoutes = SetUtil.union(Utils.copy(myRoutes), SetUtil.set(route));
   }
 
   public void addWorkout(final Workout workout) {
 
-    throw new UnsupportedOperationException();
+    workouts = SetUtil.union(Utils.copy(workouts), SetUtil.set(workout));
   }
 
   public void addGoal(final Goal goal) {
 
-    throw new UnsupportedOperationException();
+    goals = SetUtil.union(Utils.copy(goals), SetUtil.set(goal));
   }
 
   public void addFriend(final User f) {
 
-    throw new UnsupportedOperationException();
+    friends = SetUtil.union(Utils.copy(friends), SetUtil.set(f));
   }
 
   public VDMSet getWorkouts() {
 
-    throw new UnsupportedOperationException();
+    return Utils.copy(workouts);
   }
 
   public String getFirstName() {
 
-    throw new UnsupportedOperationException();
+    return firstName;
   }
 
   public String getLastName() {
 
-    throw new UnsupportedOperationException();
+    return lastName;
   }
 
   public VDMSet getMyRoutes() {
 
-    throw new UnsupportedOperationException();
+    return Utils.copy(myRoutes);
   }
 
   public VDMSet getFriends() {
 
-    throw new UnsupportedOperationException();
+    return Utils.copy(friends);
   }
 
   public VDMSet getGoals() {
 
-    throw new UnsupportedOperationException();
+    return Utils.copy(goals);
+  }
+
+  public String getEmail() {
+
+    return email;
+  }
+
+  public String getPassword() {
+
+    return password;
+  }
+
+  public Boolean checkLogin(final String mail, final String passw) {
+
+    Boolean andResult_28 = false;
+
+    if (Utils.equals(email, mail)) {
+      if (Utils.equals(password, passw)) {
+        andResult_28 = true;
+      }
+    }
+
+    return andResult_28;
   }
 
   public User() {}
@@ -87,6 +122,10 @@ public class User {
         + Utils.toString(goals)
         + ", friends := "
         + Utils.toString(friends)
+        + ", email := "
+        + Utils.toString(email)
+        + ", password := "
+        + Utils.toString(password)
         + ", gender := "
         + Utils.toString(gender)
         + ", weight := "

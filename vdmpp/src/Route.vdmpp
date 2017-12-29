@@ -9,14 +9,16 @@ instance variables
 	
 	inv len points >= 0;
 operations
-	public Route(n: seq of char, ps: seq of Types`Point) res: Route == (
+	public Route: seq of char * seq of Types`Point ==> Route 
+	Route(n, ps) == (
 			name := n;
 			points := ps;
 		)
 		post len points = len ps and points = ps and name = n; 
 		
-	 public getDistance() res: real == (
-	 	dcl totalDistance: real := 0;
+	 public getDistance: () ==> real
+	 getDistance() == (
+		dcl totalDistance: real := 0;
 	 	
 	 	-- Font: http://www.geodatasource.com/developers/javascript
 		dcl upperBound: real := (len points) - 1;

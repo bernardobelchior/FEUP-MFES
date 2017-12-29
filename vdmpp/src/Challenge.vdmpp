@@ -8,34 +8,32 @@ instance variables
 	public description: seq of char;
 	public startDate: Types`Date;
 	public endDate: Types`Date;
-	public completed: seq of User := [];
+	private completed: seq of User := [];
+	public goal: real;
 operations
-	public Challenge(n: seq of char, d: seq of char, s: Types`Date, e: Types`Date) res: Challenge == (
-				name := n;
-				description := d;
-				startDate := s;
-				endDate := e;
-		)
-		post name = n and description = d and startDate = s and endDate = e;
+	public Challenge: seq of char * seq of char * Types`Date * Types`Date * real ==> Challenge 
+	Challenge(n, d, s, e, g) == (
+		name := n;
+		description := d;
+		startDate := s;
+		endDate := e;
+		goal := g;
+	)
+	post name = n and description = d and startDate = s and endDate = e and goal = g;
+
+	public verifyChallenge: User * real ==> ()
+	verifyChallenge(user, curVal) == (
+		if curVal >= goal
+		then addCompletedUser(user);
+	)
+	pre curVal >= 0;
 		
-		public getName() res: seq of char ==
-			return name;
-		 
-		public getDescription() res: seq of char ==
-			return description;
+	public addCompletedUser: User ==> ()
+	addCompletedUser(u) == (completed := [u] ^ completed)
+	post completed = [u] ^ completed~;
 			
-		public getStartDate() res: Types`Date ==
-			return startDate;
-			
-		public getEndDate() res: Types`Date ==
-			return endDate;
-		
-		public getCompleted() res: seq of User ==
-			return completed;
-		
-		public addCompletedUser(u: User) == 
-			completed := [u] ^ completed
-			post completed = [u] ^ completed~;
+	public getCompleted: () ==> seq of User
+	getCompleted() == return completed;	
 functions
 -- TODO Define functiones here
 traces

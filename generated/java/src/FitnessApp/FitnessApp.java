@@ -4,34 +4,53 @@ import org.overture.codegen.runtime.SetUtil;
 import org.overture.codegen.runtime.Utils;
 import org.overture.codegen.runtime.VDMSet;
 
+import java.util.Iterator;
+
 @SuppressWarnings("all")
 public class FitnessApp {
   private VDMSet users = SetUtil.set();
   private User loggedInUser = null;
 
+  public void cg_init_FitnessApp_1(final VDMSet u) {
+
+    users = Utils.copy(u);
+  }
+
   public FitnessApp(final VDMSet u) {
 
-    throw new UnsupportedOperationException();
+    cg_init_FitnessApp_1(Utils.copy(u));
   }
 
   public void addUser(final User u) {
 
-    throw new UnsupportedOperationException();
+    users = SetUtil.union(SetUtil.set(u), Utils.copy(users));
   }
 
   public Boolean isValidUser(final User u) {
 
-    throw new UnsupportedOperationException();
+    return SetUtil.inSet(u, users);
   }
 
   public Boolean isLoggedIn() {
 
-    throw new UnsupportedOperationException();
+    return !(Utils.equals(loggedInUser, null));
+  }
+
+  public Boolean login(final String email, final String password) {
+
+    for (Iterator iterator_1 = users.iterator(); iterator_1.hasNext(); ) {
+      User user = (User) iterator_1.next();
+      if (user.checkLogin(email, password)) {
+        loggedInUser = user;
+        return true;
+      }
+    }
+    return false;
   }
 
   public void logout() {
 
-    throw new UnsupportedOperationException();
+    loggedInUser = null;
   }
 
   public FitnessApp() {}

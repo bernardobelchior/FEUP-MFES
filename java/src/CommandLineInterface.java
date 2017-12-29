@@ -1,4 +1,5 @@
 import FitnessApp.FitnessApp;
+import FitnessApp.User;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -19,7 +20,23 @@ public class CommandLineInterface {
         System.out.println("Welcome to your favorite Fitness app");
         ArrayList<SimpleEntry<String, Callable<Void>>> mainMenuEntries = new ArrayList<>();
 
-        if(!fitnessApp.isLoggedIn()) {
+
+        while (true) {
+            mainMenuEntries.clear();
+            addMainMenuEntries(mainMenuEntries);
+            printMenuEntries(mainMenuEntries);
+            int option = getUserInput(1, mainMenuEntries.size() - 1);
+
+            try {
+                mainMenuEntries.get(option).getValue().call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addMainMenuEntries(ArrayList<SimpleEntry<String, Callable<Void>>> mainMenuEntries) {
+        if (!fitnessApp.isLoggedIn()) {
             mainMenuEntries.add(new SimpleEntry<>("Create Account", () -> {
                 createAccountMenu();
                 return null;
@@ -36,22 +53,34 @@ public class CommandLineInterface {
             }));
         }
 
-        printMenuEntries(mainMenuEntries);
-        int option = getUserInput(1, mainMenuEntries.size() - 1);
-
-        try {
-            mainMenuEntries.get(option).getValue().call();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        mainMenuEntries.add(new SimpleEntry<>("Exit", () -> {
+            System.exit(0);
+            return null;
+        }));
     }
 
     private void createAccountMenu() {
-        System.out.println("Create account");
+        System.out.println("Create account menu");
+        printLine();
+        System.out.print("First name: ");
+        String firstName = reader.nextLine();
+        System.out.print("Last name: ");
+        String lastName = reader.nextLine();
+        System.out.print("Email: ");
+        String email = reader.nextLine();
+        System.out.print("Password: ");
+        String password = reader.nextLine();
+        fitnessApp.addUser(new User(firstName, lastName, email, password));
     }
 
     private void loginMenu() {
-        System.out.println("Login");
+        System.out.println("Login menu");
+        printLine();
+        System.out.print("Email: ");
+        String email = reader.nextLine();
+        System.out.print("Password: ");
+        String password = reader.nextLine();
+        fitnessApp.login(email, password);
     }
 
     private void printLine() {
@@ -67,12 +96,13 @@ public class CommandLineInterface {
     private int getUserInput(int bottomBound, int upperBound) {
         System.out.println("Choose an option: ");
         int option = reader.nextInt();
+        reader.skip("\n");
 
         if (option < bottomBound && option > upperBound) {
             System.out.println("Invalid option");
             option = getUserInput(bottomBound, upperBound);
         }
 
-        return option;
+        return option - 1;
     }
 }

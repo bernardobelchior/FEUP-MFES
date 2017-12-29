@@ -9,41 +9,40 @@ public class Challenge {
   public String description;
   public Types.Date startDate;
   public Types.Date endDate;
-  public VDMSeq completed = SeqUtil.seq();
+  private VDMSeq completed = SeqUtil.seq();
+  public Number goal;
 
-  public Challenge(final String n, final String d, final Types.Date s, final Types.Date e) {
+  public void cg_init_Challenge_1(
+      final String n, final String d, final Types.Date s, final Types.Date e, final Number g) {
 
-    throw new UnsupportedOperationException();
+    name = n;
+    description = d;
+    startDate = Utils.copy(s);
+    endDate = Utils.copy(e);
+    goal = g;
   }
 
-  public String getName() {
+  public Challenge(
+      final String n, final String d, final Types.Date s, final Types.Date e, final Number g) {
 
-    throw new UnsupportedOperationException();
+    cg_init_Challenge_1(n, d, Utils.copy(s), Utils.copy(e), g);
   }
 
-  public String getDescription() {
+  public void verifyChallenge(final User user, final Number curVal) {
 
-    throw new UnsupportedOperationException();
-  }
-
-  public Types.Date getStartDate() {
-
-    throw new UnsupportedOperationException();
-  }
-
-  public Types.Date getEndDate() {
-
-    throw new UnsupportedOperationException();
-  }
-
-  public VDMSeq getCompleted() {
-
-    throw new UnsupportedOperationException();
+    if (curVal.doubleValue() >= goal.doubleValue()) {
+      addCompletedUser(user);
+    }
   }
 
   public void addCompletedUser(final User u) {
 
-    throw new UnsupportedOperationException();
+    completed = SeqUtil.conc(SeqUtil.seq(u), Utils.copy(completed));
+  }
+
+  public VDMSeq getCompleted() {
+
+    return Utils.copy(completed);
   }
 
   public Challenge() {}
@@ -61,6 +60,8 @@ public class Challenge {
         + Utils.toString(endDate)
         + ", completed := "
         + Utils.toString(completed)
+        + ", goal := "
+        + Utils.toString(goal)
         + "}";
   }
 }

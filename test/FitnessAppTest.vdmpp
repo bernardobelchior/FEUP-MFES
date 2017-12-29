@@ -10,20 +10,17 @@ operations
 		new UserTest().test();
 		new WorkoutTest().test();
 		new ChallengeTest().test();
-		new MaxDistanceChallengeTest().test();
-		new MaxCaloriesChallengeTest().test();
-		new MaxTimeExerciseChallengeTest().test();
 		new RouteTest().test();
 		new FitnessAppTest().test();
 	);
 	
 	public createFitnessApp() res: FitnessApp == (
-		return new FitnessApp({new User("Nuno", "Ramos"), new User("Bernardo", "Belchior")});
+		return new FitnessApp({new User("Nuno", "Ramos", "a@b.c", "12345678"), new User("Bernardo", "Belchior", "a@b.c", "12345678")});
 	);
 	
 	public testAddUser() == (
 		dcl f: FitnessApp := createFitnessApp();
-		dcl u: User := new User("John", "Doe");
+		dcl u: User := new User("John", "Doe", "a@b.c", "12345678");
 		assert(f.isValidUser(u) = false);
 		f.addUser(u);
 		assert(f.isValidUser(u) = true);

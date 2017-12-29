@@ -92,39 +92,39 @@ public class Types {
 
   public static Boolean inv_Time(final Time time) {
 
-    Boolean andResult_18 = false;
+    Boolean andResult_9 = false;
 
     if (time.minutes.longValue() >= 0L) {
-      Boolean andResult_19 = false;
+      Boolean andResult_10 = false;
 
       if (time.minutes.longValue() < 60L) {
-        Boolean andResult_20 = false;
+        Boolean andResult_11 = false;
 
         if (time.seconds.longValue() >= 0L) {
-          Boolean andResult_21 = false;
+          Boolean andResult_12 = false;
 
           if (time.seconds.longValue() < 60L) {
             if (time.hours.longValue() >= 0L) {
-              andResult_21 = true;
+              andResult_12 = true;
             }
           }
 
-          if (andResult_21) {
-            andResult_20 = true;
+          if (andResult_12) {
+            andResult_11 = true;
           }
         }
 
-        if (andResult_20) {
-          andResult_19 = true;
+        if (andResult_11) {
+          andResult_10 = true;
         }
       }
 
-      if (andResult_19) {
-        andResult_18 = true;
+      if (andResult_10) {
+        andResult_9 = true;
       }
     }
 
-    return andResult_18;
+    return andResult_9;
   }
 
   public static class Date implements Record {
@@ -170,39 +170,39 @@ public class Types {
 
   public static Boolean inv_Date(final Date date) {
 
-    Boolean andResult_26 = false;
+    Boolean andResult_17 = false;
 
     if (date.year.longValue() >= 0L) {
-      Boolean andResult_27 = false;
+      Boolean andResult_18 = false;
 
       if (date.month.longValue() > 0L) {
-        Boolean andResult_28 = false;
+        Boolean andResult_19 = false;
 
         if (date.month.longValue() <= 12L) {
-          Boolean andResult_29 = false;
+          Boolean andResult_20 = false;
 
           if (date.day.longValue() > 0L) {
             if (date.day.longValue() <= 31L) {
-              andResult_29 = true;
+              andResult_20 = true;
             }
           }
 
-          if (andResult_29) {
-            andResult_28 = true;
+          if (andResult_20) {
+            andResult_19 = true;
           }
         }
 
-        if (andResult_28) {
-          andResult_27 = true;
+        if (andResult_19) {
+          andResult_18 = true;
         }
       }
 
-      if (andResult_27) {
-        andResult_26 = true;
+      if (andResult_18) {
+        andResult_17 = true;
       }
     }
 
-    return andResult_26;
+    return andResult_17;
   }
 
   public static class Point implements Record {

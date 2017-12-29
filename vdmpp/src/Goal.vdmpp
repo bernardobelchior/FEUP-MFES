@@ -8,9 +8,10 @@ instance variables
 	
 	inv distance > 0;
 operations
-	public Goal(d: real) res: Goal ==
-		distance := d	
-		post distance = d;
+	public Goal: real ==> Goal 
+	Goal(d) == distance := d	
+	pre d > 0
+	post distance = d;
 functions
 -- TODO Define functiones here
 traces

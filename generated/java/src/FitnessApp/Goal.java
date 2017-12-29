@@ -1,15 +1,19 @@
 package FitnessApp;
 
-import java.util.*;
-import org.overture.codegen.runtime.*;
+import org.overture.codegen.runtime.Utils;
 
 @SuppressWarnings("all")
 public class Goal {
   private Number distance;
 
+  public void cg_init_Goal_1(final Number d) {
+
+    distance = d;
+  }
+
   public Goal(final Number d) {
 
-    throw new UnsupportedOperationException();
+    cg_init_Goal_1(d);
   }
 
   public Goal() {}
