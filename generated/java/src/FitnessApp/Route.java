@@ -24,7 +24,7 @@ public class Route {
 
     Number totalDistance = 0L;
     Number upperBound = points.size() - 1L;
-    long toVar_1 = upperBound.doubleValue();
+    double toVar_1 = upperBound.doubleValue();
 
     for (Long i = 1L; i <= toVar_1; i++) {
       Number radLat1 =

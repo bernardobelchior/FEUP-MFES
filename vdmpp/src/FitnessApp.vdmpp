@@ -45,6 +45,9 @@ operations
 	logout() == loggedInUser := nil
 	pre loggedInUser <> nil
 	post loggedInUser = nil;
+	
+	public getLoggedInUser: () ==> User
+	getLoggedInUser() == return loggedInUser;
 functions
 -- TODO Define functiones here
 traces

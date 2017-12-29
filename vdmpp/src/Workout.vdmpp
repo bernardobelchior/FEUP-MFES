@@ -34,6 +34,9 @@ operations
 		
 	public getPoints: () ==> seq of Types`Point
 	getPoints() == return points;
+	
+	public getTitle: () ==> seq of char
+	getTitle() == return title;
 functions
 -- TODO Define functiones here
 traces

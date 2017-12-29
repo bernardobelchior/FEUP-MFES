@@ -40,6 +40,11 @@ public class Workout {
     return Utils.copy(points);
   }
 
+  public String getTitle() {
+
+    return title;
+  }
+
   public Workout() {}
 
   public String toString() {

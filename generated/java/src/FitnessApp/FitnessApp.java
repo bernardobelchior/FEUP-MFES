@@ -62,6 +62,11 @@ public class FitnessApp {
     loggedInUser = null;
   }
 
+  public User getLoggedInUser() {
+
+    return loggedInUser;
+  }
+
   public FitnessApp() {}
 
   public String toString() {
