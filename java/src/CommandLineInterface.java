@@ -1,57 +1,78 @@
+import FitnessApp.FitnessApp;
+
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 
 public class CommandLineInterface {
 
-	private Scanner reader = new Scanner(System.in);
+    private Scanner reader = new Scanner(System.in);
+    private FitnessApp fitnessApp;
 
-	public static void main(String args[]) {
-		CommandLineInterface cli = new CommandLineInterface();
-		cli.mainMenu();
-	}
+    public CommandLineInterface(FitnessApp fitnessApp) {
+        this.fitnessApp = fitnessApp;
+    }
 
-	public void mainMenu() {
-		printLine();
-		System.out.println("Welcome to your favorite Fitness app");
-		ArrayList<String> mainMenuEntries = new ArrayList<>();
-		mainMenuEntries.add("Login");
-		mainMenuEntries.add("Create Account");
+    public void mainMenu() {
+        printLine();
+        System.out.println("Welcome to your favorite Fitness app");
+        ArrayList<SimpleEntry<String, Callable<Void>>> mainMenuEntries = new ArrayList<>();
 
-		printMenuEntries(mainMenuEntries);
-		int option = getUserInput(1, mainMenuEntries.size());
+        if(!fitnessApp.isLoggedIn()) {
+            mainMenuEntries.add(new SimpleEntry<>("Create Account", () -> {
+                createAccountMenu();
+                return null;
+            }));
+            mainMenuEntries.add(new SimpleEntry<>("Login", () -> {
+                loginMenu();
+                return null;
+            }));
+        } else {
+            mainMenuEntries.add(new SimpleEntry<>("Logout", () -> {
+                fitnessApp.logout();
+                loginMenu();
+                return null;
+            }));
+        }
 
-		// TODO add options
-		switch (option) {
-		// Login
-		case 1: 
-			break;
-		// Create Account
-		case 2:
-			break;
-		default:
-			break;
-		}
-	}
+        printMenuEntries(mainMenuEntries);
+        int option = getUserInput(1, mainMenuEntries.size() - 1);
 
-	public void printLine() {
-		System.out.println("=====================================");
-	}
+        try {
+            mainMenuEntries.get(option).getValue().call();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public void printMenuEntries(ArrayList<String> menuEntries) {
-		for (int i = 1; i < menuEntries.size(); i++) {
-			System.out.println(i + ": " + menuEntries.get(i));
-		}
-	}
+    private void createAccountMenu() {
+        System.out.println("Create account");
+    }
 
-	public int getUserInput(int bottomBound,int upperBound) {
-		System.out.println("Choose an option: ");
-		int option = reader.nextInt();
+    private void loginMenu() {
+        System.out.println("Login");
+    }
 
-		if(option > bottomBound && option > upperBound) {
-			System.out.println("Invalid option");
-			option = getUserInput(bottomBound, upperBound);
-		}
+    private void printLine() {
+        System.out.println("=====================================");
+    }
 
-		return option;
-	}
+    private void printMenuEntries(ArrayList<SimpleEntry<String, Callable<Void>>> menuEntries) {
+        for (int i = 0; i < menuEntries.size(); i++) {
+            System.out.println((i + 1) + ": " + menuEntries.get(i).getKey());
+        }
+    }
+
+    private int getUserInput(int bottomBound, int upperBound) {
+        System.out.println("Choose an option: ");
+        int option = reader.nextInt();
+
+        if (option < bottomBound && option > upperBound) {
+            System.out.println("Invalid option");
+            option = getUserInput(bottomBound, upperBound);
+        }
+
+        return option;
+    }
 }

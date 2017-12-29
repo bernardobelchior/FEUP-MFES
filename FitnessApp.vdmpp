@@ -5,8 +5,7 @@ values
 -- TODO Define values here
 instance variables
 	users: set of User := {};
-	
-	inv card users >= 0;
+	loggedInUser: [User] := nil;
 operations
 	public FitnessApp(u: set of User) res: FitnessApp == 
 		users := u
@@ -22,6 +21,15 @@ operations
 		
 		return false;
 	);
+	
+	public isLoggedIn() res: bool == 
+		return loggedInUser <> nil
+		post res = (loggedInUser <> nil);
+		
+	public logout() ==
+		loggedInUser := nil
+		pre loggedInUser <> nil
+		post loggedInUser = nil;
 functions
 -- TODO Define functiones here
 traces

@@ -1,11 +1,13 @@
 package FitnessApp;
 
-import java.util.*;
-import org.overture.codegen.runtime.*;
+import org.overture.codegen.runtime.SetUtil;
+import org.overture.codegen.runtime.Utils;
+import org.overture.codegen.runtime.VDMSet;
 
 @SuppressWarnings("all")
 public class FitnessApp {
   private VDMSet users = SetUtil.set();
+  private User loggedInUser = null;
 
   public FitnessApp(final VDMSet u) {
 
@@ -22,10 +24,25 @@ public class FitnessApp {
     throw new UnsupportedOperationException();
   }
 
+  public Boolean isLoggedIn() {
+
+    throw new UnsupportedOperationException();
+  }
+
+  public void logout() {
+
+    throw new UnsupportedOperationException();
+  }
+
   public FitnessApp() {}
 
   public String toString() {
 
-    return "FitnessApp{" + "users := " + Utils.toString(users) + "}";
+    return "FitnessApp{"
+        + "users := "
+        + Utils.toString(users)
+        + ", loggedInUser := "
+        + Utils.toString(loggedInUser)
+        + "}";
   }
 }
