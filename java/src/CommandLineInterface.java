@@ -1,9 +1,15 @@
 import FitnessApp.FitnessApp;
+import FitnessApp.Types.Date;
+import FitnessApp.Types.DateTime;
+import FitnessApp.Types.Point;
+import FitnessApp.Types.Time;
 import FitnessApp.User;
 import FitnessApp.Workout;
 
+import java.time.LocalDateTime;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
@@ -11,6 +17,8 @@ import java.util.concurrent.Callable;
 import org.overture.codegen.runtime.VDMSet;
 
 public class CommandLineInterface {
+	
+	private static final int EMPTY_LINES = 10;
 
 	private Scanner reader = new Scanner(System.in);
 	private FitnessApp fitnessApp;
@@ -40,6 +48,7 @@ public class CommandLineInterface {
 	}
 
 	public void loggedInMenu() {
+		printEmptyLines(EMPTY_LINES);
 		printLine();
 		System.out.println("Logged In Menu");
 		ArrayList<SimpleEntry<String, Callable<Void>>> loggedInMenuEntries = new ArrayList<>();
@@ -59,6 +68,7 @@ public class CommandLineInterface {
 	}
 
 	public void userWorkoutsMenu() {
+		printEmptyLines(EMPTY_LINES);
 		printLine();
 		System.out.println("Workouts Menu");
 		ArrayList<SimpleEntry<String, Callable<Void>>> workoutsMenuEntries = new ArrayList<>();
@@ -119,8 +129,8 @@ public class CommandLineInterface {
 				viewUserWorkouts();
 				return null;
 			}));
-			workoutsMenuEntries.add(new SimpleEntry<>("Add Workout", () -> {
-				// addNewUserWorkoutMenu();
+			workoutsMenuEntries.add(new SimpleEntry<>("Start New Workout", () -> {
+				startNewWorkout();
 				return null;
 			}));
 		}
@@ -130,6 +140,7 @@ public class CommandLineInterface {
 	}
 
 	private void createAccountMenu() {
+		printEmptyLines(EMPTY_LINES);
 		printLine();
 		System.out.println("Create account menu");
 		System.out.print("First name: ");
@@ -144,8 +155,9 @@ public class CommandLineInterface {
 	}
 
 	private void loginMenu() {
-		System.out.println("Login menu");
+		printEmptyLines(EMPTY_LINES);
 		printLine();
+		System.out.println("Login menu");
 		System.out.print("Email: ");
 		String email = reader.nextLine();
 		System.out.print("Password: ");
@@ -159,6 +171,8 @@ public class CommandLineInterface {
 	}
 
 	private void viewUserWorkouts() {
+		printEmptyLines(EMPTY_LINES);
+		
 		User loggedInUser = fitnessApp.getLoggedInUser();
 		VDMSet userWorkouts = loggedInUser.getWorkouts();
 		
@@ -171,9 +185,32 @@ public class CommandLineInterface {
 		Iterator<Workout> it = userWorkouts.iterator();
 		int i = 1;
 		while (it.hasNext()) {
-			System.out.print(i + ": " + it.next().getTitle());
+			System.out.println(i + ": " + it.next().getTitle());
 			i++;
 		}
+	}
+	
+	private void startNewWorkout() {
+		printEmptyLines(EMPTY_LINES);
+		
+		User loggedInUser = fitnessApp.getLoggedInUser();
+		
+		System.out.print("Workout Name: ");
+		String workoutName = reader.nextLine();
+		System.out.print("Activity Type (Bycicle, Running, Walking): ");
+		String activityType = reader.nextLine();
+		System.out.println("First point (latitude, longitude)");
+		System.out.print("Latitude: ");
+		int initialLatitude = Integer.parseInt(reader.nextLine());
+		System.out.print("Longitude: ");
+		int initialLongitude = Integer.parseInt(reader.nextLine());
+		
+		LocalDateTime currentDate = LocalDateTime.now();
+		DateTime dateTime = new DateTime(new Date(currentDate.getYear(), currentDate.getMonth().getValue(), currentDate.getDayOfMonth()),
+				new Time(currentDate.getHour(), currentDate.getMinute(), currentDate.getSecond()));
+		
+		Workout newWorkout = new Workout(workoutName, dateTime, activityType, new Point(initialLatitude, initialLongitude));
+		loggedInUser.addWorkout(newWorkout);
 	}
 
 	private void printLine() {
@@ -196,5 +233,11 @@ public class CommandLineInterface {
 		}
 
 		return option - 1;
+	}
+	
+	public void printEmptyLines(int linesToPrint) {
+		for(int i=0; i < linesToPrint; i++) {
+			System.out.println();
+		}
 	}
 }
