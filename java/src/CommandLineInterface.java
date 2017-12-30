@@ -126,11 +126,11 @@ public class CommandLineInterface {
 	private void addWorkoutsMenuEntries(ArrayList<SimpleEntry<String, Callable<Void>>> workoutsMenuEntries) {
 		if (fitnessApp.isLoggedIn()) {
 			workoutsMenuEntries.add(new SimpleEntry<>("View My Workouts", () -> {
-				viewUserWorkouts();
+				viewUserWorkoutsMenu();
 				return null;
 			}));
 			workoutsMenuEntries.add(new SimpleEntry<>("Start New Workout", () -> {
-				startNewWorkout();
+				startNewWorkoutMenu();
 				return null;
 			}));
 		}
@@ -170,7 +170,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	private void viewUserWorkouts() {
+	private void viewUserWorkoutsMenu() {
 		printEmptyLines(EMPTY_LINES);
 		
 		User loggedInUser = fitnessApp.getLoggedInUser();
@@ -188,9 +188,11 @@ public class CommandLineInterface {
 			System.out.println(i + ": " + it.next().getTitle());
 			i++;
 		}
+		
+		printEmptyLines(EMPTY_LINES);
 	}
 	
-	private void startNewWorkout() {
+	private void startNewWorkoutMenu() {
 		printEmptyLines(EMPTY_LINES);
 		
 		User loggedInUser = fitnessApp.getLoggedInUser();
@@ -210,7 +212,25 @@ public class CommandLineInterface {
 				new Time(currentDate.getHour(), currentDate.getMinute(), currentDate.getSecond()));
 		
 		Workout newWorkout = new Workout(workoutName, dateTime, activityType, new Point(initialLatitude, initialLongitude));
+		
+		while (true) {
+			System.out.println("Next Point (latitude, longitude) OR s to stop");
+			
+			System.out.print("Latitude: ");
+			String firstInput = reader.nextLine();
+			System.out.println(firstInput);
+			if(firstInput.equals("s")) {
+				break;
+			}
+			int latitude = Integer.parseInt(firstInput);
+			
+			System.out.print("Longitude: ");
+			int longitude = Integer.parseInt(reader.nextLine());
+			newWorkout.addPoint(new Point(latitude, longitude));
+		}
+		
 		loggedInUser.addWorkout(newWorkout);
+		printEmptyLines(EMPTY_LINES);
 	}
 
 	private void printLine() {
