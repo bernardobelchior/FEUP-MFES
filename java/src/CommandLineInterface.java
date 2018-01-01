@@ -172,7 +172,7 @@ public class CommandLineInterface {
 				return null;
 			}));
 			challengeMenuEntries.add(new SimpleEntry<>("Add Challenge", () -> {
-				startNewWorkoutMenu();
+				createNewChallengeMenu();
 				return null;
 			}));
 		}
@@ -331,6 +331,36 @@ public class CommandLineInterface {
 		printEmptyLines(EMPTY_LINES);
 	}
 
+	private void createNewChallengeMenu() {
+		printEmptyLines(EMPTY_LINES);
+		
+		System.out.print("Challenge Name: ");
+		String challengeName = reader.nextLine();
+		System.out.print("Challenge description: ");
+		String challengeDescription = reader.nextLine();
+		System.out.print("End Date");
+		System.out.print("Year: ");
+		int endYear = Integer.parseInt(reader.nextLine());
+		System.out.print("Month: ");
+		int endMonth = Integer.parseInt(reader.nextLine());
+		System.out.print("Day: ");
+		int endDay = Integer.parseInt(reader.nextLine());
+		System.out.print("Type of Activity (0 -> distance(km) | 1 -> number of calories(kcal) | 2 -> time(min)): ");
+		int typeOfActivity = Integer.parseInt(reader.nextLine());
+		System.out.print("Challenge Goal: ");
+		int challengeGoal = Integer.parseInt(reader.nextLine());
+		
+		LocalDateTime initialDate = LocalDateTime.now();
+		
+		Challenge newChallenge = new Challenge(challengeName, challengeDescription, 
+				new Date(initialDate.getYear(), initialDate.getMonth().getValue(), initialDate.getDayOfMonth()),
+				new Date(endYear, endMonth, endDay), challengeGoal, typeOfActivity);
+		
+		fitnessApp.addChallenge(newChallenge);
+		
+		printEmptyLines(EMPTY_LINES);
+	}
+	
 	private void printLine() {
 		System.out.println("=====================================");
 	}
