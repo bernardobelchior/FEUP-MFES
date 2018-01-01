@@ -230,18 +230,17 @@ public class CommandLineInterface {
 		Iterator<Workout> it = userWorkouts.iterator();
 		int i = 1;
 		while (it.hasNext()) {
-			System.out.println(i + ": " + it.next().getTitle());
+			Workout workout = it.next();
+			System.out.println(i + ": " + workout.getTitle());
+			System.out.println("  Duration: " + workout.getDuration() + " min");
+			System.out.println("  Distance: " + workout.getDistance() + " km");
+			System.out.println("  Average Rhythm: " + workout.getAverageRhythm() + " min/km");
+			System.out.println("  Calories Burned: " + workout.getCaloriesBurned() + " kcal");
 			i++;
 		}
 
 		printEmptyLines(EMPTY_LINES);
 	}
-	
-	/*private void viewChallengesMenu() {
-		printEmptyLines(EMPTY_LINES);
-		
-		User loggedInU
-	}*/
 
 	private void startNewWorkoutMenu() {
 		printEmptyLines(EMPTY_LINES);
@@ -258,18 +257,17 @@ public class CommandLineInterface {
 		System.out.print("Longitude: ");
 		int initialLongitude = Integer.parseInt(reader.nextLine());
 
-		LocalDateTime currentDate = LocalDateTime.now();
-		DateTime dateTime = new DateTime(new Date(currentDate.getYear(), currentDate.getMonth().getValue(), currentDate.getDayOfMonth()),
-				new Time(currentDate.getHour(), currentDate.getMinute(), currentDate.getSecond()));
+		LocalDateTime initialDate = LocalDateTime.now();
+		DateTime dateTime = new DateTime(new Date(initialDate.getYear(), initialDate.getMonth().getValue(), initialDate.getDayOfMonth()),
+				new Time(initialDate.getHour(), initialDate.getMinute(), initialDate.getSecond()));
 
-		Workout newWorkout = new Workout(workoutName, dateTime, activityType, new Point(initialLatitude, initialLongitude));
+		Workout newWorkout = new Workout(workoutName, dateTime, activityType, new Point(initialLatitude, initialLongitude)); 
 
 		while (true) {
 			System.out.println("Next Point (latitude, longitude) OR s to stop");
 
 			System.out.print("Latitude: ");
 			String firstInput = reader.nextLine();
-			System.out.println(firstInput);
 			if(firstInput.equals("s")) {
 				break;
 			}
@@ -279,7 +277,21 @@ public class CommandLineInterface {
 			int longitude = Integer.parseInt(reader.nextLine());
 			newWorkout.addPoint(new Point(latitude, longitude));
 		}
-
+		
+		LocalDateTime endDate = LocalDateTime.now();
+		double duration = 0;
+		
+		if(initialDate.getMinute() == endDate.getMinute()) {
+			duration = (endDate.getSecond() - initialDate.getSecond()) / 60.0;
+		}
+		else if(initialDate.getHour() == endDate.getHour()) {
+			duration = endDate.getMinute() - initialDate.getMinute() + (endDate.getSecond() + (60 - initialDate.getSecond())) / 60.0;
+		}
+		else {
+			duration = (60 - initialDate.getMinute()) + endDate.getMinute() + (endDate.getSecond() + (60 - initialDate.getSecond())) / 60.0;
+		}
+		
+		newWorkout.endWorkout(loggedInUser, duration);
 		loggedInUser.addWorkout(newWorkout);
 		printEmptyLines(EMPTY_LINES);
 	}

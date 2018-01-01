@@ -76,6 +76,9 @@ operations
 	 
 	 public getCaloriesBurned: () ==> real
 	 getCaloriesBurned() == return caloriesBurned;
+	 
+	 public getDuration: () ==> real
+	 getDuration() == return duration;
 functions
 -- TODO Define functiones here
 traces

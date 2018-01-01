@@ -32,6 +32,7 @@ operations
 		assert(w.getDistance() = 1568.445093911413);
 		assert(w.getCaloriesBurned() = 113743.63821045568);
 		assert(w.getAverageRhythm() = 78.42225469557066);
+		assert(w.getDuration() = 20);
 	);
 
 	public test() == (
