@@ -10,19 +10,26 @@ instance variables
 	public endDate: Types`Date;
 	private completed: seq of User := [];
 	public goal: real;
+	-- 0 -> distance | 1 -> number of calories | 2 -> time
+	public typeOfChallenge: nat; 
 operations
-	public Challenge: seq of char * seq of char * Types`Date * Types`Date * real ==> Challenge 
-	Challenge(n, d, s, e, g) == (
+	public Challenge: seq of char * seq of char * Types`Date * Types`Date * real * nat ==> Challenge 
+	Challenge(n, d, s, e, g, t) == (
 		name := n;
 		description := d;
 		startDate := s;
 		endDate := e;
 		goal := g;
+		typeOfChallenge := t;
 	)
 	post name = n and description = d and startDate = s and endDate = e and goal = g;
 
 	public verifyChallenge: User * real ==> ()
 	verifyChallenge(user, curVal) == (
+		--for i = 1 to len user.getWorkouts() do (
+			--if typeOfChallenge == 0
+			--then 
+		--);
 		if curVal >= goal
 		then addCompletedUser(user);
 	)

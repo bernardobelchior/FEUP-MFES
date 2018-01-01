@@ -15,12 +15,12 @@ operations
 	);
 	
 	public createFitnessApp() res: FitnessApp == (
-		return new FitnessApp({new User("Nuno", "Ramos", "a@b.c", "12345678"), new User("Bernardo", "Belchior", "a@b.c", "12345678")});
+		return new FitnessApp({new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70), new User("Bernardo", "Belchior", "a@b.c", "12345678", 70, 1.70)});
 	);
 	
 	public testAddUser() == (
 		dcl f: FitnessApp := createFitnessApp();
-		dcl u: User := new User("John", "Doe", "a@b.c", "12345678");
+		dcl u: User := new User("John", "Doe", "a@b.c", "12345678", 70, 1.70);
 		assert(not f.userExists(u));
 		f.addUser(u);
 		assert(f.userExists(u));
@@ -28,7 +28,7 @@ operations
 
 	public testSuccessfulLogin() == (
 		dcl f: FitnessApp := createFitnessApp();
-		dcl u: User := new User("John", "Doe", "a@b.c", "12345678");
+		dcl u: User := new User("John", "Doe", "a@b.c", "12345678", 70, 1.70);
 		f.addUser(u);
 		assert(not f.isLoggedIn());
 		assert(f.login("a@b.c", "12345678"));
@@ -37,7 +37,7 @@ operations
 
 	public testUnsuccessfulLogin() == (
 		dcl f: FitnessApp := createFitnessApp();
-		dcl u: User := new User("John", "Doe", "a@b.c", "12345678");
+		dcl u: User := new User("John", "Doe", "a@b.c", "12345678", 70, 1.70);
 		f.addUser(u);
 		assert(not f.isLoggedIn());
 		assert(not f.login("invalid", "invalid")); -- Tests if password < 8
@@ -48,7 +48,7 @@ operations
 	
 	public testLogout() == (
 		dcl f: FitnessApp := createFitnessApp();
-		dcl u: User := new User("John", "Doe", "a@b.c", "12345678");
+		dcl u: User := new User("John", "Doe", "a@b.c", "12345678", 70, 1.70);
 		f.addUser(u);
 		assert(not f.isLoggedIn());
 		assert(f.login("a@b.c", "12345678"));
@@ -59,9 +59,9 @@ operations
 	
 	public testAddChallenge() == (
 		dcl f: FitnessApp := createFitnessApp();
-		dcl c: Challenge := new Challenge("Test", "Because we need to test", mk_Types`Date(2018, 1, 1), mk_Types`Date(2018, 2, 1), 10);
+		dcl c: Challenge := new Challenge("Test", "Because we need to test", mk_Types`Date(2018, 1, 1), mk_Types`Date(2018, 2, 1), 10, 0);
 		f.addChallenge(c);
-		assert(c in set f.getChallenges());
+		assert(c in set elems f.getChallenges());
 	);
 
 	public test() == (

@@ -6,7 +6,7 @@ instance variables
 	distance: real := 0; -- In km
 	caloriesBurned: real := 0; -- In km
 	averageRhythm: real := 0; -- In min/km
-	time: Types`Time := mk_Types`Time(0, 0, 0);
+	duration: real := 0; -- In min
 	startDateTime: Types`DateTime;
 	activity: Types`Activity;
 	points: seq of Types`Point := [];
@@ -24,7 +24,7 @@ operations
 		title := t;
 		startDateTime := sd;
 		activity := a;
-		points := points ^[p]
+		points := points ^[p];
 	)
 	post startDateTime = sd and activity = a and title = t and len points > 0 and points(len points) = p and route = nil;
 
@@ -37,6 +37,45 @@ operations
 	
 	public getTitle: () ==> seq of char
 	getTitle() == return title;
+	
+	public endWorkout: User * real ==> ()
+	endWorkout(user, d) == (
+		duration := d;
+		distance := calculateDistance();
+		caloriesBurned := distance * user.weight * 1.036;
+		averageRhythm := distance / duration;
+	);
+	
+	public calculateDistance: () ==> real -- returns in kms
+	 calculateDistance() == (
+		dcl totalDistance: real := 0;
+	 	
+	 	-- Font: http://www.geodatasource.com/developers/javascript 
+		dcl upperBound: real := (len points) - 1;
+		for i = 1 to upperBound do (
+				dcl radLat1: real := MATH`pi * points(i).lat / 180;
+				dcl radLat2: real := MATH`pi * points(i+1).lat / 180;
+				dcl theta: real := points(i).long - points(i+1).long;
+				dcl radTheta: real := MATH`pi * theta / 180;
+				dcl dist: real := MATH`sin(radLat1) * MATH`sin(radLat2) + MATH`cos(radLat1) * MATH`cos(radLat2) * MATH`cos(radTheta);
+				dist := MATH`acos(dist);
+				dist := dist * 180 / MATH`pi;
+				dist := dist * 60 * 1.1515;
+				dist := dist * 1.609344;
+				totalDistance := totalDistance + dist;
+			);
+			
+			return totalDistance;
+	 );
+	 
+	 public getDistance: () ==> real
+	 getDistance() == return distance;
+	 
+	 public getAverageRhythm: () ==> real
+	 getAverageRhythm() == return averageRhythm;
+	 
+	 public getCaloriesBurned: () ==> real
+	 getCaloriesBurned() == return caloriesBurned;
 functions
 -- TODO Define functiones here
 traces

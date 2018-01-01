@@ -22,15 +22,17 @@ instance variables
 	inv len email >= 5; -- for the @ and . symbols
 	inv len password >= 8;
 operations
-	public User : seq of char * seq of char * seq of char * seq of char ==> User
-	User(fName, lName, mail, passw) == (
+	public User : seq of char * seq of char * seq of char * seq of char * real * real ==> User
+	User(fName, lName, mail, passw, w, h) == (
 		firstName := fName;
 		lastName := lName;
 		email := mail;
-		password := passw
+		password := passw;
+		weight := w;
+		height := h
 	)
 	pre len mail >= 5 and len passw >= 8
-	post firstName = fName and lastName = lName;
+	post firstName = fName and lastName = lName and email = mail and password = passw and weight = w and height = h;
 		
 	public addRoute: Route ==> ()
 		addRoute(route) == myRoutes := myRoutes union {route}

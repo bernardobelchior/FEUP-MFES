@@ -22,10 +22,22 @@ operations
 		w.addPoint(p);
 		assert(p = w.getPoints()(len w.getPoints()))
 	);
+	
+	public testEndWorkout() == (
+		dcl w: Workout := createWorkout();	
+		dcl p: Types`Point := mk_Types`Point(10, 10);
+		dcl u: User := new User("John", "Doe", "a@b.c", "12345678", 70, 1.70);
+		w.addPoint(p);
+		w.endWorkout(u, 20);
+		assert(w.getDistance() = 1568.445093911413);
+		assert(w.getCaloriesBurned() = 113743.63821045568);
+		assert(w.getAverageRhythm() = 78.42225469557066);
+	);
 
 	public test() == (
 		testSetRoute();	
 		testAddPoint();
+		testEndWorkout();
 	);
 functions
 -- TODO Define functiones here
