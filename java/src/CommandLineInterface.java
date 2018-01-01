@@ -159,12 +159,16 @@ public class CommandLineInterface {
 				startNewWorkoutMenu();
 				return null;
 			}));
+			workoutsMenuEntries.add(new SimpleEntry<>("Main Menu", () -> {
+				loggedInMenu();
+				return null;
+			}));
 		}
 		else {
 			mainMenu();
 		}
 	}
-	
+
 	private void addChallengesMenuEntries(ArrayList<SimpleEntry<String, Callable<Void>>> challengeMenuEntries) {
 		if (fitnessApp.isLoggedIn()) {
 			challengeMenuEntries.add(new SimpleEntry<>("View Challenges", () -> {
@@ -173,6 +177,10 @@ public class CommandLineInterface {
 			}));
 			challengeMenuEntries.add(new SimpleEntry<>("Add Challenge", () -> {
 				createNewChallengeMenu();
+				return null;
+			}));
+			challengeMenuEntries.add(new SimpleEntry<>("Main Menu", () -> {
+				loggedInMenu();
 				return null;
 			}));
 		}
@@ -243,19 +251,19 @@ public class CommandLineInterface {
 
 		printEmptyLines(EMPTY_LINES);
 	}
-	
+
 	private void viewChallengesMenu() {
 		printEmptyLines(EMPTY_LINES);
-		
+
 		VDMSeq challenges = fitnessApp.getChallenges();
-		
+
 		if (challenges.size() == 0) {
 			System.out.println("No Challenges :(");
 			System.out.println("Enter to continue");
 			reader.nextLine();
 			return;
 		}
-		
+
 		Iterator<Challenge> it = challenges.iterator();
 		int i = 1;
 		while (it.hasNext()) {
@@ -272,6 +280,15 @@ public class CommandLineInterface {
 				System.out.println("   Do exercise for " + challenge.getGoal() + " min");
 			}
 			i++;
+			VDMSeq usersCompleted = challenge.getCompleted();
+			Iterator<User> ite = usersCompleted.iterator();
+			if (usersCompleted.size() > 0) {
+				System.out.print("Completed by: ");
+			}
+			while (ite.hasNext()) {
+				System.out.println(ite.next().getFirstName() + " ");
+			}
+			System.out.println();
 		}
 
 		printEmptyLines(EMPTY_LINES);
@@ -312,10 +329,10 @@ public class CommandLineInterface {
 			int longitude = Integer.parseInt(reader.nextLine());
 			newWorkout.addPoint(new Point(latitude, longitude));
 		}
-		
+
 		LocalDateTime endDate = LocalDateTime.now();
 		double duration = 0;
-		
+
 		if(initialDate.getMinute() == endDate.getMinute()) {
 			duration = (endDate.getSecond() - initialDate.getSecond()) / 60.0;
 		}
@@ -325,15 +342,28 @@ public class CommandLineInterface {
 		else {
 			duration = (60 - initialDate.getMinute()) + endDate.getMinute() + (endDate.getSecond() + (60 - initialDate.getSecond())) / 60.0;
 		}
-		
+
 		newWorkout.endWorkout(loggedInUser, duration);
 		loggedInUser.addWorkout(newWorkout);
+
+		VDMSeq challenges = fitnessApp.getChallenges();
+
+		Iterator<Challenge> it = challenges.iterator();
+		int i = 1;
+		while (it.hasNext()) {
+			Challenge challenge = it.next();
+			if (challenge.verifyChallenge(newWorkout)) {
+				challenge.addCompletedUser(loggedInUser);
+				System.out.println("You completed challenge with name " + challenge.getName());
+			}
+		}
+
 		printEmptyLines(EMPTY_LINES);
 	}
 
 	private void createNewChallengeMenu() {
 		printEmptyLines(EMPTY_LINES);
-		
+
 		System.out.print("Challenge Name: ");
 		String challengeName = reader.nextLine();
 		System.out.print("Challenge description: ");
@@ -349,18 +379,18 @@ public class CommandLineInterface {
 		int typeOfActivity = Integer.parseInt(reader.nextLine());
 		System.out.print("Challenge Goal: ");
 		int challengeGoal = Integer.parseInt(reader.nextLine());
-		
+
 		LocalDateTime initialDate = LocalDateTime.now();
-		
+
 		Challenge newChallenge = new Challenge(challengeName, challengeDescription, 
 				new Date(initialDate.getYear(), initialDate.getMonth().getValue(), initialDate.getDayOfMonth()),
 				new Date(endYear, endMonth, endDay), challengeGoal, typeOfActivity);
-		
+
 		fitnessApp.addChallenge(newChallenge);
-		
+
 		printEmptyLines(EMPTY_LINES);
 	}
-	
+
 	private void printLine() {
 		System.out.println("=====================================");
 	}
