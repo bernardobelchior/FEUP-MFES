@@ -6,6 +6,7 @@ values
 instance variables
 	users: set of User := {};
 	loggedInUser: [User] := nil;
+	challenges: set of Challenge := {};
 operations
 	public FitnessApp: set of User ==> FitnessApp  
 	FitnessApp(u) == 
@@ -48,6 +49,13 @@ operations
 	
 	public getLoggedInUser: () ==> User
 	getLoggedInUser() == return loggedInUser;
+	
+	public addChallenge: Challenge ==> ()
+	addChallenge(newChallenge) == challenges := {newChallenge} union challenges
+	post challenges = {newChallenge} union challenges~;
+	
+	public getChallenges: () ==> set of Challenge
+	getChallenges() == return challenges;
 functions
 -- TODO Define functiones here
 traces

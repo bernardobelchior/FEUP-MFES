@@ -232,6 +232,12 @@ public class CommandLineInterface {
 
 		printEmptyLines(EMPTY_LINES);
 	}
+	
+	/*private void viewChallengesMenu() {
+		printEmptyLines(EMPTY_LINES);
+		
+		User loggedInU
+	}*/
 
 	private void startNewWorkoutMenu() {
 		printEmptyLines(EMPTY_LINES);
