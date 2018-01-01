@@ -56,12 +56,20 @@ operations
 		f.logout();
 		assert(not f.isLoggedIn());
 	);
+	
+	public testAddChallenge() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl c: Challenge := new Challenge("Test", "Because we need to test", mk_Types`Date(2018, 1, 1), mk_Types`Date(2018, 2, 1), 10);
+		f.addChallenge(c);
+		assert(c in set f.getChallenges());
+	);
 
 	public test() == (
 		testAddUser();
 		testSuccessfulLogin();
 		testUnsuccessfulLogin();
 		testLogout();
+		testAddChallenge();
 		)
 functions
 -- TODO Define functiones here
