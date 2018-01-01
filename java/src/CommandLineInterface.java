@@ -17,7 +17,7 @@ import java.util.concurrent.Callable;
 import org.overture.codegen.runtime.VDMSet;
 
 public class CommandLineInterface {
-	
+
 	private static final int EMPTY_LINES = 10;
 
 	private Scanner reader = new Scanner(System.in);
@@ -38,7 +38,7 @@ public class CommandLineInterface {
 			addMainMenuEntries(mainMenuEntries);
 			printMenuEntries(mainMenuEntries);
 			int option = getUserInput(1, mainMenuEntries.size() - 1);
-			
+
 			try {
 				mainMenuEntries.get(option).getValue().call();
 			} catch (Exception e) {
@@ -52,7 +52,7 @@ public class CommandLineInterface {
 		printLine();
 		System.out.println("Logged In Menu");
 		ArrayList<SimpleEntry<String, Callable<Void>>> loggedInMenuEntries = new ArrayList<>();
-		
+
 		while (true) {
 			loggedInMenuEntries.clear();
 			addLoggedInMenuEntries(loggedInMenuEntries);
@@ -81,6 +81,26 @@ public class CommandLineInterface {
 
 			try {
 				workoutsMenuEntries.get(option).getValue().call();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void challengesMenu() {
+		printEmptyLines(EMPTY_LINES);
+		printLine();
+		System.out.println("Challenges Menu");
+		ArrayList<SimpleEntry<String, Callable<Void>>> challengesMenuEntries = new ArrayList<>();
+
+		while (true) {
+			challengesMenuEntries.clear();
+			addChallengesMenuEntries(challengesMenuEntries);
+			printMenuEntries(challengesMenuEntries);
+			int option = getUserInput(1, challengesMenuEntries.size() - 1);
+
+			try {
+				challengesMenuEntries.get(option).getValue().call();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -117,6 +137,10 @@ public class CommandLineInterface {
 				userWorkoutsMenu();
 				return null;
 			}));
+			loggedInMenuEntries.add(new SimpleEntry<>("Challenges", () -> {
+				challengesMenu();
+				return null;
+			}));
 		}
 		else {
 			mainMenu();
@@ -130,6 +154,22 @@ public class CommandLineInterface {
 				return null;
 			}));
 			workoutsMenuEntries.add(new SimpleEntry<>("Start New Workout", () -> {
+				startNewWorkoutMenu();
+				return null;
+			}));
+		}
+		else {
+			mainMenu();
+		}
+	}
+	
+	private void addChallengesMenuEntries(ArrayList<SimpleEntry<String, Callable<Void>>> challengeMenuEntries) {
+		if (fitnessApp.isLoggedIn()) {
+			challengeMenuEntries.add(new SimpleEntry<>("View Challenges", () -> {
+				viewUserWorkoutsMenu();
+				return null;
+			}));
+			challengeMenuEntries.add(new SimpleEntry<>("Add Challenge", () -> {
 				startNewWorkoutMenu();
 				return null;
 			}));
@@ -172,14 +212,15 @@ public class CommandLineInterface {
 
 	private void viewUserWorkoutsMenu() {
 		printEmptyLines(EMPTY_LINES);
-		
+
 		User loggedInUser = fitnessApp.getLoggedInUser();
 		VDMSet userWorkouts = loggedInUser.getWorkouts();
-		
+
 		if (userWorkouts.size() == 0) {
 			System.out.println("No Workouts :(");
 			System.out.println("Enter to continue");
 			reader.nextLine();
+			return;
 		}
 
 		Iterator<Workout> it = userWorkouts.iterator();
@@ -188,15 +229,15 @@ public class CommandLineInterface {
 			System.out.println(i + ": " + it.next().getTitle());
 			i++;
 		}
-		
+
 		printEmptyLines(EMPTY_LINES);
 	}
-	
+
 	private void startNewWorkoutMenu() {
 		printEmptyLines(EMPTY_LINES);
-		
+
 		User loggedInUser = fitnessApp.getLoggedInUser();
-		
+
 		System.out.print("Workout Name: ");
 		String workoutName = reader.nextLine();
 		System.out.print("Activity Type (Bycicle, Running, Walking): ");
@@ -206,16 +247,16 @@ public class CommandLineInterface {
 		int initialLatitude = Integer.parseInt(reader.nextLine());
 		System.out.print("Longitude: ");
 		int initialLongitude = Integer.parseInt(reader.nextLine());
-		
+
 		LocalDateTime currentDate = LocalDateTime.now();
 		DateTime dateTime = new DateTime(new Date(currentDate.getYear(), currentDate.getMonth().getValue(), currentDate.getDayOfMonth()),
 				new Time(currentDate.getHour(), currentDate.getMinute(), currentDate.getSecond()));
-		
+
 		Workout newWorkout = new Workout(workoutName, dateTime, activityType, new Point(initialLatitude, initialLongitude));
-		
+
 		while (true) {
 			System.out.println("Next Point (latitude, longitude) OR s to stop");
-			
+
 			System.out.print("Latitude: ");
 			String firstInput = reader.nextLine();
 			System.out.println(firstInput);
@@ -223,12 +264,12 @@ public class CommandLineInterface {
 				break;
 			}
 			int latitude = Integer.parseInt(firstInput);
-			
+
 			System.out.print("Longitude: ");
 			int longitude = Integer.parseInt(reader.nextLine());
 			newWorkout.addPoint(new Point(latitude, longitude));
 		}
-		
+
 		loggedInUser.addWorkout(newWorkout);
 		printEmptyLines(EMPTY_LINES);
 	}
@@ -246,7 +287,7 @@ public class CommandLineInterface {
 	private int getUserInput(int bottomBound, int upperBound) {
 		System.out.println("Choose an option: ");
 		int option = Integer.parseInt(reader.nextLine());
-		
+
 		if (option < bottomBound && option > upperBound) {
 			System.out.println("Invalid option");
 			option = getUserInput(bottomBound, upperBound);
@@ -254,7 +295,7 @@ public class CommandLineInterface {
 
 		return option - 1;
 	}
-	
+
 	public void printEmptyLines(int linesToPrint) {
 		for(int i=0; i < linesToPrint; i++) {
 			System.out.println();
