@@ -41,6 +41,15 @@ operations
 			
 	public getCompleted: () ==> seq of User
 	getCompleted() == return completed;	
+	
+	public getName: () ==> seq of char
+	getName() == return name;
+	
+	public getTypeOfChallenge: () ==> nat
+	getTypeOfChallenge() == return typeOfChallenge;
+	
+	public getGoal: () ==> real
+	getGoal() == return goal;
 functions
 -- TODO Define functiones here
 traces

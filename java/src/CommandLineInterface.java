@@ -1,3 +1,4 @@
+import FitnessApp.Challenge;
 import FitnessApp.FitnessApp;
 import FitnessApp.Types.Date;
 import FitnessApp.Types.DateTime;
@@ -14,6 +15,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 
+import org.overture.codegen.runtime.VDMSeq;
 import org.overture.codegen.runtime.VDMSet;
 
 public class CommandLineInterface {
@@ -166,7 +168,7 @@ public class CommandLineInterface {
 	private void addChallengesMenuEntries(ArrayList<SimpleEntry<String, Callable<Void>>> challengeMenuEntries) {
 		if (fitnessApp.isLoggedIn()) {
 			challengeMenuEntries.add(new SimpleEntry<>("View Challenges", () -> {
-				viewUserWorkoutsMenu();
+				viewChallengesMenu();
 				return null;
 			}));
 			challengeMenuEntries.add(new SimpleEntry<>("Add Challenge", () -> {
@@ -236,6 +238,39 @@ public class CommandLineInterface {
 			System.out.println("  Distance: " + workout.getDistance() + " km");
 			System.out.println("  Average Rhythm: " + workout.getAverageRhythm() + " min/km");
 			System.out.println("  Calories Burned: " + workout.getCaloriesBurned() + " kcal");
+			i++;
+		}
+
+		printEmptyLines(EMPTY_LINES);
+	}
+	
+	private void viewChallengesMenu() {
+		printEmptyLines(EMPTY_LINES);
+		
+		VDMSeq challenges = fitnessApp.getChallenges();
+		
+		if (challenges.size() == 0) {
+			System.out.println("No Challenges :(");
+			System.out.println("Enter to continue");
+			reader.nextLine();
+			return;
+		}
+		
+		Iterator<Challenge> it = challenges.iterator();
+		int i = 1;
+		while (it.hasNext()) {
+			Challenge challenge = it.next();
+			System.out.println(i + ": " + challenge.getName());
+			int activity = challenge.getTypeOfChallenge().intValue();
+			if(activity == 0) { // Running
+				System.out.println("   Running " + challenge.getGoal() + " km");
+			}
+			else if(activity == 1) { // Number of calories
+				System.out.println("   Burning " + challenge.getGoal() + " kcal");
+			}
+			else if(activity == 2) { // Time
+				System.out.println("   Do exercise for " + challenge.getGoal() + " min");
+			}
 			i++;
 		}
 
