@@ -191,7 +191,11 @@ public class CommandLineInterface {
 		String email = reader.nextLine();
 		System.out.print("Password: ");
 		String password = reader.nextLine();
-		fitnessApp.addUser(new User(firstName, lastName, email, password));
+		System.out.print("Weight: ");
+		double weight = Double.parseDouble(reader.nextLine());
+		System.out.print("Height: ");
+		double height = Double.parseDouble(reader.nextLine());
+		fitnessApp.addUser(new User(firstName, lastName, email, password, weight, height));
 	}
 
 	private void loginMenu() {
