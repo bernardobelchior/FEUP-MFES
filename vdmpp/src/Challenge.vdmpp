@@ -24,16 +24,17 @@ operations
 	)
 	post name = n and description = d and startDate = s and endDate = e and goal = g;
 
-	public verifyChallenge: User * real ==> ()
-	verifyChallenge(user, curVal) == (
-		--for i = 1 to len user.getWorkouts() do (
-			--if typeOfChallenge == 0
-			--then 
-		--);
-		if curVal >= goal
-		then addCompletedUser(user);
-	)
-	pre curVal >= 0;
+	public verifyChallenge: Workout ==> bool
+	verifyChallenge(workout) == (
+		if typeOfChallenge = 0 and workout.getDistance() >= goal
+		then return true
+		elseif typeOfChallenge = 1 and workout.getCaloriesBurned() >= goal
+		then return true
+		elseif typeOfChallenge = 2 and workout.getAverageRhythm() >= goal
+		then return true;	
+			
+		return false;
+	);
 		
 	public addCompletedUser: User ==> ()
 	addCompletedUser(u) == (completed := [u] ^ completed)

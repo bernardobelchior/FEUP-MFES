@@ -22,32 +22,19 @@ operations
 
 	public testCompleteChallenge() == (
 		dcl c: Challenge := createChallenge();
+		dcl w: Workout := new Workout("Morning Run", mk_Types`DateTime(mk_Types`Date(2017,12,21), mk_Types`Time(16, 37, 00)), <Running>, mk_Types`Point(0, 0));
 		dcl u: User := createUser();
+		dcl p: Types`Point := mk_Types`Point(10, 10);
+		w.addPoint(p);
+		w.endWorkout(u, 20);
+		assert(true = c.verifyChallenge(w));
 		c.addCompletedUser(u);
 		assert(u in set elems c.getCompleted());
-	);
-
-	public testGoalCompleted() == (
-		dcl c: Challenge := createChallenge();
-		dcl u: User := createUser();
-		dcl d: real := 22;
-		c.verifyChallenge(u, d);
-		assert(u in set elems c.getCompleted());
-	);
-	
-	public testGoalNotCompleted() == (
-		dcl c: Challenge := createChallenge();
-		dcl u: User := createUser();
-		dcl d: real := 16;
-		c.verifyChallenge(u, d);
-		assert(u not in set elems c.getCompleted());
 	);
 	
 	public test() == (
 		testChallenge();
 		testCompleteChallenge();
-		testGoalCompleted();
-		testGoalNotCompleted();
 	)	
 functions
 -- TODO Define functiones here
