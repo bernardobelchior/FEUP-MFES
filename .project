@@ -34,4 +34,24 @@
 		<nature>org.overture.ide.vdmpp.core.nature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<filteredResources>
+		<filter>
+			<id>1514886012597</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-projectRelativePath-matches-false-false-bin/lib</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1514885873005</id>
+			<name>bin</name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-projectRelativePath-matches-false-false-bin/vdmpp</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
 </projectDescription>

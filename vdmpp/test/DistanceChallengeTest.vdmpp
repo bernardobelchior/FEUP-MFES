@@ -1,0 +1,46 @@
+class DistanceChallengeTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+	public createDistanceChallenge(a: Admin) res: DistanceChallenge == 
+		return new DistanceChallenge(a, "Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30), 20);
+	
+	public createAdmin() res: Admin == 
+		return new Admin("Bernardo", "Belchior", "b@b.c", "12345678", 70, 1.70, <Masculine>);	
+
+	public createUser() res: User ==
+		return new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70, <Masculine>);	
+
+	public testChallenge() == (
+		dcl c: DistanceChallenge := createDistanceChallenge(createAdmin());
+		assert(c.name = "Testing Challenge");
+		assert(c.description = "Lets test Challenge class");
+		assert(c.startDate = mk_Types`Date(2017,12,24));
+		assert(c.endDate = mk_Types`Date(2017,12,30));
+	);
+
+	public testCompleteChallenge() == (
+		dcl c: DistanceChallenge := createDistanceChallenge(createAdmin());
+		dcl w: Workout := new Workout("Morning Run", mk_Types`DateTime(mk_Types`Date(2017,12,21), mk_Types`Time(16, 37, 00)), <Running>, mk_Types`Point(0, 0));
+		dcl u: User := createUser();
+		dcl p: Types`Point := mk_Types`Point(10, 10);
+		w.addPoint(p);
+		w.endWorkout(u, 20);
+		assert(true = c.verifyChallenge(w));
+		c.addCompletedUser(u);
+		assert(u in set elems c.getCompleted());
+	);
+	
+	public test() == (
+		testChallenge();
+		testCompleteChallenge();
+	)	
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end DistanceChallengeTest

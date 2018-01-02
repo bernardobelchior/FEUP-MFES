@@ -1,0 +1,25 @@
+class Admin is subclass of User
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+	public Admin : seq of char * seq of char * seq of char * seq of char * real * real * Types`Gender ==> Admin
+	Admin(fName, lName, mail, passw, w, h, g) == (
+		firstName := fName;
+		lastName := lName;
+		email := mail;
+		password := passw;
+		weight := w;
+		height := h;
+		gender := g;
+	)
+	pre len mail >= 5 and len passw >= 8
+	post firstName = fName and lastName = lName and email = mail and password = passw and weight = w and height = h and gender = g;
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Admin

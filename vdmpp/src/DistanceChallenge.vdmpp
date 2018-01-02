@@ -6,15 +6,16 @@ values
 instance variables
 -- TODO Define instance variables here
 operations
-	public DistanceChallenge: seq of char * seq of char * Types`Date * Types`Date * real ==> Challenge 
-	DistanceChallenge(n, d, s, e, g) == (
+	public DistanceChallenge: Admin * seq of char * seq of char * Types`Date * Types`Date * real ==> DistanceChallenge 
+	DistanceChallenge(a, n, d, s, e, g) == (
+		createdBy := a;
 		name := n;
 		description := d;
 		startDate := s;
 		endDate := e;
 		goal := g;
 	)
-	post name = n and description = d and startDate = s and endDate = e and goal = g;
+	post createdBy = a and name = n and description = d and startDate = s and endDate = e and goal = g;
 
 	public verifyChallenge: Workout ==> bool
 	verifyChallenge(workout) == (

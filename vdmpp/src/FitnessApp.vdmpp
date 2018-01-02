@@ -5,18 +5,55 @@ values
 -- TODO Define values here
 instance variables
 	users: set of User := {};
+	admins: set of Admin := {};
 	loggedInUser: [User] := nil;
+	loggedInAdmin: [Admin] := nil;
 	challenges: seq of Challenge := [];
+	
+	inv (loggedInUser = nil and loggedInAdmin = nil) or (loggedInAdmin <> nil and loggedInUser = loggedInAdmin) or (loggedInUser <> nil and loggedInAdmin = nil)
 operations
 	public FitnessApp: set of User ==> FitnessApp  
 	FitnessApp(u) == 
 	users := u
 	post users = u;
 
-	public addUser: User ==> ()
-	addUser(u) ==
-	users := {u} union users
-	post users = {u} union users~;
+	private existsUserWithSameEmail: set of User * seq of char ==> bool
+	existsUserWithSameEmail(users, email) ==  (
+		for all u in set users do (
+			if u.getEmail() = email then (
+				return true;
+			);
+		);
+		
+		return false;
+	);
+
+	public addUser: User ==> bool
+	addUser(u) == (
+		if(not existsUserWithSameEmail(users, u.getEmail())) then (
+			users := {u} union users;
+			return true;
+		);
+		
+		return false;
+	)
+	post (RESULT = true and users = {u} union users~) or (RESULT = false and users = users~);
+	
+	public addAdmin: Admin ==> bool
+	addAdmin(a) == (
+		if(not existsUserWithSameEmail(users, a.getEmail())) then (
+			admins := {a} union admins;
+			users := {a} union users;
+			return true;
+		);
+		
+		return false;
+	)
+	post (RESULT = true and admins = {a} union admins~ and users = {a} union users~) or (RESULT = false and users = users~ and admins = admins~);
+	
+	public adminExists: Admin ==> bool
+	adminExists(a) == return a in set admins
+	post RESULT = a in set admins;
 		
 	public userExists: User ==> bool
 	userExists(u) == return u in set users
@@ -25,11 +62,23 @@ operations
 	public isLoggedIn: () ==> bool 
 	isLoggedIn() == return loggedInUser <> nil
 	post RESULT = (loggedInUser <> nil);
-	
+
+	public isAdminLoggedIn: () ==> bool 
+	isAdminLoggedIn() == return loggedInAdmin <> nil
+	post RESULT = (loggedInAdmin <> nil);
+
 	public login: seq of char * seq of char ==> bool
 	login(email, password) == (
 		if (len email < 5 or len password < 8) then
 			return false;
+
+		for all admin in set admins do (
+			if admin.checkLogin(email, password) then (
+					loggedInUser := admin;
+					loggedInAdmin := admin;
+					return true;
+				);
+		);
 	
 		for all user in set users do (
 			if user.checkLogin(email, password) then (
@@ -43,16 +92,26 @@ operations
 	post (RESULT = true and loggedInUser <> nil) or RESULT = false;
 		
 	public logout: () ==> ()
-	logout() == loggedInUser := nil
-	pre loggedInUser <> nil
-	post loggedInUser = nil;
+	logout() == (
+		loggedInUser := nil;
+		loggedInAdmin := nil;
+	)
+	pre loggedInUser <> nil 
+	post loggedInUser = nil and loggedInAdmin = nil;
 	
 	public getLoggedInUser: () ==> User
 	getLoggedInUser() == return loggedInUser;
+
+	public getLoggedInAdmin: () ==> Admin
+	getLoggedInAdmin() == return loggedInAdmin;
 	
 	public addChallenge: Challenge ==> ()
-	addChallenge(newChallenge) == challenges := [newChallenge] ^ challenges
-	post challenges = [newChallenge] ^ challenges~;
+	addChallenge(newChallenge) == (
+		if(newChallenge.getCreator() = loggedInAdmin) then (
+			challenges := [newChallenge] ^ challenges
+		);
+	)
+	post (loggedInAdmin <> nil and challenges = [newChallenge] ^ challenges~) or (loggedInAdmin = nil and challenges = challenges~);
 	
 	public getChallenges: () ==> seq of Challenge
 	getChallenges() == return challenges;
@@ -60,7 +119,6 @@ operations
 	public getUsers: () ==> set of User
 	getUsers() == return users;
 functions
--- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
 end FitnessApp

@@ -1,0 +1,144 @@
+class FitnessAppTest is subclass of Test
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+	public static main() == (
+		new UserTest().test();
+		new WorkoutTest().test();
+		new CalorieChallengeTest().test();
+		new DistanceChallengeTest().test();
+		new RhythmChallengeTest().test();
+		new RouteTest().test();
+		new FitnessAppTest().test();
+	);
+	
+	public createFitnessApp() res: FitnessApp == (
+		return new FitnessApp({new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70, <Masculine>), new User("Bernardo", "Belchior", "a@b.c", "12345678", 70, 1.70, <Masculine>)});
+	);
+	
+	public createAdmin() res: Admin == 
+		return new Admin("Bernardo", "Belchior", "b@b.c", "12345678", 70, 1.70, <Masculine>);	
+
+	public testAddAdmin() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl a: Admin := new Admin("John", "Doe", "b@b.d", "12345678", 70, 1.70, <Masculine>);
+		assert(not f.adminExists(a));
+		assert(not f.userExists(a));
+		assert(f.addAdmin(a));
+		assert(f.userExists(a));
+		assert(f.adminExists(a));
+	);
+
+	public testAddUser() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl u: User := new User("John", "Doe", "b@b.d", "12345678", 70, 1.70, <Masculine>);
+		assert(not f.userExists(u));
+		assert(f.addUser(u));
+		assert(f.userExists(u));
+	);
+
+	public testAdminSuccessfulLogin() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl a: Admin := new Admin("John", "Doe", "d@d.b", "12345678", 70, 1.70, <Masculine>);
+		assert(f.addAdmin(a));
+		assert(not f.isAdminLoggedIn());
+		assert(not f.isLoggedIn());
+		assert(f.login("d@d.b", "12345678"));
+		assert(f.isAdminLoggedIn());
+		assert(f.isLoggedIn());
+	);
+
+	public testAdminUnsuccessfulLogin() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl a: Admin := new Admin("John", "Doe", "d@d.c", "12345678", 70, 1.70, <Masculine>);
+		assert(f.addAdmin(a));
+		assert(not f.isAdminLoggedIn());
+		assert(not f.isLoggedIn());
+		assert(not f.login("a", "invalid")); -- Tests if len email < 5
+		assert(not f.isAdminLoggedIn());
+		assert(not f.isLoggedIn());
+		assert(not f.login("invalid", "invalid")); -- Tests if len password < 8
+		assert(not f.isAdminLoggedIn());
+		assert(not f.isLoggedIn());
+		assert(not f.login("invalid", "invalid1")); -- Tests if combination email, password is not found
+		assert(not f.isAdminLoggedIn());
+		assert(not f.isLoggedIn());
+	);
+
+	public testUserSuccessfulLogin() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl u: User := new User("John", "Doe", "d@d.b", "12345678", 70, 1.70, <Masculine>);
+		assert(f.addUser(u));
+		assert(not f.isAdminLoggedIn());
+		assert(not f.isLoggedIn());
+		assert(f.login("d@d.b", "12345678"));
+		assert(not f.isAdminLoggedIn());
+		assert(f.isLoggedIn());
+	);
+
+	public testUserUnsuccessfulLogin() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl u: User := new User("John", "Doe", "d@b.d", "12345678", 70, 1.70, <Masculine>);
+		assert(f.addUser(u));
+		assert(not f.isAdminLoggedIn());
+		assert(not f.isLoggedIn());
+		assert(not f.login("a", "invalid")); -- Tests if len email < 5
+		assert(not f.isAdminLoggedIn());
+		assert(not f.isLoggedIn());
+		assert(not f.login("invalid", "invalid")); -- Tests if len password < 8
+		assert(not f.isAdminLoggedIn());
+		assert(not f.isLoggedIn());
+		assert(not f.login("invalid", "invalid1")); -- Tests if combination email, password is not found
+		assert(not f.isAdminLoggedIn());
+		assert(not f.isLoggedIn());
+	);
+	
+	public testLogout() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl u: User := new User("John", "Doe", "d@b.c", "12345678", 70, 1.70, <Masculine>);
+		assert(f.addUser(u));
+		assert(not f.isLoggedIn());
+		assert(f.login("a@b.c", "12345678"));
+		assert(f.isLoggedIn());
+		f.logout();
+		assert(not f.isLoggedIn());
+		assert(not f.isAdminLoggedIn());
+	);
+	
+	public testAddChallengeWithAdminInSystem() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl a: Admin := createAdmin();
+		dcl c: Challenge := new DistanceChallenge(a, "Test", "Because we need to test", mk_Types`Date(2018, 1, 1), mk_Types`Date(2018, 2, 1), 10);
+		assert(f.addAdmin(a));
+		assert(f.login("b@b.c", "12345678"));
+		f.addChallenge(c);
+		assert(c in set elems f.getChallenges());
+	);
+	
+	public testAddChallengeWithoutAdminInSystem() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl c: Challenge := new DistanceChallenge(createAdmin(), "Test", "Because we need to test", mk_Types`Date(2018, 1, 1), mk_Types`Date(2018, 2, 1), 10);
+		f.addChallenge(c);
+		assert(not c in set elems f.getChallenges());
+	);
+
+	public test() == (
+		testAddAdmin();
+		testAddUser();
+		testAdminSuccessfulLogin();
+		testAdminUnsuccessfulLogin();
+		testUserSuccessfulLogin();
+		testUserUnsuccessfulLogin();
+		testLogout();
+		testAddChallengeWithoutAdminInSystem();
+		testAddChallengeWithAdminInSystem();
+		)
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end FitnessAppTest

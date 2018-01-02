@@ -7,7 +7,7 @@ instance variables
 -- TODO Define instance variables here
 operations
 	public createUser() res: User ==
-		return new User("Bernardo", "Belchior", "up201405381@fe.up.pt", "12345678", 70, 1.70);	
+		return new User("Bernardo", "Belchior", "up201405381@fe.up.pt", "12345678", 70, 1.70, <Masculine>);	
 
 	public testUser() == (
 		dcl u: User := createUser();
@@ -19,6 +19,7 @@ operations
 		assert(u.getPassword() = "12345678");
 		assert(u.weight = 90);
 		assert(u.height = 1.20);
+		assert(u.gender = <Masculine>);
 	);
 
 	public testAddRoute() == (
@@ -37,7 +38,7 @@ operations
 	
 	public testAddFriend() == (
 		dcl u1: User := createUser();
-		dcl u2: User := new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70);
+		dcl u2: User := new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70, <Masculine>);
 		u1.addFriend(u2);
 		assert(u2 in set u1.getFriends());
 	);

@@ -4,14 +4,14 @@ types
 values
 -- TODO Define values here
 instance variables
-	firstName: seq of char;
-	lastName: seq of char;
-	workouts: set of Workout := {};
-	myRoutes: set of Route := {};
-	goals: set of Goal := {};
-	friends: set of User := {};	
-	email: seq of char;
-	password: seq of char;
+	protected firstName: seq of char;
+	protected lastName: seq of char;
+	protected workouts: set of Workout := {};
+	protected myRoutes: set of Route := {};
+	protected goals: set of Goal := {};
+	protected friends: set of User := {};	
+	protected email: seq of char;
+	protected password: seq of char;
 
 	public gender: Types`Gender;
 	public weight: [real] := nil; -- in kilograms
@@ -20,19 +20,20 @@ instance variables
 	inv weight = nil or weight > 0;
 	inv height = nil or height > 0;
 	inv len email >= 5; -- for the @ and . symbols
-	inv len password >= 8;
+	--inv len password >= 8;
 operations
-	public User : seq of char * seq of char * seq of char * seq of char * real * real ==> User
-	User(fName, lName, mail, passw, w, h) == (
+	public User : seq of char * seq of char * seq of char * seq of char * real * real * Types`Gender ==> User
+	User(fName, lName, mail, passw, w, h, g) == (
 		firstName := fName;
 		lastName := lName;
 		email := mail;
 		password := passw;
 		weight := w;
-		height := h
+		height := h;
+		gender := g;
 	)
 	pre len mail >= 5 and len passw >= 8
-	post firstName = fName and lastName = lName and email = mail and password = passw and weight = w and height = h;
+	post firstName = fName and lastName = lName and email = mail and password = passw and weight = w and height = h and gender = g;
 		
 	public addRoute: Route ==> ()
 		addRoute(route) == myRoutes := myRoutes union {route}

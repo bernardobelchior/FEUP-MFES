@@ -8,19 +8,11 @@ instance variables
 	public description: seq of char;
 	public startDate: Types`Date;
 	public endDate: Types`Date;
-	private completed: seq of User := [];
 	public goal: real;
-operations
-	public Challenge: seq of char * seq of char * Types`Date * Types`Date * real ==> Challenge 
-	Challenge(n, d, s, e, g) == (
-		name := n;
-		description := d;
-		startDate := s;
-		endDate := e;
-		goal := g;
-	)
-	post name = n and description = d and startDate = s and endDate = e and goal = g;
 
+	protected createdBy: Admin;
+	private completed: seq of User := [];
+operations
 	public verifyChallenge: Workout ==> bool
 	verifyChallenge(-) == is subclass responsibility;
 
@@ -31,11 +23,8 @@ operations
 	public getCompleted: () ==> seq of User
 	getCompleted() == return completed;	
 	
-	public getName: () ==> seq of char
-	getName() == return name;
-	
-	public getGoal: () ==> real
-	getGoal() == return goal;
+	public getCreator: () ==> Admin
+	getCreator() == return createdBy;
 functions
 -- TODO Define functiones here
 traces
