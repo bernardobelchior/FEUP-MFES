@@ -18,6 +18,9 @@ operations
 		
 	public getName: () ==> seq of char
 	getName() == return name;	
+	
+	public getPoints: () ==> seq of Types`Point
+	getPoints() == return points;
 		
  public getDistance: () ==> real
  getDistance() == (

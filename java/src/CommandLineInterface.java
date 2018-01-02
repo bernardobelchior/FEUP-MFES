@@ -317,6 +317,16 @@ public class CommandLineInterface {
 			Route route= it.next();
 			System.out.println(i + ": " + route.getName());
 			System.out.println("   Route Distance: " + route.getDistance());
+			
+			System.out.println("   Points:");
+			VDMSeq points = route.getPoints();
+			Iterator<Point> ite = points.iterator();
+			int j = 1;
+			while (ite.hasNext()) {
+				Point point = ite.next();
+				System.out.println("      " + j + "º Point (Latitude, Longitude): " + point.lat + "," + point.long_);
+				j++;
+			}
 			i++;
 		}
 
