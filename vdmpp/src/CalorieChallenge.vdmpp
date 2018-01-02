@@ -1,10 +1,5 @@
+-- Represents a challenge where its goal is measured in calories.
 class CalorieChallenge is subclass of Challenge
-types
--- TODO Define types here
-values
--- TODO Define values here
-instance variables
--- TODO Define instance variables here
 operations
 	public CalorieChallenge: Admin * seq of char * seq of char * Types`Date * Types`Date * real ==> CalorieChallenge 
 	CalorieChallenge(a, n, d, s, e, g) == (
@@ -17,15 +12,13 @@ operations
 	)
 	post createdBy = a and name = n and description = d and startDate = s and endDate = e and goal = g;
 
+	-- Returns true if the challenge is completed, returning false otherwise.
 	public verifyChallenge: Workout ==> bool
 	verifyChallenge(workout) == (
 		return workout.getCaloriesBurned() >= goal;
 	);
 	
-	public printMessage: () ==> seq of char
-	printMessage() == return "Burning " ^ [goal] ^ " kcal";
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
+	-- Returns a message describing the goal.
+	public getGoalDescription: () ==> seq of char
+	getGoalDescription() == return "Burn " ^ [goal] ^ " kcal";
 end CalorieChallenge

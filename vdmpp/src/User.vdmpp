@@ -1,26 +1,37 @@
 class User
-types
--- TODO Define types here
-values
--- TODO Define values here
 instance variables
+	-- User's first name
 	protected firstName: seq of char;
+
+	-- User's last name
 	protected lastName: seq of char;
+
+	-- Workouts the user has completed
 	protected workouts: set of Workout := {};
+	
+	-- Routes the user has created
 	protected myRoutes: set of Route := {};
-	protected goals: set of Goal := {};
+	
+	-- Friends the user has added
 	protected friends: set of User := {};	
+	
+	-- User's email
 	protected email: seq of char;
+	
+	-- User's password
 	protected password: seq of char;
 
+	-- User's gender
 	public gender: Types`Gender;
-	public weight: [real] := nil; -- in kilograms
-	public height: [real] := nil; -- in meters
 	
-	inv weight = nil or weight > 0;
-	inv height = nil or height > 0;
-	inv len email >= 5; -- for the @ and . symbols
-	--inv len password >= 8;
+	-- User's weight in kilograms
+	public weight: real;
+	
+	-- User's height in meters
+	public height: real;
+	
+	-- Restricts some invalid emails. At least 5 characters are needed to write a simple e-mail, eg.: a@b.c
+	inv len email >= 5; 
 operations
 	public User : seq of char * seq of char * seq of char * seq of char * real * real * Types`Gender ==> User
 	User(fName, lName, mail, passw, w, h, g) == (
@@ -32,61 +43,57 @@ operations
 		height := h;
 		gender := g;
 	)
-	pre len mail >= 5 and len passw >= 8
+	pre len mail >= 5 and len passw >= 8 and h > 0 and w > 0
 	post firstName = fName and lastName = lName and email = mail and password = passw and weight = w and height = h and gender = g;
 		
+	-- Adds a route to user's routes
 	public addRoute: Route ==> ()
 		addRoute(route) == myRoutes := myRoutes union {route}
 		post route in set myRoutes;
 	
+	-- Adds a complete workout to the set of complete workouts
 	public addWorkout: Workout ==> ()
 		addWorkout(workout) == workouts := workouts union {workout}
 		post workout in set workouts;
 
-	public addGoal: Goal ==> ()
-		addGoal(goal) == goals := goals union {goal}
-		post goal in set goals;
-		
+	-- Add a friend to user's set of friends
 	public addFriend: User ==> ()
 		addFriend(f) == (
 			friends := friends union {f};
 			if self not in set f.getFriends()
 			then f.addFriend(self);
 		)
-		-- pre self <> f
+		pre f <> self
 		post f in set friends;
 		
+	-- Returns the user's workouts
 	public getWorkouts: () ==> set of Workout 
 	getWorkouts() == return workouts;
 		
+	-- Returns the user's first name
 	public getFirstName: () ==> seq of char
 	getFirstName() ==	return firstName;
 
+	-- Returns the user's last name
 	public getLastName: () ==> seq of char
 	getLastName() == return lastName;
 		
-	public getMyRoutes: () ==> set of Route
-	getMyRoutes() == return myRoutes;
+	-- Returns the user's routes
+	public getRoutes: () ==> set of Route
+	getRoutes() == return myRoutes;
 
+	-- Returns the user's friends
 	public getFriends: () ==> set of User
 	getFriends() == return friends;
 
-	public getGoals: () ==> set of Goal
-	getGoals() == return goals;
-	
+	-- Returns the user's email
 	public getEmail: () ==> seq of char
 	getEmail() == return email;
-
-	public getPassword: () ==> seq of char
-	getPassword() == return password;
-
+	
+	-- Checks if the email and password combination matches
 	public checkLogin: seq of char * seq of char ==> bool 
 	checkLogin(mail, passw) == (
 		return email = mail	and password = passw;
 	)
 	post RESULT = (email = mail and password = passw);
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end User

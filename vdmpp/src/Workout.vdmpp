@@ -1,12 +1,10 @@
 class Workout
 types
-values
--- TODO Define values here
 instance variables
 	distance: real := 0; -- In km
 	caloriesBurned: real := 0; -- In km
 	averageRhythm: real := 0; -- In min/km
-	duration: real := 0; -- In min
+	duration: Types`Duration; -- In min
 	startDateTime: Types`DateTime;
 	activity: Types`Activity;
 	points: seq of Types`Point := [];
@@ -18,7 +16,6 @@ instance variables
 	inv caloriesBurned >= 0; 
 	inv averageRhythm >= 0;
 operations
-	
 	public Workout: seq of char * Types`DateTime * Types`Activity * Types`Point ==> Workout
 	Workout(t, sd, a, p) == (
 		title := t;
@@ -38,19 +35,19 @@ operations
 	public getTitle: () ==> seq of char
 	getTitle() == return title;
 	
-	public endWorkout: User * real ==> ()
+	public endWorkout: User * Types`Duration ==> ()
 	endWorkout(user, d) == (
 		duration := d;
 		distance := calculateDistance();
 		caloriesBurned := distance * user.weight * 1.036;
-		averageRhythm := distance / duration;
+		averageRhythm := distance / Types`toMinutes(duration);
 	);
 	
 	public calculateDistance: () ==> real -- returns in kms
 	 calculateDistance() == (
 		dcl totalDistance: real := 0;
 	 	
-	 	-- Font: http://www.geodatasource.com/developers/javascript 
+	 	-- Source: http://www.geodatasource.com/developers/javascript 
 		dcl upperBound: real := (len points) - 1;
 		for i = 1 to upperBound do (
 				dcl radLat1: real := MATH`pi * points(i).lat / 180;
@@ -77,10 +74,6 @@ operations
 	 public getCaloriesBurned: () ==> real
 	 getCaloriesBurned() == return caloriesBurned;
 	 
-	 public getDuration: () ==> real
+	 public getDuration: () ==> Types`Duration
 	 getDuration() == return duration;
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end Workout

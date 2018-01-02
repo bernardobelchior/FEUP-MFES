@@ -1,38 +1,45 @@
+-- Abstract class Challenge that represents a generic challenge with a goal. Subclasses should provide a way to interpret the goal.
 class Challenge
-types
--- TODO Define types here
-values
--- TODO Define values here
 instance variables
+	-- Challenge name
 	public name: seq of char;
+	
+	-- Challenge Description
 	public description: seq of char;
+	
+	-- Challenge start date
 	public startDate: Types`Date;
+
+	-- Challenge end date
 	public endDate: Types`Date;
+
+	-- Challenge goal
 	public goal: real;
 
+	-- Challenge creator
 	protected createdBy: Admin;
+
+	-- Sequence of users who have completed the challenge chronologically sorted.
 	private completed: seq of User := [];
 operations
+	-- Returns true if the challenge is completed, returning false otherwise.
 	public verifyChallenge: Workout ==> bool
 	verifyChallenge(-) == is subclass responsibility;
 	
-	public printMessage: () ==> seq of char
-	printMessage() == is subclass responsibility;
+	-- Returns a message describing the goal.
+	public getGoalDescription: () ==> seq of char
+	getGoalDescription() == is subclass responsibility;
 
+	-- Adds a user to the sequence of users who completed the challenge.
 	public addCompletedUser: User ==> ()
 	addCompletedUser(u) == (completed := [u] ^ completed)
 	post completed = [u] ^ completed~;
 			
+	-- Returns the sequence of users who completed the challenge.
 	public getCompleted: () ==> seq of User
 	getCompleted() == return completed;	
 	
+	-- Returns the creator of this challenges.
 	public getCreator: () ==> Admin
 	getCreator() == return createdBy;
-	
-	public getName: () ==> seq of char
-	getName() == return name;
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end Challenge

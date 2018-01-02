@@ -1,24 +1,34 @@
+-- Represents all the system, includes all the information about it and handles outside interactions. 
 class FitnessApp
-types
--- TODO Define types here
-values
--- TODO Define values here
 instance variables
+	-- Users with accounts in the system. Includes both normal users and admins.
 	users: set of User := {};
+	
+	-- Admins with accounts in the system
 	admins: set of Admin := {};
+	
+	-- Reference to the logged in user. If nil means there is no user logged in. 
 	loggedInUser: [User] := nil;
+
+	-- Reference to the logged in admin. If nil means there is no admin logged in.
+	-- Note that this can be nil, but loggedInUser may not be if the user does not have admin privileges. 
 	loggedInAdmin: [Admin] := nil;
+	
+	-- All challenges in the system
 	challenges: seq of Challenge := [];
 	
+	-- Establishes the relation between loggedInUser and loggedInAdmin. Ensures loggedInUser is never nil if an admin is logged in.
 	inv (loggedInUser = nil and loggedInAdmin = nil) or (loggedInAdmin <> nil and loggedInUser = loggedInAdmin) or (loggedInUser <> nil and loggedInAdmin = nil)
 operations
+	-- Constructor. Allows the system to be created with some Users.
 	public FitnessApp: set of User ==> FitnessApp  
 	FitnessApp(u) == 
 	users := u
 	post users = u;
 
-	private existsUserWithSameEmail: set of User * seq of char ==> bool
-	existsUserWithSameEmail(users, email) ==  (
+	-- Checks if there is a user with the same email as provided.
+	private existsUserWithSameEmail: seq of char ==> bool
+	existsUserWithSameEmail(email) ==  (
 		for all u in set users do (
 			if u.getEmail() = email then (
 				return true;
@@ -28,9 +38,11 @@ operations
 		return false;
 	);
 
+	-- Adds a user if there is no user with the same email. If the user cannot be added, the operation will return false. 
+	-- Otherwise, it will return true.
 	public addUser: User ==> bool
 	addUser(u) == (
-		if(not existsUserWithSameEmail(users, u.getEmail())) then (
+		if(not existsUserWithSameEmail(u.getEmail())) then (
 			users := {u} union users;
 			return true;
 		);
@@ -39,9 +51,11 @@ operations
 	)
 	post (RESULT = true and users = {u} union users~) or (RESULT = false and users = users~);
 	
+	-- Adds a admin if there is no user with the same email. If the admin cannot be added, the operation will return false. 
+	-- Otherwise, it will return true.
 	public addAdmin: Admin ==> bool
 	addAdmin(a) == (
-		if(not existsUserWithSameEmail(users, a.getEmail())) then (
+		if(not existsUserWithSameEmail(a.getEmail())) then (
 			admins := {a} union admins;
 			users := {a} union users;
 			return true;
@@ -51,22 +65,27 @@ operations
 	)
 	post (RESULT = true and admins = {a} union admins~ and users = {a} union users~) or (RESULT = false and users = users~ and admins = admins~);
 	
+	-- Returns true if the given Admin is in the system. 
 	public adminExists: Admin ==> bool
 	adminExists(a) == return a in set admins
 	post RESULT = a in set admins;
 		
+	-- Returns true if the given user is in the system. 
 	public userExists: User ==> bool
 	userExists(u) == return u in set users
 	post RESULT = u in set users;
 	
+	-- Returns true if there is a user logged in.
 	public isLoggedIn: () ==> bool 
 	isLoggedIn() == return loggedInUser <> nil
 	post RESULT = (loggedInUser <> nil);
 
+	-- Returns true if there is a admin logged in.
 	public isAdminLoggedIn: () ==> bool 
 	isAdminLoggedIn() == return loggedInAdmin <> nil
 	post RESULT = (loggedInAdmin <> nil);
 
+	-- Logs the user (or admin) in. Returns true if successful and updates the loggedInUser and loggedInAdmin variables.
 	public login: seq of char * seq of char ==> bool
 	login(email, password) == (
 		if (len email < 5 or len password < 8) then
@@ -91,6 +110,7 @@ operations
 	)
 	post (RESULT = true and loggedInUser <> nil) or RESULT = false;
 		
+	-- Logs the user out, updating the state variables.
 	public logout: () ==> ()
 	logout() == (
 		loggedInUser := nil;
@@ -99,12 +119,15 @@ operations
 	pre loggedInUser <> nil 
 	post loggedInUser = nil and loggedInAdmin = nil;
 	
-	public getLoggedInUser: () ==> User
+	-- Returns the user currently logged in.
+	public getLoggedInUser: () ==> [User]
 	getLoggedInUser() == return loggedInUser;
 
-	public getLoggedInAdmin: () ==> Admin
+	-- Returns the admin currently logged in.
+	public getLoggedInAdmin: () ==> [Admin]
 	getLoggedInAdmin() == return loggedInAdmin;
 	
+	-- Adds a challenge to the system.
 	public addChallenge: Challenge ==> ()
 	addChallenge(newChallenge) == (
 		if(newChallenge.getCreator() = loggedInAdmin) then (
@@ -113,12 +136,11 @@ operations
 	)
 	post (loggedInAdmin <> nil and challenges = [newChallenge] ^ challenges~) or (loggedInAdmin = nil and challenges = challenges~);
 	
+	-- Returns the sequence of challenges
 	public getChallenges: () ==> seq of Challenge
 	getChallenges() == return challenges;
 	
+	-- Returns the set of users.
 	public getUsers: () ==> set of User
 	getUsers() == return users;
-functions
-traces
--- TODO Define Combinatorial Test Traces here
 end FitnessApp

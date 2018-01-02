@@ -1,10 +1,4 @@
 class RouteTest is subclass of Test
-types
--- TODO Define types here
-values
--- TODO Define values here
-instance variables
--- TODO Define instance variables here
 operations
 	public createRoute() res: Route == 
 		return new Route("Test", [mk_Types`Point(38.898556, -77.037852), mk_Types`Point(38.897147, -77.043934)]);
@@ -16,8 +10,4 @@ operations
 	
 	public test() ==
 		testRouteDistance();
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end RouteTest

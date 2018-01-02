@@ -1,36 +1,46 @@
+-- Class that houses all the types used in the system.
 class Types
 types
+	-- Represents a moment in time by its date and time.
 	public DateTime :: date: Date
 										time: Time;
 
+	-- Represents a duration.
+	public Duration :: hours : int
+										 minutes: int
+										 seconds: int
+		inv duration == 
+			duration.minutes >= 0 and duration.minutes < 60 and
+			duration.seconds >= 0 and duration.seconds < 60 and
+			duration.hours >= 0;
+
+	-- Represents a moment of a day.
 	public Time :: hours : int
 										 minutes: int
 										 seconds: int
 		inv time == 
 			time.minutes >= 0 and time.minutes < 60 and
 			time.seconds >= 0 and time.seconds < 60 and
-			time.hours >= 0;
+			time.hours >= 0 and time.hours < 24;
+	-- Ensures time 
 			
+	-- Represents a date.
 	public Date :: year : int
 								month: int
 								day: int
 	inv date ==
 		date.year >= 0 and date.month > 0 and date.month <= 12 and date.day > 0 and date.day <= 31;
 		
+	-- Represents the type of an activity
 	public Activity = <Bycicle> | <Running> | <Walking>;
 	
+	-- Represents a gender
 	public Gender = <Masculine> | <Feminine>;
 
+	-- Represents a point with latitude and longitude.
 	public Point :: lat : real
 									long : real;
-values
--- TODO Define values here
-instance variables
--- TODO Define instance variables here
-operations
--- TODO Define operations here
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
+	functions
+	public static toMinutes: Types`Duration -> real
+	toMinutes(duration) == duration.minutes + duration.hours*60 + duration.seconds/60;
 end Types

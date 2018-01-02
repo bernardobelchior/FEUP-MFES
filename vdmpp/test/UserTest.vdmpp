@@ -1,10 +1,5 @@
 class UserTest is subclass of Test
 types
--- TODO Define types here
-values
--- TODO Define values here
-instance variables
--- TODO Define instance variables here
 operations
 	public createUser() res: User ==
 		return new User("Bernardo", "Belchior", "up201405381@fe.up.pt", "12345678", 70, 1.70, <Masculine>);	
@@ -16,7 +11,7 @@ operations
 		assert(u.getFirstName() = "Bernardo");
 		assert(u.getLastName() = "Belchior");
 		assert(u.getEmail() = "up201405381@fe.up.pt");
-		assert(u.getPassword() = "12345678");
+		assert(u.checkLogin("up201405381@fe.up.pt", "12345678"));
 		assert(u.weight = 90);
 		assert(u.height = 1.20);
 		assert(u.gender = <Masculine>);
@@ -24,9 +19,9 @@ operations
 
 	public testAddRoute() == (
 		dcl u: User := createUser();
-		dcl r: Route := new Route("Sunday Run", [mk_Types`Point(0, 0)]);
+		dcl r: Route := new Route("Sunday Run", [mk_Types`Point(0, 0), mk_Types`Point(0, 1)]);
 		u.addRoute(r);
-		assert(r in set u.getMyRoutes());
+		assert(r in set u.getRoutes());
 	);
 	
 	public testAddWorkout() == (
@@ -41,13 +36,6 @@ operations
 		dcl u2: User := new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70, <Masculine>);
 		u1.addFriend(u2);
 		assert(u2 in set u1.getFriends());
-	);
-	
-	public testAddGoal() == (
-		dcl u: User := createUser();
-		dcl g: Goal := new Goal(10.2);
-		u.addGoal(g);
-		assert(g in set u.getGoals());
 	);
 	
 	public testLoginSuccess() == (
@@ -65,12 +53,7 @@ operations
 		testAddRoute();	
 		testAddWorkout();
 		testAddFriend();	
-		testAddGoal();
 		testLoginSuccess();
 		testLoginFailure();
 	);
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end UserTest

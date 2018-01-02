@@ -1,10 +1,4 @@
 class CalorieChallengeTest is subclass of Test
-types
--- TODO Define types here
-values
--- TODO Define values here
-instance variables
--- TODO Define instance variables here
 operations
 	public createCalorieChallenge(a: Admin) res: CalorieChallenge == 
 		return new CalorieChallenge(a, "Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30), 20);
@@ -29,18 +23,21 @@ operations
 		dcl u: User := createUser();
 		dcl p: Types`Point := mk_Types`Point(10, 10);
 		w.addPoint(p);
-		w.endWorkout(u, 20);
+		w.endWorkout(u, mk_Types`Duration(0, 10, 0));
 		assert(true = c.verifyChallenge(w));
 		c.addCompletedUser(u);
 		assert(u in set elems c.getCompleted());
+	);
+
+	public testGoalDescription() == (
+		dcl c: CalorieChallenge := createCalorieChallenge(createAdmin());
+		dcl a: seq of char := c.getGoalDescription();
+		assert(a = "Burn 20 kcal");
 	);
 	
 	public test() == (
 		testChallenge();
 		testCompleteChallenge();
+		testGoalDescription();
 	)	
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end CalorieChallengeTest

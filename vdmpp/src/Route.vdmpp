@@ -1,13 +1,17 @@
+-- Represents a route taken in an activity. 
 class Route
-types
--- TODO Define types here
 values
+	-- Earth radius in kilometers
 	public EARTH_RADIUS: real = 6373;
 instance variables
+	-- Points this route goes through.
 	points: seq of Types`Point := [];
+	
+	-- This route's name.
 	name: seq of char;
 	
-	inv len points >= 0;
+	-- Ensure sure this route always has at least 2 points.
+	inv len points > 1;
 operations
 	public Route: seq of char * seq of Types`Point ==> Route 
 	Route(n, ps) == (
@@ -16,17 +20,20 @@ operations
 		)
 		post len points = len ps and points = ps and name = n; 
 		
+	-- Returns the route's name.
 	public getName: () ==> seq of char
 	getName() == return name;	
 	
+	-- Returns the points this route goes through
 	public getPoints: () ==> seq of Types`Point
 	getPoints() == return points;
 		
- public getDistance: () ==> real
- getDistance() == (
+	-- Calculates the real distance between Points
+ 	public getDistance: () ==> real
+ 	getDistance() == (
 	dcl totalDistance: real := 0;
  	
- 	-- Font: http://www.geodatasource.com/developers/javascript
+ 	-- Source: http://www.geodatasource.com/developers/javascript
 	dcl upperBound: real := (len points) - 1;
 	for i = 1 to upperBound do (
 			dcl radLat1: real := MATH`pi * points(i).lat / 180;
@@ -43,8 +50,4 @@ operations
 		
 		return totalDistance;
  );
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end Route

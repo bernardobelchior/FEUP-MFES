@@ -1,17 +1,11 @@
 class WorkoutTest is subclass of Test
-types
--- TODO Define types here
-values
--- TODO Define values here
-instance variables
--- TODO Define instance variables here
 operations
 	public createWorkout() res: Workout ==
 		return new Workout("Morning Run", mk_Types`DateTime(mk_Types`Date(2017,12,21), mk_Types`Time(16, 37, 00)), <Running>, mk_Types`Point(0, 0));
 
 	public testSetRoute() == (
 		dcl w: Workout := createWorkout();	
-		dcl r: Route := new Route("Sunday Run", [mk_Types`Point(0, 0)]);
+		dcl r: Route := new Route("Sunday Run", [mk_Types`Point(0, 0), mk_Types`Point(0, 1)]);
 		w.route := r;
 		assert(w.route = r);
 	);
@@ -28,11 +22,11 @@ operations
 		dcl p: Types`Point := mk_Types`Point(10, 10);
 		dcl u: User := new User("John", "Doe", "a@b.c", "12345678", 70, 1.70, <Masculine>);
 		w.addPoint(p);
-		w.endWorkout(u, 20);
+		w.endWorkout(u, mk_Types`Duration(0, 20, 0));
 		assert(w.getDistance() = 1568.445093911413);
 		assert(w.getCaloriesBurned() = 113743.63821045568);
 		assert(w.getAverageRhythm() = 78.42225469557066);
-		assert(w.getDuration() = 20);
+		assert(w.getDuration().minutes = 20);
 	);
 
 	public test() == (
@@ -40,8 +34,4 @@ operations
 		testAddPoint();
 		testEndWorkout();
 	);
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end WorkoutTest
