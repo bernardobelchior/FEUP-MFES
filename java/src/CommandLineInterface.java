@@ -169,6 +169,12 @@ public class CommandLineInterface {
 				userGoalsMenu();
 				return null;
 			}));
+			loggedInMenuEntries.add(new SimpleEntry<>("Logout", () -> {
+				fitnessApp.logout();
+				printEmptyLines(EMPTY_LINES);
+				mainMenu();
+				return null;
+			}));
 		}
 		else {
 			mainMenu();
