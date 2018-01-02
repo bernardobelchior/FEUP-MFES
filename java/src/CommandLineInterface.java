@@ -91,7 +91,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	public void userGoalsMenu() {
+	public void userRoutesMenu() {
 		printEmptyLines(EMPTY_LINES);
 		printLine();
 		System.out.println("Routes Menu");
@@ -105,6 +105,26 @@ public class CommandLineInterface {
 
 			try {
 				routesMenuEntries.get(option).getValue().call();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void manageUserFriendsMenu() {
+		printEmptyLines(EMPTY_LINES);
+		printLine();
+		System.out.println("Friends Menu");
+		ArrayList<SimpleEntry<String, Callable<Void>>> friendsMenuEntries = new ArrayList<>();
+
+		while (true) {
+			friendsMenuEntries.clear();
+			addFriendsMenuEntries(friendsMenuEntries);
+			printMenuEntries(friendsMenuEntries);
+			int option = getUserInput(1, friendsMenuEntries.size() - 1);
+
+			try {
+				friendsMenuEntries.get(option).getValue().call();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -166,7 +186,11 @@ public class CommandLineInterface {
 				return null;
 			}));
 			loggedInMenuEntries.add(new SimpleEntry<>("My Routes", () -> {
-				userGoalsMenu();
+				userRoutesMenu();
+				return null;
+			}));
+			loggedInMenuEntries.add(new SimpleEntry<>("Manage Friends", () -> {
+				manageUserFriendsMenu();
 				return null;
 			}));
 			loggedInMenuEntries.add(new SimpleEntry<>("Logout", () -> {
@@ -221,6 +245,26 @@ public class CommandLineInterface {
 		}
 	}
 
+	private void addFriendsMenuEntries(ArrayList<SimpleEntry<String, Callable<Void>>> friendsMenuEntries) {
+		if (fitnessApp.isLoggedIn()) {
+			friendsMenuEntries.add(new SimpleEntry<>("View My Friends", () -> {
+				viewUserFriendsMenu();
+				return null;
+			}));
+			friendsMenuEntries.add(new SimpleEntry<>("Add New Friend", () -> {
+				addNewFriendMenu();
+				return null;
+			}));
+			friendsMenuEntries.add(new SimpleEntry<>("Main Menu", () -> {
+				loggedInMenu();
+				return null;
+			}));
+		}
+		else {
+			mainMenu();
+		}
+	}
+
 	private void addChallengesMenuEntries(ArrayList<SimpleEntry<String, Callable<Void>>> challengeMenuEntries) {
 		if (fitnessApp.isLoggedIn()) {
 			challengeMenuEntries.add(new SimpleEntry<>("View Challenges", () -> {
@@ -258,6 +302,7 @@ public class CommandLineInterface {
 		System.out.print("Height: ");
 		double height = Double.parseDouble(reader.nextLine());
 		fitnessApp.addUser(new User(firstName, lastName, email, password, weight, height));
+		printEmptyLines(EMPTY_LINES);
 	}
 
 	private void loginMenu() {
@@ -274,6 +319,7 @@ public class CommandLineInterface {
 		else {
 			System.out.println("Login has fail");
 		}
+		printEmptyLines(EMPTY_LINES);
 	}
 
 	private void viewUserWorkoutsMenu() {
@@ -323,7 +369,7 @@ public class CommandLineInterface {
 			Route route= it.next();
 			System.out.println(i + ": " + route.getName());
 			System.out.println("   Route Distance: " + route.getDistance());
-			
+
 			System.out.println("   Points:");
 			VDMSeq points = route.getPoints();
 			Iterator<Point> ite = points.iterator();
@@ -379,6 +425,29 @@ public class CommandLineInterface {
 			System.out.println();
 		}
 
+		printEmptyLines(EMPTY_LINES);
+	}
+	
+	private void viewUserFriendsMenu() {
+		printEmptyLines(EMPTY_LINES);
+		
+		VDMSet userFriends = fitnessApp.getLoggedInUser().getFriends();
+		
+		if (userFriends.size() == 0) {
+			System.out.println("You haven't added any friends yet:(");
+			System.out.println("Enter to continue");
+			reader.nextLine();
+			return;
+		}
+
+		Iterator<User> it = userFriends.iterator();
+		int i = 1;
+		while (it.hasNext()) {
+			User friend = it.next();
+			System.out.println(i + ": " + friend.getFirstName() + " " + friend.getLastName() + " with email " + friend.getEmail());
+		}
+
+		
 		printEmptyLines(EMPTY_LINES);
 	}
 
@@ -451,20 +520,20 @@ public class CommandLineInterface {
 
 	private void createNewRouteMenu() {
 		printEmptyLines(EMPTY_LINES);
-		
+
 		User loggedInUser = fitnessApp.getLoggedInUser();
 
 		System.out.print("Route Name: ");
 		String routeName = reader.nextLine();
-		
+
 		VDMSeq points = new VDMSeq();
-		
+
 		System.out.println("First point (latitude, longitude)");
 		System.out.print("Latitude: ");
 		int initialLatitude = Integer.parseInt(reader.nextLine());
 		System.out.print("Longitude: ");
 		int initialLongitude = Integer.parseInt(reader.nextLine());
-		
+
 		points.add(new Point(initialLatitude, initialLongitude));
 
 		while (true) {
@@ -481,9 +550,39 @@ public class CommandLineInterface {
 			int longitude = Integer.parseInt(reader.nextLine());
 			points.add(new Point(latitude, longitude));
 		}
-		
+
 		Route newRoute = new Route(routeName, points);
 		loggedInUser.addRoute(newRoute);
+
+		printEmptyLines(EMPTY_LINES);
+	}
+
+	private void addNewFriendMenu() {
+		printEmptyLines(EMPTY_LINES);
+
+		User loggedInUser = fitnessApp.getLoggedInUser();
+
+		System.out.print("New Friend Email: ");
+		String friendName = reader.nextLine();
+		
+		VDMSet users = fitnessApp.getUsers();
+		
+		Iterator<User> it = users.iterator();
+		int i = 1;
+		boolean found = false;
+		while (it.hasNext()) {
+			User user = it.next();
+			if (user.getEmail().equals(friendName) && !loggedInUser.equals(user)) {
+				loggedInUser.addFriend(user);
+				System.out.println("Friend Added");
+				found = true;
+				break;
+			}
+		}
+		
+		if (!found) {
+			System.out.println("User Not Found!");
+		}
 
 		printEmptyLines(EMPTY_LINES);
 	}

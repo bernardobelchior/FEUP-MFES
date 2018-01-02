@@ -47,7 +47,11 @@ operations
 		post goal in set goals;
 		
 	public addFriend: User ==> ()
-		addFriend(f) == friends := friends union {f}
+		addFriend(f) == (
+			friends := friends union {f};
+			if self not in set f.getFriends()
+			then f.addFriend(self);
+		)
 		-- pre self <> f
 		post f in set friends;
 		

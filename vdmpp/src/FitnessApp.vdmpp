@@ -56,6 +56,9 @@ operations
 	
 	public getChallenges: () ==> seq of Challenge
 	getChallenges() == return challenges;
+	
+	public getUsers: () ==> set of User
+	getUsers() == return users;
 functions
 -- TODO Define functiones here
 traces
