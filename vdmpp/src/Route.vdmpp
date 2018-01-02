@@ -16,27 +16,30 @@ operations
 		)
 		post len points = len ps and points = ps and name = n; 
 		
-	 public getDistance: () ==> real
-	 getDistance() == (
-		dcl totalDistance: real := 0;
-	 	
-	 	-- Font: http://www.geodatasource.com/developers/javascript
-		dcl upperBound: real := (len points) - 1;
-		for i = 1 to upperBound do (
-				dcl radLat1: real := MATH`pi * points(i).lat / 180;
-				dcl radLat2: real := MATH`pi * points(i+1).lat / 180;
-				dcl theta: real := points(i).long - points(i+1).long;
-				dcl radTheta: real := MATH`pi * theta / 180;
-				dcl dist: real := MATH`sin(radLat1) * MATH`sin(radLat2) + MATH`cos(radLat1) * MATH`cos(radLat2) * MATH`cos(radTheta);
-				dist := MATH`acos(dist);
-				dist := dist * 180 / MATH`pi;
-				dist := dist * 60 * 1.1515;
-				dist := dist * 1.609344;
-				totalDistance := totalDistance + dist;
-			);
-			
-			return totalDistance;
-	 );
+	public getName: () ==> seq of char
+	getName() == return name;	
+		
+ public getDistance: () ==> real
+ getDistance() == (
+	dcl totalDistance: real := 0;
+ 	
+ 	-- Font: http://www.geodatasource.com/developers/javascript
+	dcl upperBound: real := (len points) - 1;
+	for i = 1 to upperBound do (
+			dcl radLat1: real := MATH`pi * points(i).lat / 180;
+			dcl radLat2: real := MATH`pi * points(i+1).lat / 180;
+			dcl theta: real := points(i).long - points(i+1).long;
+			dcl radTheta: real := MATH`pi * theta / 180;
+			dcl dist: real := MATH`sin(radLat1) * MATH`sin(radLat2) + MATH`cos(radLat1) * MATH`cos(radLat2) * MATH`cos(radTheta);
+			dist := MATH`acos(dist);
+			dist := dist * 180 / MATH`pi;
+			dist := dist * 60 * 1.1515;
+			dist := dist * 1.609344;
+			totalDistance := totalDistance + dist;
+		);
+		
+		return totalDistance;
+ );
 functions
 -- TODO Define functiones here
 traces

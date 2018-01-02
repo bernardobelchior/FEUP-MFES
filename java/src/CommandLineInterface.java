@@ -1,5 +1,7 @@
 import FitnessApp.Challenge;
 import FitnessApp.FitnessApp;
+import FitnessApp.Goal;
+import FitnessApp.Route;
 import FitnessApp.Types.Date;
 import FitnessApp.Types.DateTime;
 import FitnessApp.Types.Point;
@@ -89,6 +91,26 @@ public class CommandLineInterface {
 		}
 	}
 
+	public void userGoalsMenu() {
+		printEmptyLines(EMPTY_LINES);
+		printLine();
+		System.out.println("Routes Menu");
+		ArrayList<SimpleEntry<String, Callable<Void>>> routesMenuEntries = new ArrayList<>();
+
+		while (true) {
+			routesMenuEntries.clear();
+			addRoutesMenuEntries(routesMenuEntries);
+			printMenuEntries(routesMenuEntries);
+			int option = getUserInput(1, routesMenuEntries.size() - 1);
+
+			try {
+				routesMenuEntries.get(option).getValue().call();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void challengesMenu() {
 		printEmptyLines(EMPTY_LINES);
 		printLine();
@@ -135,12 +157,16 @@ public class CommandLineInterface {
 
 	private void addLoggedInMenuEntries(ArrayList<SimpleEntry<String, Callable<Void>>> loggedInMenuEntries) {
 		if (fitnessApp.isLoggedIn()) {
+			loggedInMenuEntries.add(new SimpleEntry<>("Challenges", () -> {
+				challengesMenu();
+				return null;
+			}));
 			loggedInMenuEntries.add(new SimpleEntry<>("My Workouts", () -> {
 				userWorkoutsMenu();
 				return null;
 			}));
-			loggedInMenuEntries.add(new SimpleEntry<>("Challenges", () -> {
-				challengesMenu();
+			loggedInMenuEntries.add(new SimpleEntry<>("My Routes", () -> {
+				userGoalsMenu();
 				return null;
 			}));
 		}
@@ -160,6 +186,26 @@ public class CommandLineInterface {
 				return null;
 			}));
 			workoutsMenuEntries.add(new SimpleEntry<>("Main Menu", () -> {
+				loggedInMenu();
+				return null;
+			}));
+		}
+		else {
+			mainMenu();
+		}
+	}
+
+	private void addRoutesMenuEntries(ArrayList<SimpleEntry<String, Callable<Void>>> routesMenuEntries) {
+		if (fitnessApp.isLoggedIn()) {
+			routesMenuEntries.add(new SimpleEntry<>("View My Routes", () -> {
+				viewUserRoutesMenu();
+				return null;
+			}));
+			routesMenuEntries.add(new SimpleEntry<>("Create New Route", () -> {
+				createNewRouteMenu();
+				return null;
+			}));
+			routesMenuEntries.add(new SimpleEntry<>("Main Menu", () -> {
 				loggedInMenu();
 				return null;
 			}));
@@ -251,6 +297,32 @@ public class CommandLineInterface {
 
 		printEmptyLines(EMPTY_LINES);
 	}
+
+	private void viewUserRoutesMenu() {
+		printEmptyLines(EMPTY_LINES);
+
+		User loggedInUser = fitnessApp.getLoggedInUser();
+		VDMSet userRoutes = loggedInUser.getMyRoutes();
+
+		if (userRoutes.size() == 0) {
+			System.out.println("No Routes :(");
+			System.out.println("Enter to continue");
+			reader.nextLine();
+			return;
+		}
+
+		Iterator<Route> it = userRoutes.iterator();
+		int i = 1;
+		while (it.hasNext()) {
+			Route route= it.next();
+			System.out.println(i + ": " + route.getName());
+			System.out.println("   Route Distance: " + route.getDistance());
+			i++;
+		}
+
+		printEmptyLines(EMPTY_LINES);
+	}
+
 
 	private void viewChallengesMenu() {
 		printEmptyLines(EMPTY_LINES);
@@ -357,6 +429,45 @@ public class CommandLineInterface {
 				System.out.println("You completed challenge with name " + challenge.getName());
 			}
 		}
+
+		printEmptyLines(EMPTY_LINES);
+	}
+
+	private void createNewRouteMenu() {
+		printEmptyLines(EMPTY_LINES);
+		
+		User loggedInUser = fitnessApp.getLoggedInUser();
+
+		System.out.print("Route Name: ");
+		String routeName = reader.nextLine();
+		
+		VDMSeq points = new VDMSeq();
+		
+		System.out.println("First point (latitude, longitude)");
+		System.out.print("Latitude: ");
+		int initialLatitude = Integer.parseInt(reader.nextLine());
+		System.out.print("Longitude: ");
+		int initialLongitude = Integer.parseInt(reader.nextLine());
+		
+		points.add(new Point(initialLatitude, initialLongitude));
+
+		while (true) {
+			System.out.println("Next Point (latitude, longitude) OR s to stop");
+
+			System.out.print("Latitude: ");
+			String firstInput = reader.nextLine();
+			if(firstInput.equals("s")) {
+				break;
+			}
+			int latitude = Integer.parseInt(firstInput);
+
+			System.out.print("Longitude: ");
+			int longitude = Integer.parseInt(reader.nextLine());
+			points.add(new Point(latitude, longitude));
+		}
+		
+		Route newRoute = new Route(routeName, points);
+		loggedInUser.addRoute(newRoute);
 
 		printEmptyLines(EMPTY_LINES);
 	}
