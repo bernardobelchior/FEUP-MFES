@@ -1,0 +1,27 @@
+class RhythmChallenge is subclass of Challenge
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+operations
+	public RhythmChallenge: seq of char * seq of char * Types`Date * Types`Date * real ==> Challenge 
+	RhythmChallenge(n, d, s, e, g) == (
+		name := n;
+		description := d;
+		startDate := s;
+		endDate := e;
+		goal := g;
+	)
+	post name = n and description = d and startDate = s and endDate = e and goal = g;
+
+	public verifyChallenge: Workout ==> bool
+	verifyChallenge(workout) == (
+		return workout.getAverageRhythm() >= goal;
+	);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end RhythmChallenge

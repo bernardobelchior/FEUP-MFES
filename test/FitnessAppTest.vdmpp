@@ -59,7 +59,7 @@ operations
 	
 	public testAddChallenge() == (
 		dcl f: FitnessApp := createFitnessApp();
-		dcl c: Challenge := new Challenge("Test", "Because we need to test", mk_Types`Date(2018, 1, 1), mk_Types`Date(2018, 2, 1), 10, 0);
+		dcl c: Challenge := new DistanceChallenge("Test", "Because we need to test", mk_Types`Date(2018, 1, 1), mk_Types`Date(2018, 2, 1), 10);
 		f.addChallenge(c);
 		assert(c in set elems f.getChallenges());
 	);

@@ -6,8 +6,8 @@ values
 instance variables
 -- TODO Define instance variables here
 operations
-	public createChallenge() res: Challenge == 
-		return new Challenge("Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30), 20, 0);
+	public createChallenge() res: DistanceChallenge == 
+		return new DistanceChallenge("Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30), 20);
 	
 	public createUser() res: User ==
 		return new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70);	
