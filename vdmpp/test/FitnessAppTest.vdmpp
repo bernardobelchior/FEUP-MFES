@@ -17,6 +17,21 @@ operations
 	public createAdmin() res: Admin == 
 		return new Admin("Bernardo", "Belchior", "b@b.c", "12345678", 70, 1.70, <Masculine>);	
 
+	public testAddRepeatedAdmin() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl a: Admin := new Admin("John", "Doe", "b@b.d", "12345678", 70, 1.70, <Masculine>);
+		dcl userLen: nat := card f.getUsers();
+		dcl adminLen: nat := card f.getAdmins();
+
+		assert(not f.adminExists(a));
+		assert(not f.userExists(a));
+		assert(f.addAdmin(a));
+
+		assert(f.addAdmin(a) = false);
+		assert(card f.getUsers() = userLen + 1);
+		assert(card f.getAdmins() = adminLen + 1);
+	);
+
 	public testAddAdmin() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl a: Admin := new Admin("John", "Doe", "b@b.d", "12345678", 70, 1.70, <Masculine>);
@@ -25,6 +40,20 @@ operations
 		assert(f.addAdmin(a));
 		assert(f.userExists(a));
 		assert(f.adminExists(a));
+	);
+
+	public testAddRepeatedUser() == (
+		dcl f: FitnessApp := createFitnessApp();
+		dcl u: User := new User("John", "Doe", "b@b.d", "12345678", 70, 1.70, <Masculine>);
+		dcl userLen: nat := card f.getUsers();
+		dcl adminLen: nat := card f.getAdmins();
+		assert(not f.userExists(u));
+
+		assert(f.addUser(u));
+		assert(f.addUser(u) = false);
+
+		assert(card f.getUsers() = userLen + 1);
+		assert(card f.getAdmins() = adminLen);
 	);
 
 	public testAddUser() == (
@@ -44,6 +73,8 @@ operations
 		assert(f.login("d@d.b", "12345678"));
 		assert(f.isAdminLoggedIn());
 		assert(f.isLoggedIn());
+		assert(f.getLoggedInUser() = a);
+		assert(f.getLoggedInAdmin() = a);
 	);
 
 	public testAdminUnsuccessfulLogin() == (
@@ -61,6 +92,8 @@ operations
 		assert(not f.login("invalid", "invalid1")); -- Tests if combination email, password is not found
 		assert(not f.isAdminLoggedIn());
 		assert(not f.isLoggedIn());
+		assert(f.getLoggedInUser() = nil);
+		assert(f.getLoggedInAdmin() = nil);
 	);
 
 	public testUserSuccessfulLogin() == (
@@ -72,6 +105,8 @@ operations
 		assert(f.login("d@d.b", "12345678"));
 		assert(not f.isAdminLoggedIn());
 		assert(f.isLoggedIn());
+		assert(f.getLoggedInUser() = u);
+		assert(f.getLoggedInAdmin() = nil);
 	);
 
 	public testUserUnsuccessfulLogin() == (
@@ -89,6 +124,8 @@ operations
 		assert(not f.login("invalid", "invalid1")); -- Tests if combination email, password is not found
 		assert(not f.isAdminLoggedIn());
 		assert(not f.isLoggedIn());
+		assert(f.getLoggedInUser() = nil);
+		assert(f.getLoggedInAdmin() = nil);
 	);
 	
 	public testLogout() == (
@@ -122,7 +159,9 @@ operations
 
 	public test() == (
 		testAddAdmin();
+		testAddRepeatedAdmin();
 		testAddUser();
+		testAddRepeatedUser();
 		testAdminSuccessfulLogin();
 		testAdminUnsuccessfulLogin();
 		testUserSuccessfulLogin();

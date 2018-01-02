@@ -143,4 +143,8 @@ operations
 	-- Returns the set of users.
 	public getUsers: () ==> set of User
 	getUsers() == return users;
+
+	-- Returns the set of admins.
+	public getAdmins: () ==> set of Admin
+	getAdmins() == return admins;
 end FitnessApp

@@ -20,5 +20,5 @@ operations
 	
 	-- Returns a message describing the goal.
 	public getGoalDescription: () ==> seq of char
-	getGoalDescription() == return "Burn " ^ [goal] ^ " kcal";
+	getGoalDescription() == return "Burn %s kcal";
 end CalorieChallenge

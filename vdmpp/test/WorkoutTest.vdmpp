@@ -3,6 +3,11 @@ operations
 	public createWorkout() res: Workout ==
 		return new Workout("Morning Run", mk_Types`DateTime(mk_Types`Date(2017,12,21), mk_Types`Time(16, 37, 00)), <Running>, mk_Types`Point(0, 0));
 
+	public testCreateWorkout() == (
+		dcl w: Workout := createWorkout();	
+		assert(w.getTitle() = "Morning Run");
+	);
+
 	public testSetRoute() == (
 		dcl w: Workout := createWorkout();	
 		dcl r: Route := new Route("Sunday Run", [mk_Types`Point(0, 0), mk_Types`Point(0, 1)]);
@@ -30,6 +35,7 @@ operations
 	);
 
 	public test() == (
+		testCreateWorkout();
 		testSetRoute();	
 		testAddPoint();
 		testEndWorkout();

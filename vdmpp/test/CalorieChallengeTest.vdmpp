@@ -32,7 +32,7 @@ operations
 	public testGoalDescription() == (
 		dcl c: CalorieChallenge := createCalorieChallenge(createAdmin());
 		dcl a: seq of char := c.getGoalDescription();
-		assert(a = "Burn 20 kcal");
+		assert(a = "Burn %s kcal");
 	);
 	
 	public test() == (

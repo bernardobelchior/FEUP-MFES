@@ -28,9 +28,16 @@ operations
 		c.addCompletedUser(u);
 		assert(u in set elems c.getCompleted());
 	);
+
+	public testGoalDescription() == (
+		dcl c: RhythmChallenge := createRhythmChallenge(createAdmin());
+		dcl a: seq of char := c.getGoalDescription();
+		assert(a = "Run at a pace of %s min/km");
+	);
 	
 	public test() == (
 		testChallenge();
 		testCompleteChallenge();
+		testGoalDescription();
 	)	
 end RhythmChallengeTest

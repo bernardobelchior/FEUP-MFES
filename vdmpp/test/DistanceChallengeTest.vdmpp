@@ -29,8 +29,15 @@ operations
 		assert(u in set elems c.getCompleted());
 	);
 	
+	public testGoalDescription() == (
+		dcl c: DistanceChallenge := createDistanceChallenge(createAdmin());
+		dcl a: seq of char := c.getGoalDescription();
+		assert(a = "Run %s km");
+	);
+
 	public test() == (
 		testChallenge();
 		testCompleteChallenge();
+		testGoalDescription();
 	)	
 end DistanceChallengeTest

@@ -20,5 +20,5 @@ operations
 	
 	-- Returns a message describing the goal.
 	public getGoalDescription: () ==> seq of char
-	getGoalDescription() == return "Run at a pace of " ^ [goal] ^ " min/km";
+	getGoalDescription() == return "Run at a pace of %s min/km";
 end RhythmChallenge
