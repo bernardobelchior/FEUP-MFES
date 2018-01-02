@@ -15,6 +15,9 @@ instance variables
 operations
 	public verifyChallenge: Workout ==> bool
 	verifyChallenge(-) == is subclass responsibility;
+	
+	public printMessage: () ==> seq of char
+	printMessage() == is subclass responsibility;
 
 	public addCompletedUser: User ==> ()
 	addCompletedUser(u) == (completed := [u] ^ completed)
@@ -25,6 +28,9 @@ operations
 	
 	public getCreator: () ==> Admin
 	getCreator() == return createdBy;
+	
+	public getName: () ==> seq of char
+	getName() == return name;
 functions
 -- TODO Define functiones here
 traces

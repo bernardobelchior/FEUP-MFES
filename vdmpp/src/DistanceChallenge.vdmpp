@@ -21,6 +21,9 @@ operations
 	verifyChallenge(workout) == (
 		return workout.getDistance() >= goal;
 	);
+	
+	public printMessage: () ==> seq of char
+	printMessage() == return "Running " ^ [goal] ^ " km";
 functions
 -- TODO Define functiones here
 traces

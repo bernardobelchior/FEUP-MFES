@@ -1,6 +1,10 @@
+import FitnessApp.Admin;
+import FitnessApp.CalorieChallenge;
 import FitnessApp.Challenge;
+import FitnessApp.DistanceChallenge;
 import FitnessApp.FitnessApp;
 import FitnessApp.Goal;
+import FitnessApp.RhythmChallenge;
 import FitnessApp.Route;
 import FitnessApp.Types.Date;
 import FitnessApp.Types.DateTime;
@@ -301,7 +305,9 @@ public class CommandLineInterface {
 		double weight = Double.parseDouble(reader.nextLine());
 		System.out.print("Height: ");
 		double height = Double.parseDouble(reader.nextLine());
-		fitnessApp.addUser(new User(firstName, lastName, email, password, weight, height));
+		System.out.print("Gender (Masculine, Feminine): ");
+		String gender = reader.nextLine();
+		fitnessApp.addUser(new User(firstName, lastName, email, password, weight, height, gender));
 		printEmptyLines(EMPTY_LINES);
 	}
 
@@ -403,16 +409,9 @@ public class CommandLineInterface {
 		while (it.hasNext()) {
 			Challenge challenge = it.next();
 			System.out.println(i + ": " + challenge.getName());
-			int activity = challenge.getTypeOfChallenge().intValue();
-			if(activity == 0) { // Running
-				System.out.println("   Running " + challenge.getGoal() + " km");
-			}
-			else if(activity == 1) { // Number of calories
-				System.out.println("   Burning " + challenge.getGoal() + " kcal");
-			}
-			else if(activity == 2) { // Time
-				System.out.println("   Do exercise for " + challenge.getGoal() + " min");
-			}
+			System.out.println("  " + challenge.printMessage());
+			System.out.println("  Created by: " + challenge.getCreator().getFirstName() + " " + challenge.getCreator().getLastName());
+			
 			i++;
 			VDMSeq usersCompleted = challenge.getCompleted();
 			Iterator<User> ite = usersCompleted.iterator();
@@ -589,6 +588,8 @@ public class CommandLineInterface {
 
 	private void createNewChallengeMenu() {
 		printEmptyLines(EMPTY_LINES);
+		
+		Admin admin = fitnessApp.getLoggedInAdmin();
 
 		System.out.print("Challenge Name: ");
 		String challengeName = reader.nextLine();
@@ -601,16 +602,30 @@ public class CommandLineInterface {
 		int endMonth = Integer.parseInt(reader.nextLine());
 		System.out.print("Day: ");
 		int endDay = Integer.parseInt(reader.nextLine());
-		System.out.print("Type of Activity (0 -> distance(km) | 1 -> number of calories(kcal) | 2 -> time(min)): ");
+		System.out.print("Type of Activity (0 -> distance(km) | 1 -> number of calories(kcal) | 2 -> rhythm(min/km)): ");
 		int typeOfActivity = Integer.parseInt(reader.nextLine());
 		System.out.print("Challenge Goal: ");
 		int challengeGoal = Integer.parseInt(reader.nextLine());
 
 		LocalDateTime initialDate = LocalDateTime.now();
-
-		Challenge newChallenge = new Challenge(challengeName, challengeDescription, 
-				new Date(initialDate.getYear(), initialDate.getMonth().getValue(), initialDate.getDayOfMonth()),
-				new Date(endYear, endMonth, endDay), challengeGoal, typeOfActivity);
+		
+		Challenge newChallenge;
+		
+		if (typeOfActivity == 0) {
+			newChallenge = new DistanceChallenge(admin, challengeName, challengeDescription, 
+					new Date(initialDate.getYear(), initialDate.getMonth().getValue(), initialDate.getDayOfMonth()),
+					new Date(endYear, endMonth, endDay), challengeGoal);
+		}
+		else if (typeOfActivity == 1) {
+			newChallenge = new CalorieChallenge(admin, challengeName, challengeDescription, 
+					new Date(initialDate.getYear(), initialDate.getMonth().getValue(), initialDate.getDayOfMonth()),
+					new Date(endYear, endMonth, endDay), challengeGoal);
+		}
+		else {
+			newChallenge = new RhythmChallenge(admin, challengeName, challengeDescription, 
+					new Date(initialDate.getYear(), initialDate.getMonth().getValue(), initialDate.getDayOfMonth()),
+					new Date(endYear, endMonth, endDay), challengeGoal);
+		}
 
 		fitnessApp.addChallenge(newChallenge);
 

@@ -21,6 +21,9 @@ operations
 	verifyChallenge(workout) == (
 		return workout.getAverageRhythm() >= goal;
 	);
+	
+	public printMessage: () ==> seq of char
+	printMessage() == return "Running at a pace of " ^ [goal] ^ " min/km";
 functions
 -- TODO Define functiones here
 traces
