@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,7 +20,7 @@ import java.util.concurrent.Callable;
 
 public class CommandLineInterface {
 
-    private static final int EMPTY_LINES = 20;
+    private static final int EMPTY_LINES = 10;
 
     private Scanner reader = new Scanner(System.in);
     private FitnessApp fitnessApp;
@@ -310,7 +311,8 @@ public class CommandLineInterface {
         if (fitnessApp.login(email, password)) {
             loggedInMenu();
         } else {
-            System.out.println("Login has fail");
+            printEmptyLines(EMPTY_LINES);
+            System.out.println("Incorrect email, password combination. Please try again.");
         }
         printEmptyLines(EMPTY_LINES);
     }
@@ -347,7 +349,7 @@ public class CommandLineInterface {
         printEmptyLines(EMPTY_LINES);
 
         User loggedInUser = fitnessApp.getLoggedInUser();
-        VDMSet userRoutes = loggedInUser.getMyRoutes();
+        VDMSet userRoutes = loggedInUser.getRoutes();
 
         if (userRoutes.size() == 0) {
             System.out.println("No Routes :(");
@@ -394,8 +396,8 @@ public class CommandLineInterface {
         int i = 1;
         while (it.hasNext()) {
             Challenge challenge = it.next();
-            System.out.println(i + ": " + challenge.getName());
-            System.out.println("  " + challenge.printMessage());
+            System.out.println(i + ": " + challenge.name);
+            System.out.println("  " + String.format(challenge.getGoalDescription(), challenge.goal));
             System.out.println("  Created by: " + challenge.getCreator().getFirstName() + " " + challenge.getCreator().getLastName());
 
             i++;
@@ -465,15 +467,10 @@ public class CommandLineInterface {
         }
 
         LocalDateTime endDate = LocalDateTime.now();
-        double duration;
-
-        if (initialDate.getMinute() == endDate.getMinute()) {
-            duration = (endDate.getSecond() - initialDate.getSecond()) / 60.0;
-        } else if (initialDate.getHour() == endDate.getHour()) {
-            duration = endDate.getMinute() - initialDate.getMinute() + (endDate.getSecond() + (60 - initialDate.getSecond())) / 60.0;
-        } else {
-            duration = (60 - initialDate.getMinute()) + endDate.getMinute() + (endDate.getSecond() + (60 - initialDate.getSecond())) / 60.0;
-        }
+        Types.Duration duration = new Types.Duration(
+                ChronoUnit.HOURS.between(initialDate, endDate),
+                ChronoUnit.MINUTES.between(initialDate, endDate),
+                ChronoUnit.SECONDS.between(initialDate, endDate));
 
         newWorkout.endWorkout(loggedInUser, duration);
         loggedInUser.addWorkout(newWorkout);
@@ -481,12 +478,11 @@ public class CommandLineInterface {
         VDMSeq challenges = fitnessApp.getChallenges();
 
         Iterator<Challenge> it = challenges.iterator();
-        int i = 1;
         while (it.hasNext()) {
             Challenge challenge = it.next();
             if (challenge.verifyChallenge(newWorkout)) {
                 challenge.addCompletedUser(loggedInUser);
-                System.out.println("You completed challenge with name " + challenge.getName());
+                System.out.println("You completed challenge with name " + challenge.name);
             }
         }
 
@@ -615,7 +611,7 @@ public class CommandLineInterface {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         System.out.print("End date (dd-mm-yyy): ");
-        java.util.Date endDate;
+        java.util.Date endDate = null;
 
         try {
             endDate = simpleDateFormat.parse(reader.nextLine());
@@ -624,11 +620,12 @@ public class CommandLineInterface {
                 throw new IllegalArgumentException();
             }
         } catch (Exception e) {
-            while (true) {
-                System.out.println("Invalid date. Please enter end date (dd-mm-yyyy): ");
+            boolean validDate = false;
+            while (!validDate) {
+                System.out.print("Invalid date. Please enter end date (dd-mm-yyyy): ");
                 try {
                     endDate = simpleDateFormat.parse(reader.nextLine());
-                    break;
+                    validDate = true;
                 } catch (ParseException e1) {
                     e1.printStackTrace();
                 }
