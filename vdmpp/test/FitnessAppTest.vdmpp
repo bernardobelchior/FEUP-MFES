@@ -10,14 +10,17 @@ operations
 		new FitnessAppTest().test();
 	);
 	
-	public createFitnessApp() res: FitnessApp == (
+	public createFitnessApp: () ==> FitnessApp 
+	createFitnessApp() == (
 		return new FitnessApp({new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70, <Masculine>), new User("Bernardo", "Belchior", "z@z.c", "12345678", 70, 1.70, <Masculine>)});
 	);
 	
-	public createAdmin() res: Admin == 
+	public createAdmin: () ==> Admin 
+	createAdmin() == 
 		return new Admin("Bernardo", "Belchior", "b@b.c", "12345678", 70, 1.70, <Masculine>);	
 
-	public testAddRepeatedAdmin() == (
+	public testAddRepeatedAdmin: () ==> ()
+	testAddRepeatedAdmin() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl a: Admin := new Admin("John", "Doe", "b@b.d", "12345678", 70, 1.70, <Masculine>);
 		dcl userLen: nat := card f.getUsers();
@@ -32,7 +35,8 @@ operations
 		assert(card f.getAdmins() = adminLen + 1);
 	);
 
-	public testAddAdmin() == (
+	public testAddAdmin: () ==> ()
+	testAddAdmin() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl a: Admin := new Admin("John", "Doe", "b@b.d", "12345678", 70, 1.70, <Masculine>);
 		assert(not f.adminExists(a));
@@ -42,7 +46,8 @@ operations
 		assert(f.adminExists(a));
 	);
 
-	public testAddRepeatedUser() == (
+	public testAddRepeatedUser: () ==> ()
+	testAddRepeatedUser() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl u: User := new User("John", "Doe", "b@b.d", "12345678", 70, 1.70, <Masculine>);
 		dcl userLen: nat := card f.getUsers();
@@ -56,7 +61,8 @@ operations
 		assert(card f.getAdmins() = adminLen);
 	);
 
-	public testAddUser() == (
+	public testAddUser: () ==> ()
+	testAddUser() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl u: User := new User("John", "Doe", "b@b.d", "12345678", 70, 1.70, <Masculine>);
 		assert(not f.userExists(u));
@@ -64,7 +70,8 @@ operations
 		assert(f.userExists(u));
 	);
 
-	public testAdminSuccessfulLogin() == (
+	public testAdminSuccessfulLogin: () ==> ()
+	testAdminSuccessfulLogin() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl a: Admin := new Admin("John", "Doe", "d@d.b", "12345678", 70, 1.70, <Masculine>);
 		assert(f.addAdmin(a));
@@ -77,7 +84,8 @@ operations
 		assert(f.getLoggedInAdmin() = a);
 	);
 
-	public testAdminUnsuccessfulLogin() == (
+	public testAdminUnsuccessfulLogin: () ==> ()
+	testAdminUnsuccessfulLogin() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl a: Admin := new Admin("John", "Doe", "d@d.c", "12345678", 70, 1.70, <Masculine>);
 		assert(f.addAdmin(a));
@@ -96,7 +104,8 @@ operations
 		assert(f.getLoggedInAdmin() = nil);
 	);
 
-	public testUserSuccessfulLogin() == (
+	public testUserSuccessfulLogin: () ==> ()
+	testUserSuccessfulLogin() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl u: User := new User("John", "Doe", "d@d.b", "12345678", 70, 1.70, <Masculine>);
 		assert(f.addUser(u));
@@ -109,7 +118,8 @@ operations
 		assert(f.getLoggedInAdmin() = nil);
 	);
 
-	public testUserUnsuccessfulLogin() == (
+	public testUserUnsuccessfulLogin: () ==> ()
+	testUserUnsuccessfulLogin() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl u: User := new User("John", "Doe", "d@b.d", "12345678", 70, 1.70, <Masculine>);
 		assert(f.addUser(u));
@@ -128,7 +138,8 @@ operations
 		assert(f.getLoggedInAdmin() = nil);
 	);
 	
-	public testLogout() == (
+	public testLogout: () ==> ()
+	testLogout() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl u: User := new User("John", "Doe", "d@b.c", "12345678", 70, 1.70, <Masculine>);
 		assert(f.addUser(u));
@@ -140,7 +151,8 @@ operations
 		assert(not f.isAdminLoggedIn());
 	);
 	
-	public testAddChallengeWithAdminInSystem() == (
+	public testAddChallengeWithAdminInSystem: () ==> ()
+	testAddChallengeWithAdminInSystem() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl a: Admin := createAdmin();
 		dcl c: Challenge := new DistanceChallenge(a, "Test", "Because we need to test", mk_Types`Date(2018, 1, 1), mk_Types`Date(2018, 2, 1), 10);
@@ -150,14 +162,16 @@ operations
 		assert(c in set elems f.getChallenges());
 	);
 	
-	public testAddChallengeWithoutAdminInSystem() == (
+	public testAddChallengeWithoutAdminInSystem: () ==> ()
+	testAddChallengeWithoutAdminInSystem() == (
 		dcl f: FitnessApp := createFitnessApp();
 		dcl c: Challenge := new DistanceChallenge(createAdmin(), "Test", "Because we need to test", mk_Types`Date(2018, 1, 1), mk_Types`Date(2018, 2, 1), 10);
 		f.addChallenge(c);
 		assert(not c in set elems f.getChallenges());
 	);
 
-	public test() == (
+	public test: () ==> ()
+	test() == (
 		testAddAdmin();
 		testAddRepeatedAdmin();
 		testAddUser();

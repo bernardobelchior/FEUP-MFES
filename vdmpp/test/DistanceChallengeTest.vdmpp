@@ -1,15 +1,19 @@
 class DistanceChallengeTest is subclass of Test
 operations
-	public createDistanceChallenge(a: Admin) res: DistanceChallenge == 
+	public createDistanceChallenge: Admin ==> DistanceChallenge 
+	createDistanceChallenge(a) == 
 		return new DistanceChallenge(a, "Testing Challenge", "Lets test Challenge class", mk_Types`Date(2017,12,24), mk_Types`Date(2017,12,30), 20);
 	
-	public createAdmin() res: Admin == 
+	public createAdmin: () ==> Admin 
+	createAdmin() == 
 		return new Admin("Bernardo", "Belchior", "b@b.c", "12345678", 70, 1.70, <Masculine>);	
 
-	public createUser() res: User ==
+	public createUser: () ==> User 
+	createUser() ==
 		return new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70, <Masculine>);	
 
-	public testChallenge() == (
+	public testChallenge: () ==> ()
+	testChallenge() == (
 		dcl c: DistanceChallenge := createDistanceChallenge(createAdmin());
 		assert(c.name = "Testing Challenge");
 		assert(c.description = "Lets test Challenge class");
@@ -17,7 +21,8 @@ operations
 		assert(c.endDate = mk_Types`Date(2017,12,30));
 	);
 
-	public testCompleteChallenge() == (
+	public testCompleteChallenge: () ==> ()
+	testCompleteChallenge() == (
 		dcl c: DistanceChallenge := createDistanceChallenge(createAdmin());
 		dcl w: Workout := new Workout("Morning Run", mk_Types`DateTime(mk_Types`Date(2017,12,21), mk_Types`Time(16, 37, 00)), <Running>, mk_Types`Point(0, 0));
 		dcl u: User := createUser();
@@ -29,13 +34,15 @@ operations
 		assert(u in set elems c.getCompleted());
 	);
 	
-	public testGoalDescription() == (
+	public testGoalDescription: () ==> ()
+	testGoalDescription() == (
 		dcl c: DistanceChallenge := createDistanceChallenge(createAdmin());
 		dcl a: seq of char := c.getGoalDescription();
 		assert(a = "Run %s km");
 	);
 
-	public test() == (
+	public test: () ==> ()
+	test() == (
 		testChallenge();
 		testCompleteChallenge();
 		testGoalDescription();

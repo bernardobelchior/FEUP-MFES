@@ -1,28 +1,33 @@
 class WorkoutTest is subclass of Test
 operations
-	public createWorkout() res: Workout ==
+	public createWorkout: () ==> Workout 
+	createWorkout() ==
 		return new Workout("Morning Run", mk_Types`DateTime(mk_Types`Date(2017,12,21), mk_Types`Time(16, 37, 00)), <Running>, mk_Types`Point(0, 0));
 
-	public testCreateWorkout() == (
+	public testCreateWorkout: () ==> ()
+	testCreateWorkout() == (
 		dcl w: Workout := createWorkout();	
 		assert(w.getTitle() = "Morning Run");
 	);
 
-	public testSetRoute() == (
+	public testSetRoute: () ==> ()
+	testSetRoute() == (
 		dcl w: Workout := createWorkout();	
 		dcl r: Route := new Route("Sunday Run", [mk_Types`Point(0, 0), mk_Types`Point(0, 1)]);
 		w.route := r;
 		assert(w.route = r);
 	);
 
-	public testAddPoint() == (
+	public testAddPoint: () ==> ()
+	testAddPoint() == (
 		dcl w: Workout := createWorkout();	
 		dcl p: Types`Point := mk_Types`Point(10, 10);
 		w.addPoint(p);
 		assert(p = w.getPoints()(len w.getPoints()))
 	);
 	
-	public testEndWorkout() == (
+	public testEndWorkout: () ==> ()
+	testEndWorkout() == (
 		dcl w: Workout := createWorkout();	
 		dcl p: Types`Point := mk_Types`Point(10, 10);
 		dcl u: User := new User("John", "Doe", "a@b.c", "12345678", 70, 1.70, <Masculine>);
@@ -34,7 +39,8 @@ operations
 		assert(w.getDuration().minutes = 20);
 	);
 
-	public test() == (
+	public test: () ==> ()
+	test() == (
 		testCreateWorkout();
 		testSetRoute();	
 		testAddPoint();

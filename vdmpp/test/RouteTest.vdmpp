@@ -1,6 +1,7 @@
 class RouteTest is subclass of Test
 operations
-	public testRouteDistance() == (
+	public testRouteDistance: () ==> ()
+	testRouteDistance() == (
 		dcl ps: seq of Types`Point := [mk_Types`Point(38.898556, -77.037852), mk_Types`Point(38.897147, -77.043934)];
 		dcl r: Route := new Route("Test", ps);
 
@@ -9,6 +10,7 @@ operations
 		assert(r.getPoints() = ps);
 	);
 	
-	public test() ==
+	public test: () ==> ()
+	test() ==
 		testRouteDistance();
 end RouteTest
