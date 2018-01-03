@@ -2,10 +2,10 @@
 class FitnessApp
 instance variables
 	-- Users with accounts in the system. Includes both normal users and admins.
-	users: set of User := {};
+	users: map seq of char to User := {|->};
 	
 	-- Admins with accounts in the system
-	admins: set of Admin := {};
+	admins: map seq of char to Admin := {|->};
 	
 	-- Reference to the logged in user. If nil means there is no user logged in. 
 	loggedInUser: [User] := nil;
@@ -18,62 +18,60 @@ instance variables
 	challenges: seq of Challenge := [];
 	
 	-- Establishes the relation between loggedInUser and loggedInAdmin. Ensures loggedInUser is never nil if an admin is logged in.
-	inv (loggedInUser = nil and loggedInAdmin = nil) or (loggedInAdmin <> nil and loggedInUser = loggedInAdmin) or (loggedInUser <> nil and loggedInAdmin = nil)
+	inv (loggedInUser = nil and loggedInAdmin = nil) or (loggedInAdmin <> nil and loggedInUser = loggedInAdmin) or (loggedInUser <> nil and loggedInAdmin = nil);
+
+	-- Ensures the map is consistent with the object information.
+	inv forall email in set dom users & users(email).getEmail() = email;
 operations
 	-- Constructor. Allows the system to be created with some Users.
 	public FitnessApp: set of User ==> FitnessApp  
 	FitnessApp(u) == 
-	users := u
-	post users = u;
+	for all user in set u do (
+		users := users ++ {user.getEmail() |-> user}
+	)
+	pre forall u1, u2 in set u & u1 <> u2 => u1.getEmail() <> u2.getEmail()
+	post forall email in set dom users & users(email).getEmail() = email;
 
 	-- Checks if there is a user with the same email as provided.
 	private existsUserWithSameEmail: seq of char ==> bool
-	existsUserWithSameEmail(email) ==  (
-		for all u in set users do (
-			if u.getEmail() = email then (
-				return true;
-			);
-		);
-		
-		return false;
-	);
+	existsUserWithSameEmail(email) ==  return email in set dom users;
 
 	-- Adds a user if there is no user with the same email. If the user cannot be added, the operation will return false. 
 	-- Otherwise, it will return true.
 	public addUser: User ==> bool
 	addUser(u) == (
 		if(not existsUserWithSameEmail(u.getEmail())) then (
-			users := {u} union users;
+			users := users ++ {u.getEmail() |-> u};
 			return true;
 		);
 		
 		return false;
 	)
-	post (RESULT = true and users = {u} union users~) or (RESULT = false and users = users~);
+	post (RESULT = true and users = users~ ++ {u.getEmail() |-> u}) or (RESULT = false and users = users~);
 	
 	-- Adds a admin if there is no user with the same email. If the admin cannot be added, the operation will return false. 
 	-- Otherwise, it will return true.
 	public addAdmin: Admin ==> bool
 	addAdmin(a) == (
 		if(not existsUserWithSameEmail(a.getEmail())) then (
-			admins := {a} union admins;
-			users := {a} union users;
+			admins := admins ++ {a.getEmail() |-> a};
+			users := users ++ {a.getEmail() |-> a};
 			return true;
 		);
 		
 		return false;
 	)
-	post (RESULT = true and admins = {a} union admins~ and users = {a} union users~) or (RESULT = false and users = users~ and admins = admins~);
+	post (RESULT = true and admins = admins~ ++ {a.getEmail() |-> a} and users = users~ ++ {a.getEmail() |-> a}) or (RESULT = false and users = users~ and admins = admins~);
 	
 	-- Returns true if the given Admin is in the system. 
 	public adminExists: Admin ==> bool
-	adminExists(a) == return a in set admins
-	post RESULT = a in set admins;
+	adminExists(a) == return a.getEmail() in set dom admins
+	post RESULT = a.getEmail() in set dom admins;
 		
 	-- Returns true if the given user is in the system. 
 	public userExists: User ==> bool
-	userExists(u) == return u in set users
-	post RESULT = u in set users;
+	userExists(u) == return u.getEmail() in set dom users
+	post RESULT = u.getEmail() in set dom users;
 	
 	-- Returns true if there is a user logged in.
 	public isLoggedIn: () ==> bool 
@@ -88,22 +86,28 @@ operations
 	-- Logs the user (or admin) in. Returns true if successful and updates the loggedInUser and loggedInAdmin variables.
 	public login: seq of char * seq of char ==> bool
 	login(email, password) == (
+		dcl admin: Admin;
+		dcl user: User;
+
 		if (len email < 5 or len password < 8) then
 			return false;
-
-		for all admin in set admins do (
+			
+		if (email in set dom admins) then (
+			admin := admins(email);
 			if admin.checkLogin(email, password) then (
-					loggedInUser := admin;
-					loggedInAdmin := admin;
-					return true;
-				);
+				loggedInUser := admin;
+				loggedInAdmin := admin;
+				return true;
+			);
 		);
 	
-		for all user in set users do (
+
+		if (email in set dom users) then (
+			user := users(email);
 			if user.checkLogin(email, password) then (
-					loggedInUser := user;
-					return true;
-				);
+				loggedInUser := user;
+				return true;
+			);
 		);
 		
 		return false;
@@ -142,9 +146,9 @@ operations
 	
 	-- Returns the set of users.
 	public getUsers: () ==> set of User
-	getUsers() == return users;
+	getUsers() == return rng users;
 
 	-- Returns the set of admins.
 	public getAdmins: () ==> set of Admin
-	getAdmins() == return admins;
+	getAdmins() == return rng admins;
 end FitnessApp

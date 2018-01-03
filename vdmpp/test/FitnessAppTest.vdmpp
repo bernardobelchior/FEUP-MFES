@@ -11,7 +11,7 @@ operations
 	);
 	
 	public createFitnessApp() res: FitnessApp == (
-		return new FitnessApp({new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70, <Masculine>), new User("Bernardo", "Belchior", "a@b.c", "12345678", 70, 1.70, <Masculine>)});
+		return new FitnessApp({new User("Nuno", "Ramos", "a@b.c", "12345678", 70, 1.70, <Masculine>), new User("Bernardo", "Belchior", "z@z.c", "12345678", 70, 1.70, <Masculine>)});
 	);
 	
 	public createAdmin() res: Admin == 

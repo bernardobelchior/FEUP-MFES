@@ -87,7 +87,7 @@ operations
 	getFriends() == return friends;
 
 	-- Returns the user's email
-	public getEmail: () ==> seq of char
+	public pure getEmail: () ==> seq of char
 	getEmail() == return email;
 	
 	-- Checks if the email and password combination matches
